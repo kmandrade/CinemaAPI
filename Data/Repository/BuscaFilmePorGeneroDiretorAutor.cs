@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class BuscaFilmePorGeneroDiretorAutor : IAtorDao,IDiretorDao,IGeneroDao
+    public class BuscaFilmePorGeneroDiretorAutor : IBuscaPorGeneroAutorDiretor
     {
         private readonly MyContext _context;
 

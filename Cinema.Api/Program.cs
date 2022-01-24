@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyContext>();
-builder.Services.AddScoped<IAtorDao, IDiretorDao, IGeneroDao, BuscaFilmePorGeneroDiretorAutor>();
+builder.Services.AddScoped<IBuscaPorGeneroAutorDiretor, BuscaFilmePorGeneroDiretorAutor>();
 
 var app = builder.Build();
 
