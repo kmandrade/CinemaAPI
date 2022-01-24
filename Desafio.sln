@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinema.Api", "Cinema.Api\Cinema.Api.csproj", "{68AA388A-7E98-4501-88A5-29ACBCC57059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{7DE948A0-45F8-4035-B279-57931E25F7FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68AA388A-7E98-4501-88A5-29ACBCC57059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68AA388A-7E98-4501-88A5-29ACBCC57059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68AA388A-7E98-4501-88A5-29ACBCC57059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68AA388A-7E98-4501-88A5-29ACBCC57059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DE948A0-45F8-4035-B279-57931E25F7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DE948A0-45F8-4035-B279-57931E25F7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DE948A0-45F8-4035-B279-57931E25F7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DE948A0-45F8-4035-B279-57931E25F7FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {39881C02-8A96-47D0-961F-44D0D77CEC42}
+	EndGlobalSection
+EndGlobal
