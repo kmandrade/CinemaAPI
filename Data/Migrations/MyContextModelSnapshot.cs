@@ -21,36 +21,36 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AutorFilme", b =>
+            modelBuilder.Entity("AtorFilme", b =>
                 {
-                    b.Property<int>("AutoresAutorId")
+                    b.Property<int>("AtoresAtorId")
                         .HasColumnType("int");
 
                     b.Property<int>("FilmesId")
                         .HasColumnType("int");
 
-                    b.HasKey("AutoresAutorId", "FilmesId");
+                    b.HasKey("AtoresAtorId", "FilmesId");
 
                     b.HasIndex("FilmesId");
 
-                    b.ToTable("AutorFilme");
+                    b.ToTable("AtorFilme");
                 });
 
-            modelBuilder.Entity("Domain.Models.Autor", b =>
+            modelBuilder.Entity("Domain.Models.Ator", b =>
                 {
-                    b.Property<int>("AutorId")
+                    b.Property<int>("AtorId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AutorId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AtorId"), 1L, 1);
 
-                    b.Property<string>("NomeAutor")
+                    b.Property<string>("NomeAtor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AutorId");
+                    b.HasKey("AtorId");
 
-                    b.ToTable("Autores");
+                    b.ToTable("Atores");
                 });
 
             modelBuilder.Entity("Domain.Models.Diretor", b =>
@@ -127,11 +127,11 @@ namespace Data.Migrations
                     b.ToTable("FilmeGenero");
                 });
 
-            modelBuilder.Entity("AutorFilme", b =>
+            modelBuilder.Entity("AtorFilme", b =>
                 {
-                    b.HasOne("Domain.Models.Autor", null)
+                    b.HasOne("Domain.Models.Ator", null)
                         .WithMany()
-                        .HasForeignKey("AutoresAutorId")
+                        .HasForeignKey("AtoresAtorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

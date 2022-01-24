@@ -21,9 +21,9 @@ namespace Data.Repository
         //include carregamento de entidades relacioandas 
         public Ator BuscarPorNomeDiretorOuGeneroOuAutor(object NomeDiretorOuAutorOuGenero)
         {
-            return _context.Autores
+            return _context.Atores
                 .Include(f => f.Filmes)
-                .First(f => f.NomeAutor == NomeDiretorOuAutorOuGenero.ToString());
+                .First(f => f.NomeAtor == NomeDiretorOuAutorOuGenero.ToString());
         }
 
         Genero IQuery<Genero>.BuscarPorNomeDiretorOuGeneroOuAutor(object NomeDiretorOuAutorOuGenero)

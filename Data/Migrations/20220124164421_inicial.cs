@@ -9,16 +9,16 @@ namespace Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Autores",
+                name: "Atores",
                 columns: table => new
                 {
-                    AutorId = table.Column<int>(type: "int", nullable: false)
+                    AtorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeAutor = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NomeAtor = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Autores", x => x.AutorId);
+                    table.PrimaryKey("PK_Atores", x => x.AtorId);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,23 +69,23 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AutorFilme",
+                name: "AtorFilme",
                 columns: table => new
                 {
-                    AutoresAutorId = table.Column<int>(type: "int", nullable: false),
+                    AtoresAtorId = table.Column<int>(type: "int", nullable: false),
                     FilmesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AutorFilme", x => new { x.AutoresAutorId, x.FilmesId });
+                    table.PrimaryKey("PK_AtorFilme", x => new { x.AtoresAtorId, x.FilmesId });
                     table.ForeignKey(
-                        name: "FK_AutorFilme_Autores_AutoresAutorId",
-                        column: x => x.AutoresAutorId,
-                        principalTable: "Autores",
-                        principalColumn: "AutorId",
+                        name: "FK_AtorFilme_Atores_AtoresAtorId",
+                        column: x => x.AtoresAtorId,
+                        principalTable: "Atores",
+                        principalColumn: "AtorId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AutorFilme_Filmes_FilmesId",
+                        name: "FK_AtorFilme_Filmes_FilmesId",
                         column: x => x.FilmesId,
                         principalTable: "Filmes",
                         principalColumn: "Id",
@@ -117,8 +117,8 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AutorFilme_FilmesId",
-                table: "AutorFilme",
+                name: "IX_AtorFilme_FilmesId",
+                table: "AtorFilme",
                 column: "FilmesId");
 
             migrationBuilder.CreateIndex(
@@ -135,13 +135,13 @@ namespace Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AutorFilme");
+                name: "AtorFilme");
 
             migrationBuilder.DropTable(
                 name: "FilmeGenero");
 
             migrationBuilder.DropTable(
-                name: "Autores");
+                name: "Atores");
 
             migrationBuilder.DropTable(
                 name: "Filmes");

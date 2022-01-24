@@ -25,7 +25,7 @@ namespace Domain.Models
         public IEnumerable<Genero> Generos { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Ator> Autores { get; set; }
+        public IEnumerable<Ator> Atores { get; set; }
 
 
         public SituacaoFilme Situacao { get; set; }

@@ -29,13 +29,13 @@ namespace Data.Context
 
 
             builder.Entity<Filme>()
-                .HasMany(filme => filme.Autores)
+                .HasMany(filme => filme.Atores)
                 .WithMany(autores => autores.Filmes);
                 
             
         }
 
-        public DbSet<Ator> Autores { get; set; }
+        public DbSet<Ator> Atores { get; set; }
         public DbSet<Diretor> Diretores { get; set; }
         public DbSet<Filme> Filmes { get; set; }
         public DbSet<Genero> Generos { get; set; }

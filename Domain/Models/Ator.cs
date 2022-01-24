@@ -11,9 +11,9 @@ namespace Domain.Models
     {
 
         [Key]
-        public int AutorId { get; set; }
+        public int AtorId { get; set; }
 
-        public string NomeAutor { get; set; }
+        public string NomeAtor { get; set; }
 
 
         public virtual IEnumerable<Filme> Filmes { get; set; }
