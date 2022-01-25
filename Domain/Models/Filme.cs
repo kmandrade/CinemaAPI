@@ -10,7 +10,7 @@ namespace Domain.Models
 {
     public class Filme
     {
-        // Um Filme vai ter 1 diretor, varios generos
+       
         [Key]
         [Required]
         public int Id { get; set; }
@@ -21,11 +21,11 @@ namespace Domain.Models
         public Diretor Diretor { get; set; }
         public int DiretorId { get; set; }
 
-        [JsonIgnore]
-        public IEnumerable<Genero> Generos { get; set; }
+      
+        public virtual IEnumerable<Genero> Generos { get; set; }
 
-        [JsonIgnore]
-        public IEnumerable<Ator> Atores { get; set; }
+       
+        public virtual IEnumerable<Ator> Atores { get; set; }
 
 
         public SituacaoFilme Situacao { get; set; }

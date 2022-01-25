@@ -15,8 +15,8 @@ namespace Domain.Models
         public int Id { get; set; }
 
         public string TipoGenero { get; set; }
-
-        [JsonIgnore]
+         
+        
         public virtual IEnumerable<Filme> Filmes { get; set; }
 
     }

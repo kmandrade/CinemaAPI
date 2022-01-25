@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Dtos\FilmeDto\" />
     <Folder Include="Entities\" />
-    <Folder Include="Dtos\" />
     <Folder Include="Config\" />
   </ItemGroup>
 

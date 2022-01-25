@@ -16,7 +16,7 @@ namespace Domain.Services.Handlers
 
         public ArquivamentoAdminService(IFilmeDao filmeDao, IQueryBusca queryBusca)
         {
-            _defaultService = defaultService;
+          //  _defaultService = defaultService;
         }
 
         public void CadastraFilme(Filme filme)

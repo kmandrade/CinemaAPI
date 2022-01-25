@@ -1,3 +1,4 @@
+using Cinema.Api.Helper;
 using Data.Context;
 using Data.Entities;
 using Data.Repository;
@@ -13,7 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyContext>();
-builder.Services.AddScoped<IQueryBusca, BuscaFilmePorGeneroDiretorAutor>();
+
+builder.Services.AddDependenceInjection();
 
 var app = builder.Build();
 
