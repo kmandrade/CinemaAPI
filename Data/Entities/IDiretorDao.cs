@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IDiretorDao: IQuery<Diretor>
+    public interface IDiretorDao
     {
-        
+        public Diretor BuscaFilmePorDiretor(string nomeDiretor);
     }
 }

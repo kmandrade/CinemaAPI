@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IAtorDao: IQuery<Ator>
+    public interface IAtorDao
     {
-        
+
+        public IEnumerable<Ator> BuscaFilmePorAtor(string nomeAtor);
     }
 }

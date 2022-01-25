@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,8 +10,6 @@
     <Folder Include="Entities\" />
     <Folder Include="Dtos\" />
     <Folder Include="Config\" />
-    <Folder Include="Services\Entities\" />
-    <Folder Include="Services\Handlers\" />
   </ItemGroup>
 
   <ItemGroup>

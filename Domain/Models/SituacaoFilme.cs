@@ -8,7 +8,7 @@ namespace Domain.Models
 {
     public enum SituacaoFilme
     {
-        Desativado,
+        Arquivado,
         Ativado
         
     }

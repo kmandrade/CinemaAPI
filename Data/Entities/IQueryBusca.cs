@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IBuscaPorGeneroAutorDiretor : IAtorDao,IDiretorDao,IGeneroDao
+    public interface IQueryBusca : IAtorDao,IDiretorDao,IGeneroDao
     {
 
     }
