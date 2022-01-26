@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinema.Api", "Cinema.Api\Cinema.Api.csproj", "{68AA388A-7E98-4501-88A5-29ACBCC57059}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{7DE948A0-45F8-4035-B279-57931E25F7FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{7DE948A0-45F8-4035-B279-57931E25F7FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serviços", "Services\Serviços.csproj", "{BF2D1985-02F9-42B2-B1AD-84848D0AB2DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF2D1985-02F9-42B2-B1AD-84848D0AB2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF2D1985-02F9-42B2-B1AD-84848D0AB2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF2D1985-02F9-42B2-B1AD-84848D0AB2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF2D1985-02F9-42B2-B1AD-84848D0AB2DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
