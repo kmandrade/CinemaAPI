@@ -33,7 +33,7 @@ namespace Data.Services.Handlers
         public IEnumerable<LerFilmeDto> ConsultaFilmes()
         {
             var filmes = _filmeDao.BuscarTodos();
-            IEnumerable<LerFilmeDto> filmeDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            var filmeDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
             return filmeDtos;
         }
 
