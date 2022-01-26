@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos.FilmeDto;
+using Domain.Models;
 using Domain.Services.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,10 +28,10 @@ namespace Cinema.Api.Controllers
             return Ok(filmes);
         }
         [HttpPost]
-        public IActionResult CadastraFilme(Filme filme)
+        public IActionResult CadastraFilme([FromBody] CriarFilmeDto filme)
         {
             _service.CadastraFilme(filme);
-            return Ok(filme);
+            return Ok();
         }
 
 

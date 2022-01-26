@@ -37,6 +37,29 @@ namespace Data.Repository
     
         }
 
+        public IEnumerable<Filme> BuscaFilmesPorAtor(object ator)
+        {
+            yield return _context.Filmes
+             .Include(a => a.Atores)
+             .First(f => f.Atores == ator);
+        }
+
+        public IEnumerable<Filme> BuscaFilmesPorDiretor(object _diretor)
+        {
+            yield return _context.Filmes
+               .Include(a => a.Diretor)
+               .First(f => f.Diretor == _diretor);
+        }
+
+        public IEnumerable<Filme> BuscaFilmesPorGenero(object genero)
+        {
+            yield return _context.Filmes
+                .Include(g => g.Generos)
+                .First(f => f.Generos == genero);
+        }
+
+
+
         public void Incluir(Filme obj)
         {
             _context.Filmes.Add(obj);
@@ -54,5 +77,6 @@ namespace Data.Repository
             _context.SaveChanges();
         }
 
+       
     }
 }

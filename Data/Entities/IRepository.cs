@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface ICommand<T>
+    public interface IRepository<T>
     {
 
         IEnumerable<T> BuscarTodos();

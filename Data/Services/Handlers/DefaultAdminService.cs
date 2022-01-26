@@ -1,4 +1,6 @@
-﻿using Data.Entities;
+﻿using AutoMapper;
+using Data.Entities;
+using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using Domain.Services.Entities;
 using System;
@@ -11,53 +13,43 @@ namespace Data.Services.Handlers
 {
     public class DefaultAdminService : IAdminService
     {
-        
-        IFilmeDao _filmeDao;
-        IQueryBusca _buscaDao;
 
-        public DefaultAdminService(IFilmeDao filmeDao, IQueryBusca queryBusca)
+        IFilmeDao _filmeDao;
+        private readonly IMapper _mapper;
+        //preciso dizer pra minha aplicação que ela deve fazer o mapeamento
+        //implementar o mapeamento, interfaces e utilizar o filmedao para ter acesso ao banco pela interface
+        public DefaultAdminService(IFilmeDao filmeDao, IMapper mapper)
         {
             _filmeDao = filmeDao;
-            _buscaDao = queryBusca;
+            _mapper = mapper;
         }
 
-     
-        public IEnumerable<Filme> ConsultaFilmes()
+        public void CadastraFilme(CriarFilmeDto filme)
         {
-            return _filmeDao.BuscarTodos();
-        }
-        public Filme ConsultaFilmePorId(int id)
-        {
-            return _filmeDao.BuscarPorId(id);
+            var filmeMapeado = _mapper.Map<Filme>(filme);
+            _filmeDao.Incluir(filmeMapeado);
         }
 
-        //public IEnumerable<Filme> ConsultaFilmesPorAutor(string nomeAutor)
-        //{
-        //    yield return _buscaDao.BuscaFilmePorAtor(nomeAutor);
-        //}
-
-        //public IEnumerable<Filme> ConsultaFilmesPorDiretor(string nomeDiretor)
-        //{
-        //    yield return _buscaDao.BuscaFilmePorDiretor(nomeDiretor);
-        //}
-
-        //public IEnumerable<Filme> ConsultaFilmesPorGenero(string nomeGenero)
-        //{
-        //    yield return _buscaDao.BuscaFilmePorGenero(nomeGenero);
-        //}
-        public void CadastraFilme(Filme filme)
+        public IEnumerable<LerFilmeDto> ConsultaFilmes()
         {
-            _filmeDao.Incluir(filme);
+            var filmes = _filmeDao.BuscarTodos();
+            IEnumerable<LerFilmeDto> filmeDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            return filmeDtos;
         }
 
-        public void ModificaFilme(Filme filme)
+        public LerFilmeDto ConsultaFilmePorId(int id)
         {
-            _filmeDao.Alterar(filme);
+            throw new NotImplementedException();
+        }
+
+        public void ModificaFilme(AlterarFilmeDto filme)
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveFilme(Filme filme)
         {
-            _filmeDao.Excluir(filme);
+            throw new NotImplementedException();
         }
     }
 }

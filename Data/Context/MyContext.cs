@@ -31,7 +31,8 @@ namespace Data.Context
             builder.Entity<Filme>()
                 .HasMany(filme => filme.Atores)
                 .WithMany(autores => autores.Filmes);
-                
+             
+            
             
         }
 

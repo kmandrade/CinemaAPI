@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\FilmeDto\" />
-    <Folder Include="Entities\" />
     <Folder Include="Config\" />
+    <Folder Include="Dtos\DiretorDto\" />
+    <Folder Include="Dtos\GeneroDto\" />
+    <Folder Include="Dtos\AtorDto\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
       <PrivateAssets>all</PrivateAssets>

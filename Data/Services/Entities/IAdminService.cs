@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos.FilmeDto;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,17 @@ namespace Domain.Services.Entities
 {
     public interface IAdminService
     {
-        IEnumerable<Filme> ConsultaFilmes();
-        Filme ConsultaFilmePorId(int id);
-        //IEnumerable<Filme> ConsultaFilmesPorDiretor(string nomeDiretor);
-        //IEnumerable<Filme> ConsultaFilmesPorAutor(string nomeAutor);
-        //IEnumerable<Filme> ConsultaFilmesPorGenero(string nomeGenero);
+        IEnumerable<LerFilmeDto> ConsultaFilmes();
+        LerFilmeDto ConsultaFilmePorId(int id);
+
+        //IEnumerable<Filme> ConsultaFilmesPorDiretor(Diretor _diretor);
+        //IEnumerable<Filme> ConsultaFilmesPorAtor(Ator _ator);
+        //IEnumerable<Filme> ConsultaFilmesPorGenero(Genero enero);
         
-        void CadastraFilme(Filme filme);
-        void ModificaFilme(Filme filme);
+
+
+        void CadastraFilme(CriarFilmeDto filme);
+        void ModificaFilme(AlterarFilmeDto filme);
         void RemoveFilme(Filme filme);
 
 
