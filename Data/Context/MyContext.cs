@@ -23,6 +23,7 @@ namespace Data.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Filme>()
+           
                 .HasOne(filme => filme.Diretor)
                 .WithMany(diretor => diretor.Filmes)
                 .HasForeignKey(filme => filme.DiretorId);

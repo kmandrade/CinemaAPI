@@ -31,6 +31,8 @@ namespace Domain.Models
         [JsonIgnore]
         public virtual IEnumerable<Ator> Atores { get; set; }
 
+        [Range (1,4,ErrorMessage ="O Voto so pode ser de 1 como ruim a 4 como otimo")]
+        public virtual IEnumerable<Votos> Votos { get; set; }
 
         public SituacaoFilme Situacao { get; set; }
 
