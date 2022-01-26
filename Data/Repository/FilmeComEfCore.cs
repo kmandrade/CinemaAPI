@@ -37,11 +37,11 @@ namespace Data.Repository
     
         }
 
-        public IEnumerable<Filme> BuscaFilmesPorAtor(object ator)
+         public IEnumerable<Filme> BuscaFilmesPorAtor(object ator)
         {
-            yield return _context.Filmes
-             .Include(a => a.Atores)
-             .First(f => f.Atores == ator);
+                yield return _context.Filmes
+                 .Include(a => a.Atores)
+                 .First(f => f.Atores == ator);
         }
 
         public IEnumerable<Filme> BuscaFilmesPorDiretor(object _diretor)

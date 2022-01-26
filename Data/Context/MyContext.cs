@@ -22,19 +22,25 @@ namespace Data.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Filme>()
-           
-                .HasOne(filme => filme.Diretor)
-                .WithMany(diretor => diretor.Filmes)
-                .HasForeignKey(filme => filme.DiretorId);
-
-
+            
             builder.Entity<Filme>()
                 .HasMany(filme => filme.Atores)
                 .WithMany(autores => autores.Filmes);
-             
-            
-            
+
+            builder.Entity<Filme>()
+                .HasMany(filme => filme.Generos)
+                .WithMany(generos => generos.Filmes);
+
+            builder.Entity<Filme>()
+                .HasMany(filme => filme.Votos)
+                .WithMany(votos => votos.Filmes);
+
+            builder.Entity<Filme>()
+                 .HasOne(filme => filme.Diretor)
+                 .WithMany(diretor => diretor.Filmes)
+                 .HasForeignKey(filme => filme.DiretorId);
+                
+
         }
 
         public DbSet<Ator> Atores { get; set; }

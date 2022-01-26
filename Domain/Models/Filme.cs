@@ -21,7 +21,7 @@ namespace Domain.Models
         public int Duracao { get; set; }
 
 
-        public Diretor Diretor { get; set; }
+        public virtual Diretor Diretor { get; set; }
         public int DiretorId { get; set; }
 
 
@@ -31,6 +31,7 @@ namespace Domain.Models
         [JsonIgnore]
         public virtual IEnumerable<Ator> Atores { get; set; }
 
+        [JsonIgnore]
         [Range (1,4,ErrorMessage ="O Voto so pode ser de 1 como ruim a 4 como otimo")]
         public virtual IEnumerable<Votos> Votos { get; set; }
 
