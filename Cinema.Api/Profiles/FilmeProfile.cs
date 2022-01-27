@@ -17,6 +17,8 @@ namespace Domain.Profiles
             CreateMap<CriarFilmeDto, Filme>();
             CreateMap<AlterarFilmeDto, Filme>();
 
+            
+
 
         }
     }

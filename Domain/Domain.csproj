@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
-    <Folder Include="Dtos\DiretorDto\" />
-    <Folder Include="Dtos\GeneroDto\" />
-    <Folder Include="Dtos\AtorDto\" />
+    <Folder Include="Dtos\VotosDto\" />
   </ItemGroup>
 
   <ItemGroup>

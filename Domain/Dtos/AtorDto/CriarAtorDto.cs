@@ -3,22 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.Dtos.AtorDto
 {
-    public class Ator
+    public class CriarAtorDto
     {
-
-        [Key]
-        [Required]
-        public int IdAtor { get; set; }
         [Required]
         public string NomeAtor { get; set; }
 
-        
-        public virtual IEnumerable<Filme> Filmes { get; set; }
 
 
     }
