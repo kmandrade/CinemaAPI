@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Entities
 {
-    public interface IAdminService
+    public interface IFilmeService
     {
         IEnumerable<LerFilmeDto> ConsultaFilmes();
         LerFilmeDto ConsultaFilmePorId(int id);

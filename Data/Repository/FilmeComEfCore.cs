@@ -58,8 +58,6 @@ namespace Data.Repository
                 .First(f => f.Generos == genero);
         }
 
-
-
         public void Incluir(Filme obj)
         {
             _context.Filmes.Add(obj);

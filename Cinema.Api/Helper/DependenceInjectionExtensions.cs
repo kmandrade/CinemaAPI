@@ -2,6 +2,8 @@
 using Data.Repository;
 using Data.Services.Handlers;
 using Domain.Services.Entities;
+using Serviços.Services.Entities;
+using Serviços.Services.Handlers;
 
 namespace Cinema.Api.Helper
 {
@@ -11,7 +13,9 @@ namespace Cinema.Api.Helper
         {
             
             services.AddScoped<IFilmeDao, FilmeComEfCore>();
-            services.AddScoped<IAdminService, DefaultAdminService>();
+            services.AddScoped<IFilmeService, FilmeServices>();
+            services.AddScoped<IDiretorDao, DiretorComEfCore>();
+            services.AddScoped<IDiretorService, DiretorServices>();
             return services;
         }
     }

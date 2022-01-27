@@ -13,9 +13,9 @@ namespace Cinema.Api.Controllers
     [Route("controller")]
     public class CinemaApiController : ControllerBase
     {
-        IAdminService _service;
+        IFilmeService _service;
 
-        public CinemaApiController(IAdminService service)
+        public CinemaApiController(IFilmeService service)
         {
             _service = service;
         }

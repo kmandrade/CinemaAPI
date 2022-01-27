@@ -1,4 +1,6 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos.DiretorDto;
+using Domain.Dtos.FilmeDto;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,10 @@ namespace Serviços.Services.Entities
 {
     public interface IDiretorService
     {
+        void CadastraDiretor(CriarDiretorDto DiretorDto);
+
+        IEnumerable<LerDiretorDto> LerDiretores();
+
         
     }
 }

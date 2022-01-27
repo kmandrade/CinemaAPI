@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace Data.Services.Handlers
 {
-    public class DefaultAdminService : IAdminService
+    public class FilmeServices : IFilmeService
     {
 
         IFilmeDao _filmeDao;
         private readonly IMapper _mapper;
         //preciso dizer pra minha aplicação que ela deve fazer o mapeamento
         //implementar o mapeamento, interfaces e utilizar o filmedao para ter acesso ao banco pela interface
-        public DefaultAdminService(IFilmeDao filmeDao, IMapper mapper)
+        public FilmeServices(IFilmeDao filmeDao, IMapper mapper)
         {
             _filmeDao = filmeDao;
             _mapper = mapper;
