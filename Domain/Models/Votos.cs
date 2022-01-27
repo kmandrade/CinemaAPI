@@ -6,13 +6,15 @@ namespace Domain.Models
     public class Votos
     {
         [Key]
-        public int Id { get; set; }
+        public int IdVotos { get; set; }
 
         [Required]
         public int ValorDoVoto { get; set; }
 
+        public virtual Filme Filme { get; set; }
+        public int IdFilme { get; set; }
 
-        [JsonIgnore]
-        public virtual IEnumerable<Filme> Filmes { get; set; }
+
+        //ID USUARIO RELACIONAR FILME COM USUARIO É A CLASSE VOTO
     }
 }

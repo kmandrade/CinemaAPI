@@ -13,11 +13,11 @@ namespace Domain.Models
 
         [Key]
         [Required]
-        public int AtorId { get; set; }
+        public int IdAtor { get; set; }
 
         public string NomeAtor { get; set; }
 
-        [JsonIgnore]
+        
         public virtual IEnumerable<Filme> Filmes { get; set; }
 
 

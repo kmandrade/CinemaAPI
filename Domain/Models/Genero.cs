@@ -12,12 +12,12 @@ namespace Domain.Models
     {   //varios generos para varios filmes
         [Key]
         [Required]
-        public int Id { get; set; }
+        public int IdGenero { get; set; }
 
         public string TipoGenero { get; set; }
          
-        [JsonIgnore]
+       
         public virtual IEnumerable<Filme> Filmes { get; set; }
 
-    }
+    }   
 }

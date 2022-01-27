@@ -13,7 +13,7 @@ namespace Domain.Dtos.FilmeDto
     {
         [Key]
         [Required]
-        public int Id { get; set; }
+        public int IdFilme { get; set; }
 
         [Required(ErrorMessage = "O campo Titulo é obrigatorio")]
         public string Titulo { get; set; }
