@@ -27,7 +27,11 @@ namespace Serviços.Services.Handlers
 
         public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerDiretorDto diretorDto)
         {
-            throw new NotImplementedException();
+            var filmes = _filmeDao.BuscarTodos();
+            var diretor = _mapper.Map<Diretor>(diretorDto);
+            var queryFilmes = from filme in filmes where filme.Diretor== diretor select filme;
+            var filmesDto=_mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
+            return filmesDto;
         }
 
         public IEnumerable<LerDiretorDto> ConsultaTodos()

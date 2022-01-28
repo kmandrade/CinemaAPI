@@ -5,7 +5,7 @@ using Serviços.Services.Entities;
 namespace Cinema.Api.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("[controller]")]
     public class DiretorController : ControllerBase
     {
         IDiretorService _diretorService;
@@ -20,6 +20,12 @@ namespace Cinema.Api.Controllers
         {
             _diretorService.Cadastra(criarDiretorDto);
             return Ok();
+        }
+        [HttpGet]
+        public IActionResult BuscaFilmesPorDiretor([FromQuery] LerDiretorDto lerDiretorDto)
+        {
+           var filmes = _diretorService.lerFilmeDtosPorDiretor(lerDiretorDto);
+            return Ok (filmes);
         }
     }
 }
