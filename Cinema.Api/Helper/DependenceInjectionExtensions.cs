@@ -11,11 +11,18 @@ namespace Cinema.Api.Helper
     {
         public static IServiceCollection AddDependenceInjection (this IServiceCollection services)
         {
-            
+            //INTERFACES DATA
             services.AddScoped<IFilmeDao, FilmeComEfCore>();
-            services.AddScoped<IFilmeService, FilmeServices>();
             services.AddScoped<IDiretorDao, DiretorComEfCore>();
+            services.AddScoped<IAtorDao, AtorComEfCore>();
+            services.AddScoped<IGeneroDao, GeneroComEfCore>();
+
+            //INTERFACES SERVICES
+            services.AddScoped<IFilmeService, FilmeServices>();
             services.AddScoped<IDiretorService, DiretorServices>();
+            services.AddScoped<IAtorService, AtorServices>();
+            services.AddScoped<IGeneroService, GeneroServices>();
+
             return services;
         }
     }

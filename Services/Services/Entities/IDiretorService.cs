@@ -11,10 +11,14 @@ namespace Serviços.Services.Entities
 {
     public interface IDiretorService
     {
-        void CadastraDiretor(CriarDiretorDto DiretorDto);
+        IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerDiretorDto diretorDto);
 
-        IEnumerable<LerDiretorDto> LerDiretores();
+        IEnumerable<LerDiretorDto> ConsultaTodos();
+        LerDiretorDto ConsultaPorId(int id);
 
-        
+
+        void Cadastra(CriarDiretorDto obj);
+        void Modifica(AlterarDiretorDto obj);
+        void Remove(Diretor obj);
     }
 }

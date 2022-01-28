@@ -21,19 +21,7 @@ namespace Cinema.Api.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult ConsultaTodosFilmes()
-        {
-            var filmes = _service.ConsultaFilmes();
-            return Ok(filmes);
-        }
-        [HttpPost]
-        public IActionResult CadastraFilme([FromBody] CriarFilmeDto filme)
-        {
-            _service.CadastraFilme(filme);
-            return Ok();
-        }
-
+        
 
     }
 }

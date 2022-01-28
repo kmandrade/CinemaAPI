@@ -1,6 +1,7 @@
 ﻿using Data.Context;
 using Data.Entities;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,26 +22,38 @@ namespace Data.Repository
 
         public IEnumerable<Diretor> BuscarTodos()
         {
-            throw new NotImplementedException();
+            var diretores = _context.Diretores;
+            return diretores;
         }
         public Diretor BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            return _context.Diretores.Find(id);
         }
 
 
         public void Alterar(Diretor obj)
         {
-            throw new NotImplementedException();
+            _context.Diretores.Update(obj);
+            _context.SaveChanges();
         }
+
         public void Excluir(Diretor obj)
         {
-            throw new NotImplementedException();
+            _context.Diretores.Remove(obj);
+            _context.SaveChanges();
         }
 
         public void Incluir(Diretor obj)
         {
-            throw new NotImplementedException();
+            _context.Diretores.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Filme> BuscaFilmesPorDiretor(Diretor diretor)
+        {
+            yield return _context.Filmes
+               .Include(a => a.Diretor)
+               .First(f => f.Diretor == diretor);
         }
     }
 }

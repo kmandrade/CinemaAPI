@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos.FilmeDto;
 using Domain.Models;
+using Serviços.Services.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,13 @@ namespace Domain.Services.Entities
 {
     public interface IFilmeService
     {
-        IEnumerable<LerFilmeDto> ConsultaFilmes();
-        LerFilmeDto ConsultaFilmePorId(int id);
+        IEnumerable<LerFilmeDto> ConsultaTodos();
+        LerFilmeDto ConsultaPorId(int id);
 
 
-        void CadastraFilme(CriarFilmeDto filme);
-        void ModificaFilme(AlterarFilmeDto filme);
-        void RemoveFilme(Filme filme);
-
+        void Cadastra(CriarFilmeDto obj);
+        void Modifica(AlterarFilmeDto obj);
+        void Remove(Filme obj);
 
     }
 }

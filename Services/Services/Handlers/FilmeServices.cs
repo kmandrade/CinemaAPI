@@ -24,32 +24,45 @@ namespace Data.Services.Handlers
             _mapper = mapper;
         }
 
-        public void CadastraFilme(CriarFilmeDto filme)
-        {
-            var filmeMapeado = _mapper.Map<Filme>(filme);
-            _filmeDao.Incluir(filmeMapeado);
-        }
-
-        public IEnumerable<LerFilmeDto> ConsultaFilmes()
-        {
-            var filmes = _filmeDao.BuscarTodos();
-            var filmeDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
-            return filmeDtos;
-        }
-
-        public LerFilmeDto ConsultaFilmePorId(int id)
+        public IEnumerable<LerFilmeDto> ConsultaTodos()
         {
             throw new NotImplementedException();
         }
 
-        public void ModificaFilme(AlterarFilmeDto filme)
+        public LerFilmeDto ConsultaPorId(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveFilme(Filme filme)
+        public void Cadastra(CriarFilmeDto obj)
         {
             throw new NotImplementedException();
         }
+
+        public void Modifica(AlterarFilmeDto obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(Filme obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public void CadastraFilme(CriarFilmeDto filme)
+        //{
+        //    var filmeMapeado = _mapper.Map<Filme>(filme);
+        //    _filmeDao.Incluir(filmeMapeado);
+        //}
+
+        //public IEnumerable<LerFilmeDto> ConsultaFilmes()
+        //{
+        //    var filmes = _filmeDao.BuscarTodos();
+        //    var filmeDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+        //    return filmeDtos;
+        //}
+
+
+
     }
 }

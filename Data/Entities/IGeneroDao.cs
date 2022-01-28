@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IDiretorDao :IRepository<Diretor>
+    public interface IGeneroDao :IRepository<Genero>
     {
-        IEnumerable<Filme> BuscaFilmesPorDiretor(Diretor diretor);
+        IEnumerable<Filme> BuscaFilmesPorGenero(Genero genero);
     }
 }

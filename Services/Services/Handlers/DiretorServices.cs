@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Domain.Dtos.DiretorDto;
+using Domain.Dtos.FilmeDto;
+using Domain.Models;
 using Serviços.Services.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,23 +14,51 @@ namespace Serviços.Services.Handlers
 {
     public class DiretorServices : IDiretorService
     {
-        
+        IDiretorDao _diretorDao;
+        IFilmeDao _filmeDao;
         private readonly IMapper _mapper;
-        public DiretorServices(IRepository repository, IMapper mapper )
+        public DiretorServices(IDiretorDao diretorDao, IMapper mapper , IFilmeDao filmeDao)
         {
             _mapper=mapper;
-            _repository = repository;
+            _diretorDao=diretorDao;
+            _filmeDao=filmeDao;
 
         }
 
-        public void CadastraDiretor(CriarDiretorDto DiretorDto)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerDiretorDto diretorDto)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<LerDiretorDto> LerDiretores()
+        public IEnumerable<LerDiretorDto> ConsultaTodos()
         {
-            throw new NotImplementedException();
+            var diretores = _diretorDao.BuscarTodos();
+            var diretoresDto = _mapper.Map<IEnumerable<LerDiretorDto>>(diretores);
+            return diretoresDto;
+        }
+
+        public LerDiretorDto ConsultaPorId(int id)
+        {
+            var diretor = _diretorDao.BuscarPorId(id);
+            var diretorDto = _mapper.Map<LerDiretorDto>(diretor);
+            return diretorDto;
+        }
+
+        public void Cadastra(CriarDiretorDto obj)
+        {
+            var diretor = _mapper.Map<Diretor>(obj);
+            _diretorDao.Incluir(diretor);
+        }
+
+        public void Modifica(AlterarDiretorDto obj)
+        {
+            var diretor = _mapper.Map<Diretor>(obj);
+            _diretorDao.Alterar(diretor);
+        }
+
+        public void Remove(Diretor obj)
+        {
+            _diretorDao.Excluir(obj);
         }
     }
 }
