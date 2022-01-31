@@ -11,15 +11,15 @@ namespace Serviços.Services.Entities
 {
     public interface IAtorService
     {
-        IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerAtorDto ator);
+        IEnumerable<LerFilmeDto> lerFilmeDtosPorAtor(LerAtorDto ator);
 
         IEnumerable<LerAtorDto> ConsultaTodos();
         LerAtorDto ConsultaPorId(int id);
 
 
         void Cadastra(CriarAtorDto obj);
-        void Modifica(AlterarAtorDto obj);
-        void Remove(Ator obj);
+        void Altera(AlterarAtorDto obj);
+        void Remove(LerAtorDto obj);
 
 
     }

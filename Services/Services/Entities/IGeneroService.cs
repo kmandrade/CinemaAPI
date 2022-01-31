@@ -11,14 +11,14 @@ namespace Serviços.Services.Entities
 {
     public interface IGeneroService
     {
-        IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerGeneroDto genero);
+        IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(LerGeneroDto genero);
 
         IEnumerable<LerGeneroDto> ConsultaTodos();
         LerGeneroDto ConsultaPorId(int id);
 
 
         void Cadastra(CriarGeneroDto obj);
-        void Modifica(AlterarGeneroDto obj);
-        void Remove(Genero obj);
+        void Altera(AlterarGeneroDto obj);
+        void Remove(LerGeneroDto obj);
     }
 }

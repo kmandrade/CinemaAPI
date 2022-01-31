@@ -1,4 +1,6 @@
-﻿using Domain.Dtos.AtorDto;
+﻿using AutoMapper;
+using Data.Entities;
+using Domain.Dtos.AtorDto;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using Serviços.Services.Entities;
@@ -12,36 +14,62 @@ namespace Serviços.Services.Handlers
 {
     public class AtorServices : IAtorService
     {
-
-
-        public void Cadastra(CriarAtorDto obj)
+        IFilmeDao _filmeDao;
+        IAtorDao _atorDao;
+        private readonly IMapper _mapper;
+        public AtorServices(IAtorDao atorDao, IMapper mapper, IFilmeDao filmeDao)
         {
-            throw new NotImplementedException();
+            _atorDao = atorDao;
+            _mapper = mapper;
+            _filmeDao = filmeDao;
         }
+
 
         public LerAtorDto ConsultaPorId(int id)
         {
-            throw new NotImplementedException();
+            var atores = _atorDao.BuscarPorId(id);
+            var atorDto = _mapper.Map<LerAtorDto>(atores);
+            return atorDto;
         }
 
         public IEnumerable<LerAtorDto> ConsultaTodos()
         {
-            throw new NotImplementedException();
+            var atores = _atorDao.BuscarTodos();
+            var atoresDto = _mapper.Map<IEnumerable<LerAtorDto>>(atores);
+            return atoresDto;
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerAtorDto ator)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorAtor(LerAtorDto ator)
         {
-            throw new NotImplementedException();
+            var filmes = _filmeDao.BuscarTodos();
+            var atores = _mapper.Map<Ator>(ator);
+            var queryFilmes = from filme in filmes where filme.Atores == ator select filme;
+            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
+            return filmesDto;
         }
 
-        public void Modifica(AlterarAtorDto obj)
+        public void Cadastra(CriarAtorDto obj)
         {
-            throw new NotImplementedException();
+            var ator = _mapper.Map<Ator>(obj);
+            _atorDao.Incluir(ator);
         }
 
-        public void Remove(Ator obj)
+        public void Altera(AlterarAtorDto obj)
         {
-            throw new NotImplementedException();
+            var listaAtores = _atorDao.BuscarTodos();
+            var atorMapeado = _mapper.Map<Ator>(obj);
+            var queryAtores = from ator in listaAtores where listaAtores == atorMapeado select ator;
+            var atorSelecionado = _mapper.Map<Ator>(queryAtores);
+            _atorDao.Alterar(atorSelecionado);
+        }
+
+        public void Remove(LerAtorDto obj)
+        {
+            var listaAtores = _atorDao.BuscarTodos();
+            var atorMapeado = _mapper.Map<Ator>(obj);
+            var queryAtores = from ator in listaAtores where listaAtores == atorMapeado select ator;
+            var atorSelecionado = _mapper.Map<Ator>(queryAtores);
+            _atorDao.Excluir(atorSelecionado);
         }
     }
 }

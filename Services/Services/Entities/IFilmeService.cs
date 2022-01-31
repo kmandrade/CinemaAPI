@@ -16,7 +16,7 @@ namespace Domain.Services.Entities
 
 
         void Cadastra(CriarFilmeDto obj);
-        void Modifica(AlterarFilmeDto obj);
+        void Altera(AlterarFilmeDto obj);
         void Remove(Filme obj);
 
     }

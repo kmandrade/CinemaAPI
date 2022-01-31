@@ -43,8 +43,8 @@ namespace Serviços.Services.Handlers
 
         public LerDiretorDto ConsultaPorId(int id)
         {
-            var diretor = _diretorDao.BuscarPorId(id);
-            var diretorDto = _mapper.Map<LerDiretorDto>(diretor);
+            var diretor = _diretorDao.BuscarPorId(id);//vai pegar so o numero do id e verifica no banco
+            var diretorDto = _mapper.Map<LerDiretorDto>(diretor);//converte pra dto e manda pra tela
             return diretorDto;
         }
 
@@ -54,15 +54,22 @@ namespace Serviços.Services.Handlers
             _diretorDao.Incluir(diretor);
         }
 
-        public void Modifica(AlterarDiretorDto obj)
+        public void Altera(AlterarDiretorDto obj)
         {
-            var diretor = _mapper.Map<Diretor>(obj);
-            _diretorDao.Alterar(diretor);
+            var listaDiretores = _diretorDao.BuscarTodos();
+            var diretorMapeado = _mapper.Map<Diretor>(obj);
+            var queryDiretores = from diretor in listaDiretores where listaDiretores == diretorMapeado select diretor;
+            var diretorSelecionado = _mapper.Map<Diretor>(queryDiretores);
+            _diretorDao.Alterar(diretorSelecionado);
         }
 
-        public void Remove(Diretor obj)
+        public void Remove(LerDiretorDto obj)
         {
-            _diretorDao.Excluir(obj);
+            var listaDiretores = _diretorDao.BuscarTodos();
+            var diretorMapeado = _mapper.Map<Diretor>(obj);
+            var queryDiretores = from diretor in listaDiretores where listaDiretores == diretorMapeado select diretor;
+            var diretorSelecionado = _mapper.Map<Diretor>(queryDiretores);
+            _diretorDao.Excluir(diretorSelecionado);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Domain.Dtos.FilmeDto;
+﻿using AutoMapper;
+using Data.Entities;
+using Domain.Dtos.FilmeDto;
 using Domain.Dtos.GeneroDto;
 using Domain.Models;
 using Serviços.Services.Entities;
@@ -12,34 +14,65 @@ namespace Serviços.Services.Handlers
 {
     public class GeneroServices : IGeneroService
     {
-        public void Cadastra(CriarGeneroDto obj)
+        IGeneroDao _generoDao;
+        IFilmeDao _filmeDao;
+        private readonly IMapper _mapper;
+
+        public GeneroServices(IMapper mapper, IFilmeDao filmeDao, IGeneroDao generoDao)
         {
-            throw new NotImplementedException();
+            _mapper = mapper;
+            _filmeDao = filmeDao;
+            _generoDao = generoDao;
         }
+
+       
 
         public LerGeneroDto ConsultaPorId(int id)
         {
-            throw new NotImplementedException();
+            var generoId = _generoDao.BuscarPorId(id);
+            var generoDto = _mapper.Map<LerGeneroDto>(generoId);
+            return generoDto;
+            
         }
 
         public IEnumerable<LerGeneroDto> ConsultaTodos()
         {
-            throw new NotImplementedException();
+            var listaGeneros = _generoDao.BuscarTodos();
+            var listaGenerosDto = _mapper.Map<IEnumerable<LerGeneroDto>>(listaGeneros);
+            return listaGenerosDto;
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerGeneroDto genero)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(LerGeneroDto genero)
         {
-            throw new NotImplementedException();
+            var filmes = _filmeDao.BuscarTodos();
+            var _genero = _mapper.Map<Genero>(genero);
+            var queryFilmes = from filme in filmes where filme.Generos == _genero select filme;
+            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
+            return filmesDto;
         }
 
-        public void Modifica(AlterarGeneroDto obj)
+        public void Cadastra(CriarGeneroDto obj)
         {
-            throw new NotImplementedException();
+            var genero = _mapper.Map<Genero>(obj);
+            _generoDao.Incluir(genero);
         }
 
-        public void Remove(Genero obj)
+        public void Altera(AlterarGeneroDto obj)
         {
-            throw new NotImplementedException();
+            var listaGeneros = _generoDao.BuscarTodos();
+            var generoMapeado = _mapper.Map<Genero>(obj);
+            var queryGeneros = from genero in listaGeneros where listaGeneros == generoMapeado select genero;
+            var generoSelecionado = _mapper.Map<Genero>(queryGeneros);
+            _generoDao.Alterar(generoSelecionado);
+        }
+
+        public void Remove(LerGeneroDto obj)
+        {
+            var listaGeneros = _generoDao.BuscarTodos();
+            var generoMapeado = _mapper.Map<Genero>(obj);
+            var queryGeneros = from genero in listaGeneros where listaGeneros == generoMapeado select genero;
+            var generoSelecionado = _mapper.Map<Genero>(queryGeneros);
+            _generoDao.Excluir(generoSelecionado);
         }
     }
 }

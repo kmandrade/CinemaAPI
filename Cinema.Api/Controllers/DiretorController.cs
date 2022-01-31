@@ -25,7 +25,48 @@ namespace Cinema.Api.Controllers
         public IActionResult BuscaFilmesPorDiretor([FromQuery] LerDiretorDto lerDiretorDto)
         {
            var filmes = _diretorService.lerFilmeDtosPorDiretor(lerDiretorDto);
-            return Ok (filmes);
+            if (filmes != null)
+            {
+                return Ok(filmes);
+            }
+            return NotFound();
         }
+        [HttpGet]
+        public IActionResult BuscaDiretores()
+        {
+            var diretores= _diretorService.ConsultaTodos();
+
+            if(diretores != null)
+            {
+                return Ok(diretores);
+            }
+            return NotFound();
+        }
+        [HttpGet]
+        public IActionResult BuscaDiretoresPorId([FromQuery] int idDiretor)
+        {
+            var diretor = _diretorService.ConsultaPorId(idDiretor);
+
+            if(diretor != null)
+            {
+                return Ok(diretor);
+            }
+            return NotFound();
+        }
+        [HttpGet]
+        public IActionResult RemoveDiretor([FromQuery] LerDiretorDto diretor)
+        {
+            _diretorService.Remove(diretor);
+            return NoContent();
+            
+        }
+        [HttpGet]
+        public IActionResult ModificaDiretor([FromQuery] AlterarDiretorDto diretor)
+        {
+            _diretorService.Altera(diretor);
+            return NoContent();
+
+        }
+
     }
 }

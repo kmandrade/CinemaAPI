@@ -39,7 +39,7 @@ namespace Data.Services.Handlers
             throw new NotImplementedException();
         }
 
-        public void Modifica(AlterarFilmeDto obj)
+        public void Altera(AlterarFilmeDto obj)
         {
             throw new NotImplementedException();
         }
