@@ -25,11 +25,10 @@ namespace Serviços.Services.Handlers
 
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerDiretorDto diretorDto)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(int idDiretor)
         {
             var filmes = _filmeDao.BuscarTodos();
-            var diretor = _mapper.Map<Diretor>(diretorDto);
-            var queryFilmes = from filme in filmes where filme.Diretor== diretor select filme;
+            var queryFilmes = from filme in filmes where filme.DiretorId == idDiretor select filme;
             var filmesDto=_mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
             return filmesDto;
         }
