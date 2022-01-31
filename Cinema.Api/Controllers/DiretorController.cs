@@ -21,7 +21,7 @@ namespace Cinema.Api.Controllers
             _diretorService.Cadastra(criarDiretorDto);
             return Ok();
         }
-        [HttpGet]
+        [HttpGet("BuscaFilmesPorDiretor")]
         public IActionResult BuscaFilmesPorDiretor([FromQuery] LerDiretorDto lerDiretorDto)
         {
            var filmes = _diretorService.lerFilmeDtosPorDiretor(lerDiretorDto);
@@ -31,7 +31,7 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
-        [HttpGet]
+        [HttpGet("BuscaTodosDiretores")]
         public IActionResult BuscaDiretores()
         {
             var diretores= _diretorService.ConsultaTodos();
@@ -42,8 +42,8 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
-        [HttpGet]
-        public IActionResult BuscaDiretoresPorId([FromQuery] int idDiretor)
+        [HttpGet("{id}")]
+        public IActionResult BuscaDiretoresPorId(int idDiretor)
         {
             var diretor = _diretorService.ConsultaPorId(idDiretor);
 
@@ -53,17 +53,17 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
-        [HttpGet]
-        public IActionResult RemoveDiretor([FromQuery] LerDiretorDto diretor)
+        [HttpDelete("{id}")]
+        public IActionResult RemoveDiretor(int id)
         {
-            _diretorService.Remove(diretor);
-            return NoContent();
+            _diretorService.Excluir(id);
+            return NoContent(); 
             
         }
-        [HttpGet]
-        public IActionResult ModificaDiretor([FromQuery] AlterarDiretorDto diretor)
+        [HttpPut("{id}")]
+        public IActionResult ModificaDiretor( int id, [FromBody] AlterarDiretorDto diretor)
         {
-            _diretorService.Altera(diretor);
+            _diretorService.Altera(id,diretor);
             return NoContent();
 
         }

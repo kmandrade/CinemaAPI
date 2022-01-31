@@ -54,21 +54,18 @@ namespace Serviços.Services.Handlers
             _atorDao.Incluir(ator);
         }
 
-        public void Altera(AlterarAtorDto obj)
+        public void Altera(int id, AlterarAtorDto obj)
         {
             var listaAtores = _atorDao.BuscarTodos();
+            var atorSelecionado = listaAtores.FirstOrDefault(a => a.IdAtor == id);
             var atorMapeado = _mapper.Map<Ator>(obj);
-            var queryAtores = from ator in listaAtores where listaAtores == atorMapeado select ator;
-            var atorSelecionado = _mapper.Map<Ator>(queryAtores);
-            _atorDao.Alterar(atorSelecionado);
+            _atorDao.Alterar(atorMapeado);
         }
 
-        public void Remove(LerAtorDto obj)
+        public void Excluir(int id)
         {
-            var listaAtores = _atorDao.BuscarTodos();
-            var atorMapeado = _mapper.Map<Ator>(obj);
-            var queryAtores = from ator in listaAtores where listaAtores == atorMapeado select ator;
-            var atorSelecionado = _mapper.Map<Ator>(queryAtores);
+            var listaAtores = _atorDao.BuscarTodos(); 
+            var atorSelecionado = listaAtores.FirstOrDefault(a => a.IdAtor == id); 
             _atorDao.Excluir(atorSelecionado);
         }
     }

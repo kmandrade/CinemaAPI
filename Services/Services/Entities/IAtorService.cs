@@ -18,8 +18,8 @@ namespace Serviços.Services.Entities
 
 
         void Cadastra(CriarAtorDto obj);
-        void Altera(AlterarAtorDto obj);
-        void Remove(LerAtorDto obj);
+        void Altera(int id,AlterarAtorDto obj);
+        void Excluir(int id);
 
 
     }

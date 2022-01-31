@@ -14,10 +14,10 @@ namespace Domain.Models
         [Key]
         [Required]
         public int IdFilme { get; set; }
-        [Range(5,30,ErrorMessage ="O nome do filme pode ser de 5 a 30 caracteres")]
+        
         [Required(ErrorMessage ="O campo Titulo é obrigatorio")]
         public string Titulo { get; set; }
-        [Range(1, 600, ErrorMessage = "A duração deve ter no mínimo 1 minuto e no máximo 600.")]
+       
         public int Duracao { get; set; }
 
 

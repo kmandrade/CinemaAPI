@@ -18,7 +18,7 @@ namespace Serviços.Services.Entities
 
 
         void Cadastra(CriarGeneroDto obj);
-        void Altera(AlterarGeneroDto obj);
-        void Remove(LerGeneroDto obj);
+        void Altera(int id, AlterarGeneroDto obj);
+        void Excluir(int id);
     }
 }

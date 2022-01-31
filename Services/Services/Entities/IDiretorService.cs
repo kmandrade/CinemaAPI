@@ -18,7 +18,7 @@ namespace Serviços.Services.Entities
 
 
         void Cadastra(CriarDiretorDto obj);
-        void Altera(AlterarDiretorDto obj);
-        void Remove(LerDiretorDto obj);
+        void Altera(int id, AlterarDiretorDto obj);
+        void Excluir(int id);
     }
 }

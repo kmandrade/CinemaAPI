@@ -54,21 +54,18 @@ namespace Serviços.Services.Handlers
             _diretorDao.Incluir(diretor);
         }
 
-        public void Altera(AlterarDiretorDto obj)
+        public void Altera(int id, AlterarDiretorDto diretorDto)
         {
-            var listaDiretores = _diretorDao.BuscarTodos();
-            var diretorMapeado = _mapper.Map<Diretor>(obj);
-            var queryDiretores = from diretor in listaDiretores where listaDiretores == diretorMapeado select diretor;
-            var diretorSelecionado = _mapper.Map<Diretor>(queryDiretores);
-            _diretorDao.Alterar(diretorSelecionado);
+            var listaDiretores = _diretorDao.BuscarTodos(); //selecionei todos diretores 
+            var diretorSelecionado = listaDiretores.FirstOrDefault(d=>d.Id == id); //peguei ele por id 
+            var diretorMapeado = _mapper.Map<Diretor>(diretorDto);//transformei o dto em diretor para assim alterar
+            _diretorDao.Alterar(diretorMapeado);
         }
 
-        public void Remove(LerDiretorDto obj)
+        public void Excluir(int id)
         {
-            var listaDiretores = _diretorDao.BuscarTodos();
-            var diretorMapeado = _mapper.Map<Diretor>(obj);
-            var queryDiretores = from diretor in listaDiretores where listaDiretores == diretorMapeado select diretor;
-            var diretorSelecionado = _mapper.Map<Diretor>(queryDiretores);
+            var listaDiretores = _diretorDao.BuscarTodos(); //selecionei todos diretores 
+            var diretorSelecionado = listaDiretores.FirstOrDefault(d => d.Id == id); //peguei ele por id 
             _diretorDao.Excluir(diretorSelecionado);
         }
     }

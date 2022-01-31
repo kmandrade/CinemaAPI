@@ -57,7 +57,7 @@ namespace Serviços.Services.Handlers
             _generoDao.Incluir(genero);
         }
 
-        public void Altera(AlterarGeneroDto obj)
+        public void Altera(int id, AlterarGeneroDto obj)
         {
             var listaGeneros = _generoDao.BuscarTodos();
             var generoMapeado = _mapper.Map<Genero>(obj);
@@ -66,12 +66,10 @@ namespace Serviços.Services.Handlers
             _generoDao.Alterar(generoSelecionado);
         }
 
-        public void Remove(LerGeneroDto obj)
+        public void Excluir(int id)
         {
-            var listaGeneros = _generoDao.BuscarTodos();
-            var generoMapeado = _mapper.Map<Genero>(obj);
-            var queryGeneros = from genero in listaGeneros where listaGeneros == generoMapeado select genero;
-            var generoSelecionado = _mapper.Map<Genero>(queryGeneros);
+            var listaGeneros = _generoDao.BuscarTodos(); 
+            var generoSelecionado = listaGeneros.FirstOrDefault(g => g.IdGenero == id); 
             _generoDao.Excluir(generoSelecionado);
         }
     }

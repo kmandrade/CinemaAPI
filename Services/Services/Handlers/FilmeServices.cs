@@ -26,43 +26,38 @@ namespace Data.Services.Handlers
 
         public IEnumerable<LerFilmeDto> ConsultaTodos()
         {
-            throw new NotImplementedException();
+            var listadeFilmes = _filmeDao.BuscarTodos();
+            var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(listadeFilmes);
+            return filmesDtos.OrderBy(nome => nome.Titulo);
         }
 
         public LerFilmeDto ConsultaPorId(int id)
         {
-            throw new NotImplementedException();
+            var filme = _filmeDao.BuscarPorId(id);
+            var filmeDto = _mapper.Map<LerFilmeDto>(filme);
+            return filmeDto;
         }
+
 
         public void Cadastra(CriarFilmeDto obj)
         {
-            throw new NotImplementedException();
+            var filmeMapeado = _mapper.Map<Filme>(obj);
+            _filmeDao.Incluir(filmeMapeado);
         }
 
-        public void Altera(AlterarFilmeDto obj)
+        public void Altera(int id,AlterarFilmeDto obj)
         {
-            throw new NotImplementedException();
+            var listaFilmes = _filmeDao.BuscarTodos(); 
+            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id);
+            var filmeMapeado = _mapper.Map<Filme>(obj);
+            _filmeDao.Alterar(filmeMapeado);
         }
 
-        public void Remove(Filme obj)
+        public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            var listaFilmes = _filmeDao.BuscarTodos();
+            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id); 
+            _filmeDao.Excluir(filmeSelecionado);
         }
-
-        //public void CadastraFilme(CriarFilmeDto filme)
-        //{
-        //    var filmeMapeado = _mapper.Map<Filme>(filme);
-        //    _filmeDao.Incluir(filmeMapeado);
-        //}
-
-        //public IEnumerable<LerFilmeDto> ConsultaFilmes()
-        //{
-        //    var filmes = _filmeDao.BuscarTodos();
-        //    var filmeDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
-        //    return filmeDtos;
-        //}
-
-
-
     }
 }

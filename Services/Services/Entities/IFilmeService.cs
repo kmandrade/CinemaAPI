@@ -14,10 +14,11 @@ namespace Domain.Services.Entities
         IEnumerable<LerFilmeDto> ConsultaTodos();
         LerFilmeDto ConsultaPorId(int id);
 
-
+        
         void Cadastra(CriarFilmeDto obj);
-        void Altera(AlterarFilmeDto obj);
-        void Remove(Filme obj);
+        void Altera(int id, AlterarFilmeDto obj);
+        void Excluir(int id);
+
 
     }
 }
