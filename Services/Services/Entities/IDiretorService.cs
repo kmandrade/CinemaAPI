@@ -11,7 +11,7 @@ namespace Serviços.Services.Entities
 {
     public interface IDiretorService
     {
-        IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(int idDiretor);
+        IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerDiretorDto diretorDto);
 
         IEnumerable<LerDiretorDto> ConsultaTodos();
         LerDiretorDto ConsultaPorId(int id);

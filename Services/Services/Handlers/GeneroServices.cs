@@ -42,10 +42,10 @@ namespace Serviços.Services.Handlers
             return listaGenerosDto;
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(LerGeneroDto genero)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(LerGeneroDto generoDto)
         {
             var filmes = _filmeDao.BuscarTodos();
-            var _genero = _mapper.Map<Genero>(genero);
+            var _genero = _mapper.Map<Genero>(generoDto);
             var queryFilmes = from filme in filmes where filme.Generos == _genero select filme;
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
             return filmesDto;

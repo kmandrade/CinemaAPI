@@ -22,6 +22,7 @@ namespace Cinema.Api.Helper
             services.AddScoped<IDiretorService, DiretorServices>();
             services.AddScoped<IAtorService, AtorServices>();
             services.AddScoped<IGeneroService, GeneroServices>();
+            
 
             return services;
         }

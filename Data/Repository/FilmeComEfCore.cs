@@ -25,16 +25,16 @@ namespace Data.Repository
         //ela será retornada imediatamente sem fazer uma solicitação ao banco de dados
         public Filme BuscarPorId(int id)
         {
-            return _context.Filmes.Find(id);   
+            return _context.Filmes.Find(id);
         }
         //retornar em ordem alfabetica
         public IEnumerable<Filme> BuscarTodos()
         {
-            
+
             IEnumerable<Filme> filmes = _context.Filmes;//Era .ToList depois coloquei em um ienumerable
-            //orderby ja é um enumerable
+
             return filmes;
-    
+
         }
 
 
@@ -43,7 +43,7 @@ namespace Data.Repository
             _context.Filmes.Add(obj);
             _context.SaveChanges();
         }
-          public void Alterar(Filme obj)
+        public void Alterar(Filme obj)
         {
             _context.Filmes.Update(obj);
             _context.SaveChanges();
@@ -55,6 +55,12 @@ namespace Data.Repository
             _context.SaveChanges();
         }
 
-       
+        public void Save()
+        {
+            _context.SaveChanges();
+            _context.Dispose();
+        }
+
+
     }
 }

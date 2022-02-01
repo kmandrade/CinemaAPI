@@ -3,6 +3,7 @@ using Data.Entities;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using Domain.Services.Entities;
+using Serviços.Services.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +17,21 @@ namespace Data.Services.Handlers
 
         IFilmeDao _filmeDao;
         private readonly IMapper _mapper;
+
         //preciso dizer pra minha aplicação que ela deve fazer o mapeamento
         //implementar o mapeamento, interfaces e utilizar o filmedao para ter acesso ao banco pela interface
         public FilmeServices(IFilmeDao filmeDao, IMapper mapper)
         {
             _filmeDao = filmeDao;
             _mapper = mapper;
+
         }
 
         public IEnumerable<LerFilmeDto> ConsultaTodos()
         {
             var listadeFilmes = _filmeDao.BuscarTodos();
             var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(listadeFilmes);
-            return filmesDtos.OrderBy(nome => nome.Titulo);
+            return filmesDtos.OrderBy(nome => nome.Titulo);//orderby ja é um enumerable
         }
 
         public LerFilmeDto ConsultaPorId(int id)
@@ -45,9 +48,9 @@ namespace Data.Services.Handlers
             _filmeDao.Incluir(filmeMapeado);
         }
 
-        public void Altera(int id,AlterarFilmeDto obj)
+        public void Altera(int id, AlterarFilmeDto obj)
         {
-            var listaFilmes = _filmeDao.BuscarTodos(); 
+            var listaFilmes = _filmeDao.BuscarTodos();
             var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id);
             var filmeMapeado = _mapper.Map<Filme>(obj);
             _filmeDao.Alterar(filmeMapeado);
@@ -56,8 +59,17 @@ namespace Data.Services.Handlers
         public void Excluir(int id)
         {
             var listaFilmes = _filmeDao.BuscarTodos();
-            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id); 
+            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id);
             _filmeDao.Excluir(filmeSelecionado);
+        }
+
+        public void ArquivarFilme(int id)
+        {
+            var listaFilmes = _filmeDao.BuscarTodos();
+            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id);
+            filmeSelecionado.Situacao = SituacaoFilme.Arquivado;
+            _filmeDao.Save();
+
         }
     }
 }

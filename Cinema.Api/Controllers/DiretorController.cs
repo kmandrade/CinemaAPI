@@ -22,9 +22,9 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
         [HttpGet("BuscaFilmesPorDiretor")]
-        public IActionResult BuscaFilmesPorDiretor([FromQuery]  int idDiretor)
+        public IActionResult BuscaFilmesPorDiretor([FromQuery]  LerDiretorDto diretorDto)
         {
-           var filmes = _diretorService.lerFilmeDtosPorDiretor(idDiretor);
+           var filmes = _diretorService.lerFilmeDtosPorDiretor(diretorDto);
             if (filmes != null)
             {
                 return Ok(filmes);

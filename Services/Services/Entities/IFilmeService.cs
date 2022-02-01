@@ -19,6 +19,7 @@ namespace Domain.Services.Entities
         void Altera(int id, AlterarFilmeDto obj);
         void Excluir(int id);
 
+        void ArquivarFilme(int id);
 
     }
 }

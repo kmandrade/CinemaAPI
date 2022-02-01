@@ -39,11 +39,11 @@ namespace Serviços.Services.Handlers
             return atoresDto;
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorAtor(LerAtorDto ator)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorAtor(LerAtorDto atorDto)
         {
             var filmes = _filmeDao.BuscarTodos();
-            var atores = _mapper.Map<Ator>(ator);
-            var queryFilmes = from filme in filmes where filme.Atores == ator select filme;
+            var atorMapeado = _mapper.Map<IEnumerable<Ator>>(atorDto);
+            var queryFilmes = from filme in filmes where filme.Atores == atorMapeado select filme;
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
             return filmesDto;
         }
