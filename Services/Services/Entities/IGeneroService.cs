@@ -11,7 +11,7 @@ namespace Serviços.Services.Entities
 {
     public interface IGeneroService
     {
-        IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(LerGeneroDto genero);
+        IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(int iDgenero);
 
         IEnumerable<LerGeneroDto> ConsultaTodos();
         LerGeneroDto ConsultaPorId(int id);

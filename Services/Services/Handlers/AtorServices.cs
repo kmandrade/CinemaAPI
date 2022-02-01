@@ -39,13 +39,12 @@ namespace Serviços.Services.Handlers
             return atoresDto;
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorAtor(LerAtorDto atorDto)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorAtor(int  iDAtor)
         {
-            var filmes = _filmeDao.BuscarTodos();
-            var atorMapeado = _mapper.Map<IEnumerable<Ator>>(atorDto);
-            var queryFilmes = from filme in filmes where filme.Atores == atorMapeado select filme;
-            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
-            return filmesDto;
+            var filmes = _filmeDao.BuscarPorId(iDAtor);
+
+            var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
+            yield return filmesDto;
         }
 
         public void Cadastra(CriarAtorDto obj)
@@ -56,17 +55,22 @@ namespace Serviços.Services.Handlers
 
         public void Altera(int id, AlterarAtorDto obj)
         {
-            var listaAtores = _atorDao.BuscarTodos();
-            var atorSelecionado = listaAtores.FirstOrDefault(a => a.IdAtor == id);
-            var atorMapeado = _mapper.Map<Ator>(obj);
-            _atorDao.Alterar(atorMapeado);
+            var atorSelecionado = _atorDao.BuscarPorId(id);
+            if (atorSelecionado != null)
+            {
+                var atorMapeado = _mapper.Map<Ator>(obj);
+                _atorDao.Alterar(atorMapeado);
+            }
+            
         }
 
         public void Excluir(int id)
         {
-            var listaAtores = _atorDao.BuscarTodos(); 
-            var atorSelecionado = listaAtores.FirstOrDefault(a => a.IdAtor == id); 
-            _atorDao.Excluir(atorSelecionado);
+            var atorSelecionado = _atorDao.BuscarPorId(id);
+            if (atorSelecionado != null)
+            {
+                _atorDao.Excluir(atorSelecionado);
+            }
         }
     }
 }

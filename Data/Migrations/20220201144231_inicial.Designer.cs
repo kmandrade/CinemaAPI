@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220128145310_inicial")]
+    [Migration("20220201144231_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,6 +22,21 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("AtorFilme", b =>
+                {
+                    b.Property<int>("AtoresIdAtor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FilmesIdFilme")
+                        .HasColumnType("int");
+
+                    b.HasKey("AtoresIdAtor", "FilmesIdFilme");
+
+                    b.HasIndex("FilmesIdFilme");
+
+                    b.ToTable("AtorFilme");
+                });
 
             modelBuilder.Entity("Domain.Models.Ator", b =>
                 {
@@ -110,9 +125,6 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVotos"), 1L, 1);
 
-                    b.Property<int>("FilmeIdFilme")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdFilme")
                         .HasColumnType("int");
 
@@ -121,39 +133,39 @@ namespace Data.Migrations
 
                     b.HasKey("IdVotos");
 
-                    b.HasIndex("FilmeIdFilme");
+                    b.HasIndex("IdFilme");
 
                     b.ToTable("Votos");
                 });
 
-            modelBuilder.Entity("FilmeAtor", b =>
-                {
-                    b.Property<int>("IdAtor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdFilme")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdAtor", "IdFilme");
-
-                    b.HasIndex("IdFilme");
-
-                    b.ToTable("FilmeAtor");
-                });
-
             modelBuilder.Entity("FilmeGenero", b =>
                 {
-                    b.Property<int>("IdFilme")
+                    b.Property<int>("FilmesIdFilme")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdGenero")
+                    b.Property<int>("GenerosIdGenero")
                         .HasColumnType("int");
 
-                    b.HasKey("IdFilme", "IdGenero");
+                    b.HasKey("FilmesIdFilme", "GenerosIdGenero");
 
-                    b.HasIndex("IdGenero");
+                    b.HasIndex("GenerosIdGenero");
 
                     b.ToTable("FilmeGenero");
+                });
+
+            modelBuilder.Entity("AtorFilme", b =>
+                {
+                    b.HasOne("Domain.Models.Ator", null)
+                        .WithMany()
+                        .HasForeignKey("AtoresIdAtor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Filme", null)
+                        .WithMany()
+                        .HasForeignKey("FilmesIdFilme")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Models.Filme", b =>
@@ -171,45 +183,26 @@ namespace Data.Migrations
                 {
                     b.HasOne("Domain.Models.Filme", "Filme")
                         .WithMany("Votos")
-                        .HasForeignKey("FilmeIdFilme")
+                        .HasForeignKey("IdFilme")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Filme");
                 });
 
-            modelBuilder.Entity("FilmeAtor", b =>
-                {
-                    b.HasOne("Domain.Models.Ator", null)
-                        .WithMany()
-                        .HasForeignKey("IdAtor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_FilmeAtor_Atores_IdAtor");
-
-                    b.HasOne("Domain.Models.Filme", null)
-                        .WithMany()
-                        .HasForeignKey("IdFilme")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_FilmeAtor_Filmes_IdFilme");
-                });
-
             modelBuilder.Entity("FilmeGenero", b =>
                 {
                     b.HasOne("Domain.Models.Filme", null)
                         .WithMany()
-                        .HasForeignKey("IdFilme")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_FilmeGenero_Filmes_IdFilme");
+                        .HasForeignKey("FilmesIdFilme")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Genero", null)
                         .WithMany()
-                        .HasForeignKey("IdGenero")
+                        .HasForeignKey("GenerosIdGenero")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_FilmeGenero_Generos_IdGenero");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Models.Diretor", b =>

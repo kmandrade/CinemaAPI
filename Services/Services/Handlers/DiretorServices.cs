@@ -25,13 +25,12 @@ namespace Serviços.Services.Handlers
 
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(LerDiretorDto diretorDto)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(int idDiretor)
         {
-            var filmes = _filmeDao.BuscarTodos();
-            var diretorMapeado = _mapper.Map<Diretor>(diretorDto);
-            var queryFilmes = from filme in filmes where filme.Diretor == diretorMapeado select filme;
-            var filmesDto=_mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
-            return filmesDto;
+            var filmes = _filmeDao.BuscarPorId(idDiretor);
+            
+                var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
+                yield return filmesDto;
         }
 
         public IEnumerable<LerDiretorDto> ConsultaTodos()
@@ -56,17 +55,22 @@ namespace Serviços.Services.Handlers
 
         public void Altera(int id, AlterarDiretorDto diretorDto)
         {
-            var listaDiretores = _diretorDao.BuscarTodos(); //selecionei todos diretores 
-            var diretorSelecionado = listaDiretores.FirstOrDefault(d=>d.Id == id); //peguei ele por id 
-            var diretorMapeado = _mapper.Map<Diretor>(diretorDto);//transformei o dto em diretor para assim alterar
-            _diretorDao.Alterar(diretorMapeado);
+            var diretorSelecionado = _diretorDao.BuscarPorId(id);
+            if(diretorSelecionado != null)
+            {
+                var diretorMapeado = _mapper.Map<Diretor>(diretorDto);
+                _diretorDao.Alterar(diretorMapeado);
+            }
+            
         }
 
         public void Excluir(int id)
         {
-            var listaDiretores = _diretorDao.BuscarTodos(); //selecionei todos diretores 
-            var diretorSelecionado = listaDiretores.FirstOrDefault(d => d.Id == id); //peguei ele por id 
-            _diretorDao.Excluir(diretorSelecionado);
+            var diretorSelecionado = _diretorDao.BuscarPorId(id);
+            if (diretorSelecionado != null)
+            {
+                _diretorDao.Excluir(diretorSelecionado);
+            }
         }
     }
 }

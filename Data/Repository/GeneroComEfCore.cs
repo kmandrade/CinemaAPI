@@ -41,15 +41,19 @@ namespace Data.Repository
         public void Excluir(Genero obj)
         {
             _context.Generos.Remove(obj);
+            _context.SaveChanges();
         }
         public void Alterar(Genero obj)
         {
             _context.Generos.Update(obj);
+            _context.SaveChanges();
         }
 
         public void Incluir(Genero obj)
         {
             _context.Generos.Add(obj);
+            _context.SaveChanges();
+
         }
     }
 }

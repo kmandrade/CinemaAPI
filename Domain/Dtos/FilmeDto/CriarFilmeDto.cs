@@ -16,8 +16,12 @@ namespace Domain.Dtos.FilmeDto
         public string Titulo { get; set; }
        
         public int Duracao { get; set; }
+        [Required]
         public int DiretorId { get; set; }
-        //public int GeneroId { get; set; }
+        [Required]
+        public int GeneroId { get; set; }
+        [Required]
+        public int AtorId { get; set; }
         public SituacaoFilme Situacao { get; set; }
 
     }

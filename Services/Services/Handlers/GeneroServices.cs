@@ -42,13 +42,12 @@ namespace Serviços.Services.Handlers
             return listaGenerosDto;
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(LerGeneroDto generoDto)
+        public IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(int iDgenero)
         {
-            var filmes = _filmeDao.BuscarTodos();
-            var _genero = _mapper.Map<Genero>(generoDto);
-            var queryFilmes = from filme in filmes where filme.Generos == _genero select filme;
-            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(queryFilmes);
-            return filmesDto;
+            var filmes = _filmeDao.BuscarPorId(iDgenero);
+
+            var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
+            yield return filmesDto;
         }
 
         public void Cadastra(CriarGeneroDto obj)
@@ -59,18 +58,21 @@ namespace Serviços.Services.Handlers
 
         public void Altera(int id, AlterarGeneroDto obj)
         {
-            var listaGeneros = _generoDao.BuscarTodos();
-            var generoMapeado = _mapper.Map<Genero>(obj);
-            var queryGeneros = from genero in listaGeneros where listaGeneros == generoMapeado select genero;
-            var generoSelecionado = _mapper.Map<Genero>(queryGeneros);
-            _generoDao.Alterar(generoSelecionado);
+            var generoSelecionado = _generoDao.BuscarPorId(id);
+            if (generoSelecionado != null)
+            {
+                var generoMapeado = _mapper.Map<Genero>(obj);
+                _generoDao.Alterar(generoMapeado);
+            }
         }
 
         public void Excluir(int id)
         {
-            var listaGeneros = _generoDao.BuscarTodos(); 
-            var generoSelecionado = listaGeneros.FirstOrDefault(g => g.IdGenero == id); 
-            _generoDao.Excluir(generoSelecionado);
+            var generoSelecionado = _generoDao.BuscarPorId(id);
+            if (generoSelecionado != null)
+            {
+                _generoDao.Excluir(generoSelecionado);
+            }
         }
     }
 }

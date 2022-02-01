@@ -16,15 +16,20 @@ namespace Data.Services.Handlers
     {
 
         IFilmeDao _filmeDao;
+        IAtorDao _atorDao;
+        IGeneroDao _generoDao;
+        IDiretorDao _diretorDao;
         private readonly IMapper _mapper;
 
         //preciso dizer pra minha aplicação que ela deve fazer o mapeamento
         //implementar o mapeamento, interfaces e utilizar o filmedao para ter acesso ao banco pela interface
-        public FilmeServices(IFilmeDao filmeDao, IMapper mapper)
+        public FilmeServices(IFilmeDao filmeDao, IMapper mapper, IGeneroDao eneroDao, IAtorDao atorDao, IDiretorDao diretorDao)
         {
             _filmeDao = filmeDao;
             _mapper = mapper;
-
+            _generoDao = eneroDao;
+            _atorDao = atorDao;
+            _diretorDao = diretorDao;
         }
 
         public IEnumerable<LerFilmeDto> ConsultaTodos()
@@ -44,29 +49,41 @@ namespace Data.Services.Handlers
 
         public void Cadastra(CriarFilmeDto obj)
         {
-            var filmeMapeado = _mapper.Map<Filme>(obj);
-            _filmeDao.Incluir(filmeMapeado);
+            var atorSelecionado = _atorDao.BuscarPorId(obj.AtorId);
+            var generoSelecionado = _generoDao.BuscarPorId(obj.GeneroId);
+            var diretorSelecionado = _diretorDao.BuscarPorId(obj.DiretorId);
+            if(atorSelecionado!=null && generoSelecionado != null && diretorSelecionado!=null)
+            {
+                var filmeMapeado = _mapper.Map<Filme>(obj);
+                _filmeDao.Incluir(filmeMapeado);
+            }
+            
         }
 
         public void Altera(int id, AlterarFilmeDto obj)
         {
-            var listaFilmes = _filmeDao.BuscarTodos();
-            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id);
-            var filmeMapeado = _mapper.Map<Filme>(obj);
-            _filmeDao.Alterar(filmeMapeado);
+            var filmeSelecionado = _filmeDao.BuscarPorId(id);
+            if (filmeSelecionado != null)
+            {
+                var filmeMapeado = _mapper.Map<Filme>(obj);
+                _filmeDao.Alterar(filmeMapeado);
+            }
+
         }
 
         public void Excluir(int id)
         {
-            var listaFilmes = _filmeDao.BuscarTodos();
-            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id);
-            _filmeDao.Excluir(filmeSelecionado);
+            var filmeSelecionado = _filmeDao.BuscarPorId(id);
+            if (filmeSelecionado != null)
+            {
+                _filmeDao.Excluir(filmeSelecionado);
+            }
         }
 
         public void ArquivarFilme(int id)
         {
-            var listaFilmes = _filmeDao.BuscarTodos();
-            var filmeSelecionado = listaFilmes.FirstOrDefault(f => f.IdFilme == id);
+            var filmeSelecionado = _filmeDao.BuscarPorId(id);
+            
             filmeSelecionado.Situacao = SituacaoFilme.Arquivado;
             _filmeDao.Save();
 
