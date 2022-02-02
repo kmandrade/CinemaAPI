@@ -36,10 +36,14 @@ namespace Data.Repository
             return filmes;
 
         }
-
-
+        public Filme BuscarPorNome(string nome)
+        {
+            var _filme = _context.Filmes.Where(f => f.Titulo == nome);
+            return _filme.FirstOrDefault();
+        }
         public void Incluir(Filme obj)
         {
+            
             _context.Filmes.Add(obj);
             _context.SaveChanges();
         }
@@ -60,6 +64,7 @@ namespace Data.Repository
             _context.SaveChanges();
             _context.Dispose();
         }
+
 
 
     }

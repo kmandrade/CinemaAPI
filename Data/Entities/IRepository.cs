@@ -10,6 +10,7 @@ namespace Data.Entities
     {
 
         IEnumerable<T> BuscarTodos();
+        T BuscarPorNome(string nome);
         T BuscarPorId(int id); 
 
         void Incluir(T obj);

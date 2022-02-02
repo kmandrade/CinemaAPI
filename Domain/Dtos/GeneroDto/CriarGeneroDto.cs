@@ -10,6 +10,6 @@ namespace Domain.Dtos.GeneroDto
     public class CriarGeneroDto
     {
         [Required]
-        public string TipoGenero { get; set; }
+        public string NomeGenero { get; set; }
     }
 }

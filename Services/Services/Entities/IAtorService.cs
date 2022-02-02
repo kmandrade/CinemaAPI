@@ -1,6 +1,7 @@
 ﻿using Domain.Dtos.AtorDto;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Serviços.Services.Entities
         LerAtorDto ConsultaPorId(int id);
 
 
-        void Cadastra(CriarAtorDto obj);
+        Result Cadastra(CriarAtorDto obj);
         void Altera(int id,AlterarAtorDto obj);
         void Excluir(int id);
 

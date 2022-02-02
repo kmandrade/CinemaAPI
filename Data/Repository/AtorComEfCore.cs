@@ -32,6 +32,11 @@ namespace Data.Repository
         {
            return _context.Atores.Find(id);
         }
+        public Ator BuscarPorNome(string nome)
+        {
+            var _ator = _context.Atores.Where(a => a.NomeAtor == nome);
+            return _ator.FirstOrDefault();
+        }
 
         public IEnumerable<Ator> BuscarTodos()
         {

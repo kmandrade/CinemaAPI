@@ -12,17 +12,23 @@ namespace Domain.Dtos.FilmeDto
     public class CriarFilmeDto
     {
         [Required(ErrorMessage = "O campo Titulo é obrigatorio")]
-        
+
         public string Titulo { get; set; }
-       
+
         public int Duracao { get; set; }
         [Required]
         public int DiretorId { get; set; }
-        [Required]
-        public int GeneroId { get; set; }
-        [Required]
-        public int AtorId { get; set; }
+
+        
         public SituacaoFilme Situacao { get; set; }
 
     }
+    //public class CriarFilmeGeneroDto public IEnumerable<CriarFilmeGeneroDto> Generos { get; set; }
+    //{
+    //    public int Id { get; set; }
+    //}
+    //public class CriarFilmeAtorDto
+    //{
+    //    public int Id { get; set; }
+    //}
 }

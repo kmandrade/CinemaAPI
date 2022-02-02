@@ -47,11 +47,9 @@ namespace Cinema.Api.Controllers
         [HttpPost("CadastraFilmes")]
         public IActionResult CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
         {
-            
             _filmeService.Cadastra(criarFilmeDto);
             return Ok();
         }
-
 
         
         [HttpDelete("Deletar Um Filme")]

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentResults;
 
 namespace Data.Services.Handlers
 {
@@ -36,28 +37,33 @@ namespace Data.Services.Handlers
         {
             var listadeFilmes = _filmeDao.BuscarTodos();
             var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(listadeFilmes);
+            
             return filmesDtos.OrderBy(nome => nome.Titulo);//orderby ja é um enumerable
         }
 
         public LerFilmeDto ConsultaPorId(int id)
         {
             var filme = _filmeDao.BuscarPorId(id);
-            var filmeDto = _mapper.Map<LerFilmeDto>(filme);
+            
+            
+                var filmeDto = _mapper.Map<LerFilmeDto>(filme);
+
             return filmeDto;
+            
+
         }
 
-
-        public void Cadastra(CriarFilmeDto obj)
+        
+        public Result Cadastra(CriarFilmeDto obj)
         {
-            var atorSelecionado = _atorDao.BuscarPorId(obj.AtorId);
-            var generoSelecionado = _generoDao.BuscarPorId(obj.GeneroId);
-            var diretorSelecionado = _diretorDao.BuscarPorId(obj.DiretorId);
-            if(atorSelecionado!=null && generoSelecionado != null && diretorSelecionado!=null)
+            var filme = _filmeDao.BuscarPorNome(obj.Titulo);
+            if (filme != null)
             {
-                var filmeMapeado = _mapper.Map<Filme>(obj);
-                _filmeDao.Incluir(filmeMapeado);
+                return Result.Fail("Filme ja existe");
             }
-            
+            var filmeMapeado = _mapper.Map<Filme>(obj);
+            _filmeDao.Incluir(filmeMapeado);
+            return Result.Ok();
         }
 
         public void Altera(int id, AlterarFilmeDto obj)

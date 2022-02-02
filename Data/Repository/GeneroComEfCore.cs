@@ -31,6 +31,11 @@ namespace Data.Repository
         {
             return _context.Generos.Find(id);
         }
+        public Genero BuscarPorNome(string nome)
+        {
+            var _genero = _context.Generos.Where(g => g.NomeGenero == nome);
+            return _genero.FirstOrDefault();
+        }
 
         public IEnumerable<Genero> BuscarTodos()
         {
@@ -55,5 +60,7 @@ namespace Data.Repository
             _context.SaveChanges();
 
         }
+
+        
     }
 }

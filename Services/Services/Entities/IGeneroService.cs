@@ -1,6 +1,7 @@
 ﻿using Domain.Dtos.FilmeDto;
 using Domain.Dtos.GeneroDto;
 using Domain.Models;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Serviços.Services.Entities
         LerGeneroDto ConsultaPorId(int id);
 
 
-        void Cadastra(CriarGeneroDto obj);
+        Result Cadastra(CriarGeneroDto obj);
         void Altera(int id, AlterarGeneroDto obj);
         void Excluir(int id);
     }

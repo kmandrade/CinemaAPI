@@ -3,6 +3,7 @@ using Data.Entities;
 using Domain.Dtos.FilmeDto;
 using Domain.Dtos.GeneroDto;
 using Domain.Models;
+using FluentResults;
 using Serviços.Services.Entities;
 using System;
 using System.Collections.Generic;
@@ -50,10 +51,16 @@ namespace Serviços.Services.Handlers
             yield return filmesDto;
         }
 
-        public void Cadastra(CriarGeneroDto obj)
+        public Result Cadastra(CriarGeneroDto obj)
         {
-            var genero = _mapper.Map<Genero>(obj);
-            _generoDao.Incluir(genero);
+            var genero = _generoDao.BuscarPorNome(obj.NomeGenero);
+            if (genero != null)
+            {
+                return Result.Fail("Ator ja existe ");
+            }
+            var generoMapeado = _mapper.Map<Genero>(obj);
+            _generoDao.Incluir(generoMapeado);
+            return Result.Ok();
         }
 
         public void Altera(int id, AlterarGeneroDto obj)

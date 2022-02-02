@@ -17,7 +17,7 @@ namespace Domain.Models
         [Required]
         public string NomeDiretor { get; set; }
 
-        
+        [JsonIgnore]
         public virtual IEnumerable<Filme> Filmes { get; set; }
 
 

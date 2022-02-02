@@ -14,9 +14,9 @@ namespace Domain.Models
         [Required]
         public int IdGenero { get; set; }
 
-        public string TipoGenero { get; set; }
-         
-       
+        public string NomeGenero { get; set; }
+
+        
         public virtual IEnumerable<Filme> Filmes { get; set; }
 
     }   

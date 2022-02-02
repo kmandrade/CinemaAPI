@@ -10,6 +10,11 @@ namespace Domain.Models
 {
     public class Filme
     {
+        //public Filme()
+        //{
+        //    Atores = new HashSet<Ator>();
+        //}
+
        
         [Key]
         [Required]
@@ -25,7 +30,6 @@ namespace Domain.Models
         public int DiretorId { get; set; }
 
 
-        
         public virtual IEnumerable<Genero> Generos { get; set; }
 
        
@@ -37,6 +41,6 @@ namespace Domain.Models
 
         public SituacaoFilme Situacao { get; set; }
 
-
+        
     }
 }
