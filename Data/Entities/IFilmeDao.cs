@@ -8,5 +8,6 @@ namespace Data.Entities
         //IEnumerable<Filme> BuscaFilmesMaisVotados(Votos votos);
         void Save();
         Filme BuscarPorNome(string nome);
+
     }
 }
