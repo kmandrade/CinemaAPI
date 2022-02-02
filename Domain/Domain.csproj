@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
+    <Folder Include="Dtos\AtorFilme\" />
+    <Folder Include="Dtos\FilmeGenero\" />
     <Folder Include="Dtos\VotosDto\" />
   </ItemGroup>
 

@@ -42,16 +42,39 @@ namespace Data.Context
 
             //ATOR
             builder.Entity<Filme>()
-                //filme tem mutios atores e muitos atores tem muitos filmes
-                .HasMany(filme => filme.Atores)
-                .WithMany(autores => autores.Filmes);
-                
+                .HasMany(f => f.Atores)
+                .WithMany(a => a.Filmes)
+                .UsingEntity<AtorFilme>(
+                x => x
+                .HasOne(at => at.Ator)
+                .WithMany(a => a.AtorFilmes)
+                .HasForeignKey(at => at.IdAtor),
+                x => x
+                .HasOne(at => at.Filme)
+                .WithMany(f => f.AtorFilmes)
+                .HasForeignKey(at => at.IdFilme),
+                x =>
+                {
+                    x.HasKey(f => new { f.IdFilme, f.IdAtor });
+                });
+
             //GENERO
             builder.Entity<Filme>()
-                .HasMany(filme => filme.Generos)
-                .WithMany(generos => generos.Filmes);
-                
-
+                .HasMany(f => f.Generos)
+                .WithMany(g => g.Filmes)
+                .UsingEntity<GeneroFilme>(
+                x => x
+                .HasOne(gf => gf.Genero)
+                .WithMany(g => g.GeneroFilmes)
+                .HasForeignKey(gf => gf.IdGenero),
+                x => x
+                .HasOne(gf => gf.Filme)
+                .WithMany(g => g.GeneroFilmes)
+                .HasForeignKey(gf => gf.IdFilme),
+                x =>
+                {
+                    x.HasKey(g => new { g.IdFilme, g.IdGenero });
+                });
         }
 
 

@@ -21,21 +21,6 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AtorFilme", b =>
-                {
-                    b.Property<int>("AtoresIdAtor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FilmesIdFilme")
-                        .HasColumnType("int");
-
-                    b.HasKey("AtoresIdAtor", "FilmesIdFilme");
-
-                    b.HasIndex("FilmesIdFilme");
-
-                    b.ToTable("AtorFilme");
-                });
-
             modelBuilder.Entity("Domain.Models.Ator", b =>
                 {
                     b.Property<int>("IdAtor")
@@ -51,6 +36,24 @@ namespace Data.Migrations
                     b.HasKey("IdAtor");
 
                     b.ToTable("Atores");
+                });
+
+            modelBuilder.Entity("Domain.Models.AtorFilme", b =>
+                {
+                    b.Property<int>("IdFilme")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdAtor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdFilme", "IdAtor");
+
+                    b.HasIndex("IdAtor");
+
+                    b.ToTable("AtorFilme");
                 });
 
             modelBuilder.Entity("Domain.Models.Diretor", b =>
@@ -106,13 +109,31 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdGenero"), 1L, 1);
 
-                    b.Property<string>("TipoGenero")
+                    b.Property<string>("NomeGenero")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdGenero");
 
                     b.ToTable("Generos");
+                });
+
+            modelBuilder.Entity("Domain.Models.GeneroFilme", b =>
+                {
+                    b.Property<int>("IdFilme")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdGenero")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdFilme", "IdGenero");
+
+                    b.HasIndex("IdGenero");
+
+                    b.ToTable("GeneroFilme");
                 });
 
             modelBuilder.Entity("Domain.Models.Votos", b =>
@@ -136,34 +157,23 @@ namespace Data.Migrations
                     b.ToTable("Votos");
                 });
 
-            modelBuilder.Entity("FilmeGenero", b =>
+            modelBuilder.Entity("Domain.Models.AtorFilme", b =>
                 {
-                    b.Property<int>("FilmesIdFilme")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GenerosIdGenero")
-                        .HasColumnType("int");
-
-                    b.HasKey("FilmesIdFilme", "GenerosIdGenero");
-
-                    b.HasIndex("GenerosIdGenero");
-
-                    b.ToTable("FilmeGenero");
-                });
-
-            modelBuilder.Entity("AtorFilme", b =>
-                {
-                    b.HasOne("Domain.Models.Ator", null)
-                        .WithMany()
-                        .HasForeignKey("AtoresIdAtor")
+                    b.HasOne("Domain.Models.Ator", "Ator")
+                        .WithMany("AtorFilmes")
+                        .HasForeignKey("IdAtor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Filme", null)
-                        .WithMany()
-                        .HasForeignKey("FilmesIdFilme")
+                    b.HasOne("Domain.Models.Filme", "Filme")
+                        .WithMany("AtorFilmes")
+                        .HasForeignKey("IdFilme")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ator");
+
+                    b.Navigation("Filme");
                 });
 
             modelBuilder.Entity("Domain.Models.Filme", b =>
@@ -177,6 +187,25 @@ namespace Data.Migrations
                     b.Navigation("Diretor");
                 });
 
+            modelBuilder.Entity("Domain.Models.GeneroFilme", b =>
+                {
+                    b.HasOne("Domain.Models.Filme", "Filme")
+                        .WithMany("GeneroFilmes")
+                        .HasForeignKey("IdFilme")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Genero", "Genero")
+                        .WithMany("GeneroFilmes")
+                        .HasForeignKey("IdGenero")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Filme");
+
+                    b.Navigation("Genero");
+                });
+
             modelBuilder.Entity("Domain.Models.Votos", b =>
                 {
                     b.HasOne("Domain.Models.Filme", "Filme")
@@ -188,19 +217,9 @@ namespace Data.Migrations
                     b.Navigation("Filme");
                 });
 
-            modelBuilder.Entity("FilmeGenero", b =>
+            modelBuilder.Entity("Domain.Models.Ator", b =>
                 {
-                    b.HasOne("Domain.Models.Filme", null)
-                        .WithMany()
-                        .HasForeignKey("FilmesIdFilme")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Genero", null)
-                        .WithMany()
-                        .HasForeignKey("GenerosIdGenero")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("AtorFilmes");
                 });
 
             modelBuilder.Entity("Domain.Models.Diretor", b =>
@@ -210,7 +229,16 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Models.Filme", b =>
                 {
+                    b.Navigation("AtorFilmes");
+
+                    b.Navigation("GeneroFilmes");
+
                     b.Navigation("Votos");
+                });
+
+            modelBuilder.Entity("Domain.Models.Genero", b =>
+                {
+                    b.Navigation("GeneroFilmes");
                 });
 #pragma warning restore 612, 618
         }

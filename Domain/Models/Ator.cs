@@ -18,7 +18,8 @@ namespace Domain.Models
         public string NomeAtor { get; set; }
 
         
-        public virtual IEnumerable<Filme> Filmes { get; set; }
+        public virtual ICollection<Filme> Filmes { get; set; }
+        public List<AtorFilme> AtorFilmes { get; set; }
 
 
     }

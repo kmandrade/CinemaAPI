@@ -17,7 +17,8 @@ namespace Domain.Models
         public string NomeGenero { get; set; }
 
         
-        public virtual IEnumerable<Filme> Filmes { get; set; }
+        public virtual ICollection<Filme> Filmes { get; set; }
+        public List<GeneroFilme> GeneroFilmes { get; set; }
 
     }   
 }

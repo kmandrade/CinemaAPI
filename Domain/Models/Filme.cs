@@ -15,25 +15,25 @@ namespace Domain.Models
         //    Atores = new HashSet<Ator>();
         //}
 
-       
+
         [Key]
         [Required]
         public int IdFilme { get; set; }
-        
-        [Required(ErrorMessage ="O campo Titulo é obrigatorio")]
-        public string Titulo { get; set; }
-       
-        public int Duracao { get; set; }
 
+        [Required(ErrorMessage = "O campo Titulo é obrigatorio")]
+        public string Titulo { get; set; }
+        public int Duracao { get; set; }
 
         public virtual Diretor Diretor { get; set; }
         public int DiretorId { get; set; }
 
 
-        public virtual IEnumerable<Genero> Generos { get; set; }
+        public virtual ICollection<Genero> Generos { get; set; }
+        public List<GeneroFilme> GeneroFilmes { get; set; }
 
-       
         public virtual IEnumerable<Ator> Atores { get; set; }
+        public List<AtorFilme> AtorFilmes {get;set;}
+
 
         
         [Range (1,4,ErrorMessage ="O Voto so pode ser de 1 como ruim a 4 como otimo")]

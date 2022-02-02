@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class FilmeComEfCore : IFilmeDao
+    public class FilmeComEfCore : IFilmeDao 
     {
 
         private readonly MyContext _context;
