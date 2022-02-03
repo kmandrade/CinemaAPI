@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    partial class BaseRepository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IRepository<T> where T : class
     {
-        private readonly MyContext _context;
-        private readonly DbSet<T> _dbSet;
-        public BaseRepository(MyContext context, DbSet<T> dbSet)
+        protected readonly MyContext _context;
+        protected readonly DbSet<T> _dbSet;
+        public BaseRepository(MyContext context)
         {
             _context = context;
-            _dbSet = dbSet;
+            _dbSet = context.Set<T>();
         }
 
         public T BuscarPorId(int id)

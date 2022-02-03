@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IGeneroDao :IRepository<Genero>
+    public interface IGeneroFilme : IRepository<GeneroFilme>
     {
-        
+        IEnumerable<Filme> BuscaFilmesPorGenero(GeneroFilme generoFilme);
     }
 }

@@ -55,11 +55,5 @@ namespace Data.Repository
                .Include(a => a.Diretor)
                .First(f => f.Diretor == diretor);
         }
-
-        public Diretor BuscarPorNome(string nome)
-        {
-            var _diretor = _context.Diretores.Where(d => d.NomeDiretor == nome);
-            return _diretor.FirstOrDefault();
-        }
     }
 }

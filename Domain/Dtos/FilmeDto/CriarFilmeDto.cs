@@ -1,4 +1,6 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos.AtorFilme;
+using Domain.Dtos.FilmeGenero;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +14,6 @@ namespace Domain.Dtos.FilmeDto
     public class CriarFilmeDto
     {
         [Required(ErrorMessage = "O campo Titulo é obrigatorio")]
-
         public string Titulo { get; set; }
 
         public int Duracao { get; set; }
@@ -23,12 +24,5 @@ namespace Domain.Dtos.FilmeDto
         public SituacaoFilme Situacao { get; set; }
 
     }
-    //public class CriarFilmeGeneroDto public IEnumerable<CriarFilmeGeneroDto> Generos { get; set; }
-    //{
-    //    public int Id { get; set; }
-    //}
-    //public class CriarFilmeAtorDto
-    //{
-    //    public int Id { get; set; }
-    //}
+    
 }

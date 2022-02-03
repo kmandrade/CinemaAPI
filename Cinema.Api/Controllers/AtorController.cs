@@ -26,12 +26,7 @@ namespace Cinema.Api.Controllers
            var atores =  _atorService.ConsultaTodos();
             return Ok(atores);
         }
-        [HttpGet("Consulta Filmes Por Ator")]
-        public IActionResult ConsultaFilmesPorAtor([FromQuery] int iDAtor)
-        {
-            var filmes  = _atorService.lerFilmeDtosPorAtor(iDAtor);
-            return Ok(filmes);
-        }
+       
 
         [HttpDelete("Deleta Ator{id}")]
         public IActionResult DeletaAtor(int id)

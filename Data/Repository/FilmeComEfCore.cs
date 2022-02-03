@@ -31,8 +31,8 @@ namespace Data.Repository
         public IEnumerable<Filme> BuscarTodos()
         {
 
-            IEnumerable<Filme> filmes = _context.Filmes;//Era .ToList depois coloquei em um ienumerable
-
+            IEnumerable<Filme> filmes = _context.Filmes;
+            
             return filmes;
 
         }

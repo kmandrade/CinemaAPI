@@ -21,13 +21,6 @@ namespace Data.Repository
             _context = context;
         }
 
-        public IEnumerable<Filme> BuscaFilmesPorAtor(Ator ator)
-        {
-            yield return _context.Filmes
-                 .Include(a => a.Atores)
-                 .First(f => f.Atores == ator);
-        }
-
         public Ator BuscarPorId(int id)
         {
            return _context.Atores.Find(id);

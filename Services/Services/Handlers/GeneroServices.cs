@@ -53,11 +53,11 @@ namespace Serviços.Services.Handlers
 
         public Result Cadastra(CriarGeneroDto obj)
         {
-            var genero = _generoDao.BuscarPorNome(obj.NomeGenero);
-            if (genero != null)
-            {
-                return Result.Fail("Ator ja existe ");
-            }
+            //var genero = _generoDao.BuscarPorNome(obj.NomeGenero);
+            //if (genero != null)
+            //{
+            //    return Result.Fail("Ator ja existe ");
+            //}
             var generoMapeado = _mapper.Map<Genero>(obj);
             _generoDao.Incluir(generoMapeado);
             return Result.Ok();

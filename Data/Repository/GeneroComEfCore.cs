@@ -19,13 +19,7 @@ namespace Data.Repository
             _context = context;
         }
 
-        public IEnumerable<Filme> BuscaFilmesPorGenero(Genero genero)
-        {
-
-            yield return _context.Filmes
-                .Include(g => g.Generos)
-                .First(f => f.Generos == genero);
-        }
+        
 
         public Genero BuscarPorId(int id)
         {

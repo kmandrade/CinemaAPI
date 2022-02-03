@@ -25,12 +25,8 @@ namespace Domain.Dtos.FilmeDto
 
         public int DiretorId { get; set; }
 
-        public virtual IEnumerable<Votos> Votos { get; set; }
-
-        public virtual IEnumerable<Genero> Generos { get; set; }
-
         
-        public virtual IEnumerable<Ator> Atores { get; set; }
+        
 
 
         public SituacaoFilme Situacao { get; set; }

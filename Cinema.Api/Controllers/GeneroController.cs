@@ -26,12 +26,7 @@ namespace Cinema.Api.Controllers
             var generos = _generoService.ConsultaTodos();
             return Ok(generos);
         }
-        [HttpGet("Consulta Filmes Por Genero")]
-        public IActionResult ConsultaFilmesPorGenero([FromQuery] int iDGnero)
-        {
-            var filmes = _generoService.lerFilmeDtosPorGenero(iDGnero);
-            return Ok(filmes);
-        }
+    
 
         [HttpDelete("Deleta Generos {id}")]
         public IActionResult DeletaGenero(int id)

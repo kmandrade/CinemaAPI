@@ -50,11 +50,11 @@ namespace Serviços.Services.Handlers
 
         public Result Cadastra(CriarAtorDto obj)
         {
-            var ator = _atorDao.BuscarPorNome(obj.NomeAtor);
-            if(ator != null)
-            {
-                return Result.Fail("Ator ja existe ");
-            }
+            //var ator = _atorDao.BuscarPorNome(obj.NomeAtor);
+            //if(ator != null)
+            //{
+            //    return Result.Fail("Ator ja existe ");
+            //}
             var atorMapeado = _mapper.Map<Ator>(obj);
             _atorDao.Incluir(atorMapeado);
             return Result.Ok();
