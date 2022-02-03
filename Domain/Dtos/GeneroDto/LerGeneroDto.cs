@@ -17,7 +17,5 @@ namespace Domain.Dtos.GeneroDto
         public string TipoGenero { get; set; }
 
 
-        public virtual IEnumerable<Filme> Filmes { get; set; }
-
     }
 }

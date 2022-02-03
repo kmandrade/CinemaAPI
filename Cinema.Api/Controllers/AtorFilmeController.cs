@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos.AtorFilme;
 using Microsoft.AspNetCore.Mvc;
+using Serviços.Services.Entities;
 using Serviços.Services.Handlers;
 
 namespace Cinema.Api.Controllers
@@ -9,12 +10,14 @@ namespace Cinema.Api.Controllers
     public class AtorFilmeController : ControllerBase
 
     {
-        private AtorFilmeServices _atorFilmeService;
+        private IAtorFilmeService _atorFilmeService;
 
-        public AtorFilmeController([FromBody]AtorFilmeServices atorFilmeService)
+        public AtorFilmeController(IAtorFilmeService atorFilmeService)
         {
             _atorFilmeService = atorFilmeService;
         }
+
+       
         [HttpPost("Adiciona AtorFilme")]
         public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {

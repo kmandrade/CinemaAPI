@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Context;
+﻿using Data.Context;
 using Data.Entities;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
