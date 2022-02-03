@@ -27,6 +27,12 @@ namespace Cinema.Api.Controllers
             var filmes = _atorFilmeService.BuscaFilmesPorAtor(lerAtorFilmeDto);
             return Ok(filmes);
         }
+        [HttpGet("Busca Todos")]
+        public IActionResult BuscaTodosAtoresFilmes()
+        {
+            var at = _atorFilmeService.BuscaTodosAtoresFilmes();
+            return Ok(at);
+        }
 
     }
 }

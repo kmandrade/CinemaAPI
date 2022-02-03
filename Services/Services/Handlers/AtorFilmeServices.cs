@@ -37,5 +37,13 @@ namespace Serviços.Services.Handlers
             var atorFilme = _mapper.Map<AtoresFilme>(lerAtorFilmeDto);
              return (IEnumerable<LerFilmeDto>)_atorfilme.BuscarFilmesPorAtor(atorFilme);
         }
+
+        public IEnumerable<LerAtorFilmeDto> BuscaTodosAtoresFilmes()
+        {
+            var atoresFilmes = _atorfilme.BuscarTodos();
+            var dtoAt = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atoresFilmes);
+            return dtoAt;
+
+        }
     }
 }
