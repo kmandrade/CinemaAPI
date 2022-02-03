@@ -11,61 +11,20 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class FilmeComEfCore : IFilmeDao 
+    public class FilmeComEfCore : BaseRepository<Filme>, IFilmeDao 
     {
 
-        private readonly MyContext _context;
+        private readonly DbSet<Filme> _dbset;
 
-        public FilmeComEfCore(MyContext context)
+        public FilmeComEfCore(MyContext _context) : base(_context)
         {
-            _context = context;
-        }
-        //FIND: encontra uma entidade com os valores de chave primária fornecidos.
-        //Se uma entidade com os valores de chave primária fornecidos for rastreada pelo contexto,
-        //ela será retornada imediatamente sem fazer uma solicitação ao banco de dados
-        public Filme BuscarPorId(int id)
-        {
-            return _context.Filmes.Find(id);
-        }
-        //retornar em ordem alfabetica
-        public IEnumerable<Filme> BuscarTodos()
-        {
-
-            IEnumerable<Filme> filmes = _context.Filmes;
-            
-            return filmes;
-
+            _dbset = _context.Set<Filme>();
         }
         public Filme BuscarPorNome(string nome)
         {
             var _filme = _context.Filmes.Where(f => f.Titulo == nome);
             return _filme.FirstOrDefault();
         }
-        public void Incluir(Filme obj)
-        {
-            
-            _context.Filmes.Add(obj);
-            _context.SaveChanges();
-        }
-        public void Alterar(Filme obj)
-        {
-            _context.Filmes.Update(obj);
-            _context.SaveChanges();
-        }
-
-        public void Excluir(Filme obj)
-        {
-            _context.Filmes.Remove(obj);
-            _context.SaveChanges();
-        }
-
-        public void Save()
-        {
-            _context.SaveChanges();
-            _context.Dispose();
-        }
-
-
 
     }
 }

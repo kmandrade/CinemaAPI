@@ -23,7 +23,7 @@ namespace Data.Repository
         {
             return _dbSet.Find(id);
         }
-
+        
         public IEnumerable<T> BuscarTodos()
         {
             return _dbSet.ToList();

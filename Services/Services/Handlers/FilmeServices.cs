@@ -91,7 +91,7 @@ namespace Data.Services.Handlers
             var filmeSelecionado = _filmeDao.BuscarPorId(id);
             
             filmeSelecionado.Situacao = SituacaoFilme.Arquivado;
-            _filmeDao.Save();
+            //salvar o dao _filmedao.save(); error por conta que nao tem mais
 
         }
     }

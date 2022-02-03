@@ -10,51 +10,22 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class GeneroComEfCore : IGeneroDao
+    public class GeneroComEfCore : BaseRepository<Genero>,IGeneroDao
     {
-        MyContext _context;
+       private readonly DbSet<Genero> _dbset;
 
-        public GeneroComEfCore(MyContext context)
+        public GeneroComEfCore(MyContext _context):base(_context)
         {
-            _context = context;
+            _dbset = _context.Set<Genero>();
         }
 
-        
 
-        public Genero BuscarPorId(int id)
-        {
-            return _context.Generos.Find(id);
-        }
-        public Genero BuscarPorNome(string nome)
-        {
-            var _genero = _context.Generos.Where(g => g.NomeGenero == nome);
-            return _genero.FirstOrDefault();
-        }
+        //public Genero BuscarPorNome(string nome)
+        //{
+        //    var _genero = _context.Generos.Where(g => g.NomeGenero == nome);
+        //    return _genero.FirstOrDefault();
+        //}
 
-        public IEnumerable<Genero> BuscarTodos()
-        {
-            var generos = _context.Generos;
-            return generos;
-        }
 
-        public void Excluir(Genero obj)
-        {
-            _context.Generos.Remove(obj);
-            _context.SaveChanges();
-        }
-        public void Alterar(Genero obj)
-        {
-            _context.Generos.Update(obj);
-            _context.SaveChanges();
-        }
-
-        public void Incluir(Genero obj)
-        {
-            _context.Generos.Add(obj);
-            _context.SaveChanges();
-
-        }
-
-        
     }
 }

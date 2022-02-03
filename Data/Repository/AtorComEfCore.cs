@@ -10,50 +10,21 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class AtorComEfCore : IAtorDao
+    public class AtorComEfCore : BaseRepository<Ator>, IAtorDao
     {
 
+        private readonly DbSet<Ator> _dbset;
 
-        private readonly MyContext _context;
-
-        public AtorComEfCore(MyContext context)
+        public AtorComEfCore(MyContext _context):base(_context)
         {
-            _context = context;
+            _dbset = _context.Set<Ator>();
         }
 
-        public Ator BuscarPorId(int id)
-        {
-           return _context.Atores.Find(id);
-        }
-        public Ator BuscarPorNome(string nome)
-        {
-            var _ator = _context.Atores.Where(a => a.NomeAtor == nome);
-            return _ator.FirstOrDefault();
-        }
+        //public Ator BuscarPorNome(string nome)
+        //{
+        //    var _ator = _context.Atores.Where(a => a.NomeAtor == nome);
+        //    return _ator.FirstOrDefault();
+        //}
 
-        public IEnumerable<Ator> BuscarTodos()
-        {
-            var atores = _context.Atores;
-             return atores;
-        }
-
-
-        public void Excluir(Ator obj)
-        {
-            _context.Atores.Remove(obj);
-            _context.SaveChanges();
-        }
-
-        public void Alterar(Ator obj)
-        {
-            _context.Atores.Update(obj);
-            _context.SaveChanges();
-        }
-
-        public void Incluir(Ator obj)
-        {
-            _context.Atores.Add(obj);
-            _context.SaveChanges();
-        }
     }
 }
