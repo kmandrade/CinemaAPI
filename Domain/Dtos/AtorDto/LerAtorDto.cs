@@ -17,6 +17,5 @@ namespace Domain.Dtos.AtorDto
         public string NomeAtor { get; set; }
 
 
-        public virtual IEnumerable<Models.Filme> Filmes { get; set; }
     }
 }

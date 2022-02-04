@@ -26,6 +26,7 @@ namespace Domain.Dtos.FilmeDto
 
         public AtoresFilme AtoresFilme { get; set; }
 
+        public GeneroFilme GeneroFilme { get; set; }
 
 
         public SituacaoFilme Situacao { get; set; }

@@ -13,7 +13,7 @@ namespace Domain.Dtos.GeneroDto
         
         public int IdGenero { get; set; }
         
-        public string TipoGenero { get; set; }
+        public string NomeGenero { get; set; }
 
 
     }

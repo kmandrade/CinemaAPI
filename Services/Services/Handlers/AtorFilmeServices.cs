@@ -32,10 +32,10 @@ namespace Serviços.Services.Handlers
             
         }
 
-        public IEnumerable<LerFilmeDto> BuscaFilmesPorAtor(int idAtorFilme)
+        public LerFilmeDto BuscaFilmesPorAtor(int idAtorFilme)
         {
-            IEnumerable<Filme> filmes = _atorfilme.BuscarFilmesPorAtor(idAtorFilme);//aqui ja tenho os filmes
-            var filmesMapeados = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            Filme filmes = _atorfilme.BuscarFilmesPorAtor(idAtorFilme);//aqui ja tenho os filmes
+            var filmesMapeados = _mapper.Map<LerFilmeDto>(filmes);
             return filmesMapeados;
         }
         /*

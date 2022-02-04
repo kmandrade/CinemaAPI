@@ -20,12 +20,12 @@ namespace Data.Repository
             _dbsetFilme=_context.Set<Filme>();
         }
 
-        public IEnumerable<Filme> BuscarFilmesPorAtor(int IdAtorFilme)
+        public Filme BuscarFilmesPorAtor(int IdAtorFilme)
         {
-           var filmes = _dbsetFilme
+           var filme = _dbsetFilme
                 .Include(f=>f.AtoresFilme)
-                .First(a=>a.IdFilme==IdAtorFilme);
-            yield return filmes;
+                .FirstOrDefault(a=>a.IdFilme==IdAtorFilme);
+             return filme;
 
         }
     }
