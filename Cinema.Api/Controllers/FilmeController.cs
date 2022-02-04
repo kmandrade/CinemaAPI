@@ -71,6 +71,12 @@ namespace Cinema.Api.Controllers
             _filmeService.Altera(id,filmeDto);
             return NoContent();
         }
+        [HttpGet("BuscaCompleta{id}")]
+        public IActionResult BuscaCompleta (int id)
+        {
+            var filme  = _filmeService.BuscarFilmeCompleto(id);
+            return Ok(filme);
+        }
 
     }
 }

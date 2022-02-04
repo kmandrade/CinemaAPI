@@ -31,10 +31,12 @@ namespace Serviços.Services.Handlers
             _generofilme.Incluir(generoFilme);
         }
 
-        public IEnumerable<LerFilmeDto> BuscarFilmesPorGenero(LerGeneroFilmeDto lerGeneroFilmeDto)
+        public IEnumerable<LerFilmeDto> BuscarFilmesPorGenero(int IdGeneroFilme)
         {
-            var generoFilme = _mapper.Map<GeneroFilme>(lerGeneroFilmeDto);
-            return (IEnumerable<LerFilmeDto>)_generofilme.BuscaFilmesPorGenero(generoFilme);
+           IEnumerable<Filme> filmes = _generofilme.BuscaFilmesPorGenero(IdGeneroFilme);
+            var filmesMapeados =_mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            return filmesMapeados;
+
         }
     }
 }

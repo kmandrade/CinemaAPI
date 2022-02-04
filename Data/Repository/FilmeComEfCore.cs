@@ -25,6 +25,15 @@ namespace Data.Repository
             var _filme = _context.Filmes.Where(f => f.Titulo == nome);
             return _filme.FirstOrDefault();
         }
+        public Filme BuscarPorFilmesCompletoID(int id)
+        {
+            var filme = _context.Filmes
+                .Include(a => a.AtoresFilme)
+                .Include(d => d.Diretor)
+                .Include(g => g.GenerosFilme)
+                .FirstOrDefault(a => a.IdFilme == id);
+            return filme;
+        }
 
     }
 }

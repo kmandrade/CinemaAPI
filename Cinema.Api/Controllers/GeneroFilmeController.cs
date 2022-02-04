@@ -21,9 +21,9 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
         [HttpGet("Busca Filmes Por Genero")]
-        public IActionResult BuscarFilmesPorGenero([FromQuery]LerGeneroFilmeDto lerGeneroFilmeDto)
+        public IActionResult BuscarFilmesPorGenero([FromQuery]int IdGeneroFilme)
         {
-            var gf = _generoFilmeService.BuscarFilmesPorGenero(lerGeneroFilmeDto);
+            var gf = _generoFilmeService.BuscarFilmesPorGenero(IdGeneroFilme);
             return Ok(gf);
         }
     }

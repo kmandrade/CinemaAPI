@@ -25,9 +25,9 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
         [HttpGet("LerFilmesPorAtor")]
-        public IActionResult LerFilmesPorAtor([FromQuery]int idAtorFilme)
+        public IActionResult LerFilmesPorAtor([FromQuery]int lerAtorFilmeDto)
         {
-            var filmes = _atorFilmeService.BuscaFilmesPorAtor(idAtorFilme);
+            var filmes = _atorFilmeService.BuscaFilmesPorAtor(lerAtorFilmeDto);
             return Ok(filmes);
         }
         [HttpGet("Busca Todos")]

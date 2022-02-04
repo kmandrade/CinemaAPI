@@ -10,6 +10,6 @@ namespace Data.Entities
 {
     public interface IAtorFilme : IRepository<AtoresFilme>
     {
-        IEnumerable<Filme> BuscarFilmesPorAtor(AtoresFilme atorFilme);
+        IEnumerable<Filme> BuscarFilmesPorAtor(int IdAtorFilme);
     }
 }

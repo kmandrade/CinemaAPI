@@ -44,13 +44,17 @@ namespace Data.Services.Handlers
         public LerFilmeDto ConsultaPorId(int id)
         {
             var filme = _filmeDao.BuscarPorId(id);
-            
-            
                 var filmeDto = _mapper.Map<LerFilmeDto>(filme);
 
             return filmeDto;
             
 
+        }
+        public LerFilmeDto BuscarFilmeCompleto(int id)
+        {
+            var filme = _filmeDao.BuscarPorFilmesCompletoID(id);
+            var filmeMapeado = _mapper.Map<LerFilmeDto>(filme);
+            return filmeMapeado;
         }
 
         

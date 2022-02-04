@@ -8,6 +8,6 @@ namespace Data.Entities
         //IEnumerable<Filme> BuscaFilmesMaisVotados(Votos votos);
        
         Filme BuscarPorNome(string nome);
-
+        Filme BuscarPorFilmesCompletoID(int id);
     }
 }

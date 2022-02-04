@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos.AtorFilme;
 using Domain.Dtos.FilmeDto;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;

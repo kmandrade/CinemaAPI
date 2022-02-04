@@ -13,34 +13,20 @@ namespace Data.Repository
     public class AtorFilmeComEfCore : BaseRepository<AtoresFilme>, IAtorFilme
     {
         private readonly DbSet<AtoresFilme> _dbset;
-
+        private readonly DbSet<Filme> _dbsetFilme;
         public AtorFilmeComEfCore(MyContext _context):base(_context)
         {
             _dbset = _context.Set<AtoresFilme>();
+            _dbsetFilme=_context.Set<Filme>();
         }
 
-        public IEnumerable<Filme> BuscarFilmesPorAtor(AtoresFilme atorfilme)
+        public IEnumerable<Filme> BuscarFilmesPorAtor(int IdAtorFilme)
         {
-            
+           var filmes = _dbsetFilme
+                .Include(f=>f.AtoresFilme)
+                .First(a=>a.IdFilme==IdAtorFilme);
+            yield return filmes;
 
-
-
-                //lendo filmes por ator
-                var filme = _context
-                    .Filmes //contexto de filmes 
-                    .Include(a => a.AtoresFilme)//seleciona chave ator
-                    .ThenInclude(at => at.Filme)
-                    .FirstOrDefault();
-                if (filme != null)
-                {
-                    foreach (var item in filme.AtoresFilme)
-                    {
-                        return (IEnumerable<Filme>)item.Ator;
-                    }
-                }
-                return null;
-
-            
         }
     }
 }

@@ -34,15 +34,22 @@ namespace Serviços.Services.Handlers
 
         public IEnumerable<LerFilmeDto> BuscaFilmesPorAtor(int idAtorFilme)
         {
-            var filmes =_filmeDao.BuscarPorId(idAtorFilme);
+            IEnumerable<Filme> filmes = _atorfilme.BuscarFilmesPorAtor(idAtorFilme);//aqui ja tenho os filmes
+            var filmesMapeados = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            return filmesMapeados;
+        }
+        /*
+        public IEnumerable<LerFilmeDto> BuscaFilmesPorAtor(int idAtorFilme)
+        {
+            var filmes = _filmeDao.BuscarPorId(idAtorFilme);
             var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
             if (filmes == null)
             {
-               yield return null;
+                yield return null;
             }
-           yield return filmesDto;
+            yield return filmesDto;
         }
-
+        */
         public IEnumerable<LerAtorFilmeDto> BuscaTodosAtoresFilmes()
         {
             var atoresFilmes = _atorfilme.BuscarTodos();
