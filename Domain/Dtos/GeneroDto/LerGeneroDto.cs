@@ -10,10 +10,9 @@ namespace Domain.Dtos.GeneroDto
 {
     public class LerGeneroDto
     {
-        [Key]
-        [Required]
+        
         public int IdGenero { get; set; }
-
+        
         public string TipoGenero { get; set; }
 
 

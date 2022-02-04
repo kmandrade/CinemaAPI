@@ -23,12 +23,12 @@ namespace Data.Repository
         {
             var filme = _context
                 .Filmes
-                .Include(a => a.Generos)
+                .Include(a => a.GenerosFilme)
                 .ThenInclude(gf => gf.Filme)
                 .FirstOrDefault();
             if (filme != null)
             {
-                foreach (var item in filme.Generos)
+                foreach (var item in filme.GenerosFilme)
                 {
                     return (IEnumerable<Filme>)item.Genero;
                 }

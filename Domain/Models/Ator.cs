@@ -19,7 +19,7 @@ namespace Domain.Models
 
         
         
-        public virtual List<AtoresFilme> Filmes { get; set; }
+        public virtual List<AtoresFilme> AtoresFilme { get; set; }
 
 
     }

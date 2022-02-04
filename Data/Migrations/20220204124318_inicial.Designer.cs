@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220203142953_inicial")]
+    [Migration("20220204124318_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,16 +42,21 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Models.AtoresFilme", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<int>("IdAtor")
                         .HasColumnType("int");
 
                     b.Property<int>("IdFilme")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("IdAtor", "IdFilme");
+                    b.HasIndex("IdAtor");
 
                     b.HasIndex("IdFilme");
 
@@ -122,18 +127,23 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Models.GeneroFilme", b =>
                 {
-                    b.Property<int>("IdGenero")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("IdFilme")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("IdGenero")
                         .HasColumnType("int");
 
-                    b.HasKey("IdGenero", "IdFilme");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdFilme");
+
+                    b.HasIndex("IdGenero");
 
                     b.ToTable("GenerosFilmes");
                 });
@@ -162,13 +172,13 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Models.AtoresFilme", b =>
                 {
                     b.HasOne("Domain.Models.Ator", "Ator")
-                        .WithMany("Filmes")
+                        .WithMany("AtoresFilme")
                         .HasForeignKey("IdAtor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Filme", "Filme")
-                        .WithMany("Atores")
+                        .WithMany("AtoresFilme")
                         .HasForeignKey("IdFilme")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -192,13 +202,13 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Models.GeneroFilme", b =>
                 {
                     b.HasOne("Domain.Models.Filme", "Filme")
-                        .WithMany("Generos")
+                        .WithMany("GenerosFilme")
                         .HasForeignKey("IdFilme")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Genero", "Genero")
-                        .WithMany("Filmes")
+                        .WithMany("GeneroFilmes")
                         .HasForeignKey("IdGenero")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -221,7 +231,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Models.Ator", b =>
                 {
-                    b.Navigation("Filmes");
+                    b.Navigation("AtoresFilme");
                 });
 
             modelBuilder.Entity("Domain.Models.Diretor", b =>
@@ -231,16 +241,16 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Models.Filme", b =>
                 {
-                    b.Navigation("Atores");
+                    b.Navigation("AtoresFilme");
 
-                    b.Navigation("Generos");
+                    b.Navigation("GenerosFilme");
 
                     b.Navigation("Votos");
                 });
 
             modelBuilder.Entity("Domain.Models.Genero", b =>
                 {
-                    b.Navigation("Filmes");
+                    b.Navigation("GeneroFilmes");
                 });
 #pragma warning restore 612, 618
         }

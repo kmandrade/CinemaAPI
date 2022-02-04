@@ -10,13 +10,13 @@ namespace Domain.Dtos.DiretorDto
 {
     public class LerDiretorDto
     {
-        [Key]
-        [Required]
+      
+        
         public int Id { get; set; }
-        [Required]
+        
         public string NomeDiretor { get; set; }
 
 
-        public virtual IEnumerable<Models.Filme> Filmes { get; set; }
+        
     }
 }

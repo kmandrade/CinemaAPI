@@ -10,50 +10,17 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class DiretorComEfCore : IDiretorDao
+    public class DiretorComEfCore : BaseRepository<Diretor>,IDiretorDao
     {
+        private readonly DbSet<Diretor> _dbset;
 
-        private readonly MyContext _context;
-
-        public DiretorComEfCore(MyContext context)
+        public DiretorComEfCore(MyContext _context):base(_context)
         {
-            _context = context;
-        }
+            _dbset = _context.Set<Diretor>();
 
-        public IEnumerable<Diretor> BuscarTodos()
-        {
-            var diretores = _context.Diretores;
-            return diretores;
         }
-        public Diretor BuscarPorId(int id)
-        {
-            return _context.Diretores.Find(id);
-        }
+        
 
-
-        public void Alterar(Diretor obj)
-        {
-            _context.Diretores.Update(obj);
-            _context.SaveChanges();
-        }
-
-        public void Excluir(Diretor obj)
-        {
-            _context.Diretores.Remove(obj);
-            _context.SaveChanges();
-        }
-
-        public void Incluir(Diretor obj)
-        {
-            _context.Diretores.Add(obj);
-            _context.SaveChanges();
-        }
-
-        public IEnumerable<Filme> BuscaFilmesPorDiretor(Diretor diretor)
-        {
-            yield return _context.Filmes
-               .Include(a => a.Diretor)
-               .First(f => f.Diretor == diretor);
-        }
+       
     }
 }

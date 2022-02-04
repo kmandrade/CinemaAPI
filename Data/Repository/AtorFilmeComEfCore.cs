@@ -22,15 +22,18 @@ namespace Data.Repository
         public IEnumerable<Filme> BuscarFilmesPorAtor(AtoresFilme atorfilme)
         {
             
+
+
+
                 //lendo filmes por ator
                 var filme = _context
                     .Filmes //contexto de filmes 
-                    .Include(a => a.Atores)//seleciona chave ator
+                    .Include(a => a.AtoresFilme)//seleciona chave ator
                     .ThenInclude(at => at.Filme)
                     .FirstOrDefault();
                 if (filme != null)
                 {
-                    foreach (var item in filme.Atores)
+                    foreach (var item in filme.AtoresFilme)
                     {
                         return (IEnumerable<Filme>)item.Ator;
                     }

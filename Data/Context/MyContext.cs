@@ -42,14 +42,24 @@ namespace Data.Context
                 .WithOne(votos => votos.Filme)
                 .HasForeignKey(x=>x.IdFilme);
 
-            //ATOR
+            //ATORFILME
             builder.Entity<AtoresFilme>()
-                .HasKey(at => new { at.IdAtor, at.IdFilme });
-
-            //GENERO
+                .HasOne(atf => atf.Filme)
+                .WithMany(filme=>filme.AtoresFilme)
+                .HasForeignKey(atf=>atf.IdFilme);
+            builder.Entity<AtoresFilme>()
+                .HasOne(atf => atf.Ator)
+                .WithMany(at => at.AtoresFilme)
+                .HasForeignKey(atf => atf.IdAtor);
+            //GENEROFILME
             builder.Entity<GeneroFilme>()
-                .HasKey(gf => new { gf.IdGenero,gf.IdFilme });
-
+                .HasOne(gf => gf.Filme)
+                .WithMany(filme => filme.GenerosFilme)
+                .HasForeignKey(gf => gf.IdFilme);
+           builder.Entity<GeneroFilme>()
+                .HasOne(gf=>gf.Genero)
+                .WithMany(gen=>gen.GeneroFilmes)
+                .HasForeignKey(gf=>gf.IdGenero);
 
 
             //builder.Entity<Filme>()

@@ -22,11 +22,15 @@ namespace Domain.Dtos.FilmeDto
 
 
         public Diretor Diretor { get; set; }
-
         public int DiretorId { get; set; }
 
-        
-        
+        public Ator Ator { get; set; }
+        public int idAtor { get; set; }
+
+        public Genero Genero { get; set; }
+        public int IdGenero { get; set; }
+
+
 
 
         public SituacaoFilme Situacao { get; set; }

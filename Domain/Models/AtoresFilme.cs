@@ -10,10 +10,10 @@ namespace Domain.Models
     {
         public int Id { get; set; }
 
-        public Filme Filme { get; set; }
+        public virtual Filme Filme { get; set; }
         public int IdFilme { get; set; }
 
-        public Ator Ator { get; set; }
+        public virtual Ator Ator { get; set; }
         public int IdAtor { get; set; }
     }
 }

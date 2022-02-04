@@ -28,8 +28,10 @@ namespace Domain.Models
         public int DiretorId { get; set; }
 
 
-        public List<AtoresFilme> Atores { get; set; }
-        public List<GeneroFilme> Generos { get; set; }
+        public virtual List<AtoresFilme> AtoresFilme { get; set; }
+
+
+        public virtual List<GeneroFilme> GenerosFilme { get; set; }
 
         
         
