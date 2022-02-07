@@ -12,7 +12,7 @@ namespace Data.Context
     {
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
-
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

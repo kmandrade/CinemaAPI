@@ -11,23 +11,23 @@ namespace Domain.Dtos.FilmeDto
 {
     public class LerFilmeDto
     {
-        [Key]
-        [Required]
         public int IdFilme { get; set; }
 
-        [Required(ErrorMessage = "O campo Titulo é obrigatorio")]
+        
         public string Titulo { get; set; }
-        [Range(1, 600, ErrorMessage = "A duração deve ter no mínimo 1 minuto e no máximo 600.")]
         public int Duracao { get; set; }
 
-
-        public Diretor Diretor { get; set; }
+        public virtual Diretor Diretor { get; set; }
         public int DiretorId { get; set; }
 
-        public AtoresFilme AtoresFilme { get; set; }
 
-        public GeneroFilme GeneroFilme { get; set; }
+        public virtual List<AtoresFilme> AtoresFilme { get; set; }
 
+
+        public virtual List<GeneroFilme> GenerosFilme { get; set; }
+
+
+        public virtual IEnumerable<Votos> ?Votos { get; set; }
 
         public SituacaoFilme Situacao { get; set; }
     }

@@ -26,5 +26,11 @@ namespace Cinema.Api.Controllers
             var gf = _generoFilmeService.BuscarFilmesPorGenero(IdGeneroFilme);
             return Ok(gf);
         }
+        [HttpGet("BuscaTodosGenerosFilmes")]
+        public IActionResult BuscaTodosGenerosFilmes()
+        {
+            var gf = _generoFilmeService.BuscaTodosGenerosFilmes();
+            return Ok(gf);
+        }
     }
 }

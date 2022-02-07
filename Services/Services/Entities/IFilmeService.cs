@@ -15,7 +15,7 @@ namespace Domain.Services.Entities
         IEnumerable<LerFilmeDto> ConsultaTodos();
         LerFilmeDto ConsultaPorId(int id);
 
-        LerFilmeDto BuscarFilmeCompleto(int id);
+        Filme BuscarFilmeCompleto(int id);
         Result Cadastra(CriarFilmeDto obj);
         void Altera(int id, AlterarFilmeDto obj);
         void Excluir(int id);

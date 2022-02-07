@@ -38,5 +38,12 @@ namespace Serviços.Services.Handlers
             return filmesMapeados;
 
         }
+
+        public IEnumerable<LerGeneroFilmeDto> BuscaTodosGenerosFilmes()
+        {
+            var gf = _generofilme.BuscarTodos();
+            var dto = _mapper.Map<IEnumerable<LerGeneroFilmeDto>>(gf);
+            return dto;
+        }
     }
 }

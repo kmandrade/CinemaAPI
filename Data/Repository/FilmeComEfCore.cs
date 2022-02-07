@@ -27,12 +27,16 @@ namespace Data.Repository
         }
         public Filme BuscarPorFilmesCompletoID(int id)
         {
-            var filme = _context.Filmes
-                .Include(a => a.AtoresFilme)
-                .Include(d => d.Diretor)
-                .Include(g => g.GenerosFilme)
-                .FirstOrDefault(a => a.IdFilme == id);
+            var filme = _dbset
+                .Include(d=>d.Diretor)
+                .Include(a=>a.AtoresFilme)
+                .ThenInclude(x=>x.Ator)
+                .Include(gf=>gf.GenerosFilme)
+                .ThenInclude(g=>g.Genero)
+                .FirstOrDefault(f=>f.IdFilme == id);
             return filme;
+          
+            
         }
 
     }

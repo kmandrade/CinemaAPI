@@ -50,11 +50,11 @@ namespace Data.Services.Handlers
             
 
         }
-        public LerFilmeDto BuscarFilmeCompleto(int id)
+        public Filme BuscarFilmeCompleto(int id)
         {
             var filme = _filmeDao.BuscarPorFilmesCompletoID(id);
-            var filmeMapeado = _mapper.Map<LerFilmeDto>(filme);
-            return filmeMapeado;
+           // DANDO ERROR//var filmeMapeado = _mapper.Map<LerFilmeDto>(filme);
+            return filme;
         }
 
         
