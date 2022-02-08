@@ -1,4 +1,6 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos.FilmeDto;
+using Domain.Dtos.GeneroDto;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace Domain.Dtos.FilmeGenero
     public class LerGeneroFilmeDto
     {
         public int Id { get; set; }
-        public Filme Filme { get; set; }
-        public Genero Genero { get; set; }
+        public LerFilmeDto FilmeDto { get; set; }
+        public LerGeneroDto GeneroDto { get; set; }
     }
 }
