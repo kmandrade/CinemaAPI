@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Dtos.AtorDto;
 using Domain.Dtos.AtorFilme;
 using Domain.Models;
 
@@ -8,9 +9,12 @@ namespace Cinema.Api.Profiles
     {
         public AtorFilmeProfile()
         {
-            CreateMap<AtoresFilme, LerAtorFilmeDto>().ReverseMap();
+            CreateMap<AtoresFilme, LerAtorFilmeDto>()
+                .ReverseMap();
             CreateMap<CriarAtorFilmeDto, AtoresFilme>();
-            
+            CreateMap<AtoresFilme, LerAtorDto>()
+                .ForMember(dto => dto.NomeAtor, opt => opt.MapFrom(n => n.Ator.NomeAtor))
+                .ReverseMap();
         }
     }
 }

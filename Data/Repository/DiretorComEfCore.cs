@@ -19,8 +19,22 @@ namespace Data.Repository
             _dbset = _context.Set<Diretor>();
 
         }
-        
 
-       
+        public IEnumerable<Filme> BuscaFilmesPorDiretor(int idDiretor)
+        {
+            var filmes = _context.Filmes
+                .Include(atf => atf.AtoresFilme)
+                .ThenInclude(at => at.Ator)
+                .Include(gf => gf.GenerosFilme)
+                .ThenInclude(g => g.Genero)
+                .Include(d => d.Diretor)
+             
+                .Where(f => f.DiretorId == idDiretor)
+                .ToList();
+                
+            return filmes;
+
+
+        }
     }
 }

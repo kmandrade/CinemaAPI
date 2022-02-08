@@ -30,7 +30,6 @@ namespace Domain.Models
 
         public virtual List<AtoresFilme> AtoresFilme { get; set; }
 
-
         public virtual List<GeneroFilme> GenerosFilme { get; set; }
 
         
@@ -43,6 +42,6 @@ namespace Domain.Models
 
         public SituacaoFilme Situacao { get; set; }
 
-        
+       
     }
 }

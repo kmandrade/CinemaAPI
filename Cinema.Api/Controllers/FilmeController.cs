@@ -31,7 +31,13 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
-        [HttpGet("Buca Um Filme{id}")]
+        [HttpGet("BuscaCompleta/{id}")]
+        public IActionResult BuscaCompleta(int id)
+        {
+            var filme = _filmeService.BuscarFilmeCompleto(id);
+            return Ok(filme);
+        }
+        [HttpGet("BucaUmFilme/{id}")]
         public IActionResult BuscaUmFilme(int id)
         {
             var filme = _filmeService.ConsultaPorId(id);
@@ -43,16 +49,14 @@ namespace Cinema.Api.Controllers
             return NotFound();
         }
 
-
-        [HttpPost("CadastraFilmes")]
+        [HttpPost("CadastraFilme")]
         public IActionResult CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
         {
             _filmeService.Cadastra(criarFilmeDto);
             return Ok();
         }
 
-        
-        [HttpDelete("Deletar Um Filme")]
+        [HttpDelete("DeletaUmFilme")]
         public IActionResult DeletaUmFilme([FromQuery] int idFilme)
         {
             _filmeService.Excluir(idFilme);
@@ -65,18 +69,13 @@ namespace Cinema.Api.Controllers
             return NoContent();
         }
 
-        [HttpPut("Altera Um Filme")]
+        [HttpPut("AlteraUmFilme")]
         public IActionResult AlterarFilme(int id,[FromBody]AlterarFilmeDto filmeDto)
         {
             _filmeService.Altera(id,filmeDto);
             return NoContent();
         }
-        [HttpGet("BuscaCompleta{id}")]
-        public IActionResult BuscaCompleta (int id)
-        {
-            var filme  = _filmeService.BuscarFilmeCompleto(id);
-            return Ok(filme);
-        }
+        
 
     }
 }

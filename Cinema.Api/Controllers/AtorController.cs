@@ -14,21 +14,22 @@ namespace Cinema.Api.Controllers
         {
             _atorService = atorService;
         }
+
+        [HttpGet("ConsultaAtores")]
+        public IActionResult ConsultaAtores()
+        {
+            var atores = _atorService.ConsultaTodos();
+            return Ok(atores);
+        }
+
         [HttpPost]
         public IActionResult CadastraAtor([FromBody]CriarAtorDto atorDto)
         {
             _atorService.Cadastra(atorDto);
             return Ok();
         }
-        [HttpGet("Consulta Atores")]
-        public IActionResult ConsultaAtores()
-        {
-           var atores =  _atorService.ConsultaTodos();
-            return Ok(atores);
-        }
-       
-
-        [HttpDelete("Deleta Ator{id}")]
+    
+        [HttpDelete("DeletaAtor/{id}")]
         public IActionResult DeletaAtor(int id)
         {
             _atorService.Excluir(id);

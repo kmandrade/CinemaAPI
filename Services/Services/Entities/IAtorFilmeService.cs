@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos.AtorFilme;
 using Domain.Dtos.FilmeDto;
+using Domain.Models;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Serviços.Services.Entities
     public interface IAtorFilmeService
     {
         void AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto);
-        LerFilmeDto BuscaFilmesPorAtor(int  idAtorFilme);
+        IEnumerable<AtoresFilme> BuscaFilmesPorAtor(int  idAtorFilme);
         IEnumerable<LerAtorFilmeDto> BuscaTodosAtoresFilmes();
     }
 }

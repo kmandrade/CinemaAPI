@@ -14,21 +14,22 @@ namespace Cinema.Api.Controllers
         {
             _generoService = generoService;
         }
+
+        [HttpGet("ConsultaGeneros")]
+        public IActionResult ConsultaGeneros()
+        {
+            var generos = _generoService.ConsultaTodos();
+            return Ok(generos);
+        }
+
         [HttpPost]
         public IActionResult CadastraGenero([FromBody]CriarGeneroDto generoDto)
         {
             _generoService.Cadastra(generoDto);
             return Ok();
         }
-        [HttpGet("Consulta Generos")]
-        public IActionResult ConsultaGeneros()
-        {
-            var generos = _generoService.ConsultaTodos();
-            return Ok(generos);
-        }
-    
-
-        [HttpDelete("Deleta Generos {id}")]
+        
+        [HttpDelete("DeletaGeneros/{id}")]
         public IActionResult DeletaGenero(int id)
         {
             _generoService.Excluir(id);

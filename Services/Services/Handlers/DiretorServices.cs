@@ -27,10 +27,14 @@ namespace Serviços.Services.Handlers
 
         public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(int idDiretor)
         {
-            var filmes = _filmeDao.BuscarPorId(idDiretor);
-            
-                var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
-                yield return filmesDto;
+
+            var filmes = _diretorDao.BuscaFilmesPorDiretor(idDiretor);
+            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            return filmesDto;
+            //var filmes = _filmeDao.BuscarPorId(idDiretor);
+
+            //    var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
+            //    yield return filmesDto;
         }
 
         public IEnumerable<LerDiretorDto> ConsultaTodos()

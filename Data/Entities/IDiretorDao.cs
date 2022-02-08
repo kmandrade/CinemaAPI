@@ -9,6 +9,6 @@ namespace Data.Entities
 {
     public interface IDiretorDao :IRepository<Diretor>
     {
-        
+        IEnumerable<Filme> BuscaFilmesPorDiretor(int idDiretor);
     }
 }

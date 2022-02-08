@@ -10,10 +10,9 @@ namespace Domain.Dtos.AtorDto
 {
     public class LerAtorDto
     {
-        [Key]
-        [Required]
+        
         public int IdAtor { get; set; }
-        [Required]
+        
         public string NomeAtor { get; set; }
 
 

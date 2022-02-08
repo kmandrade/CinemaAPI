@@ -16,26 +16,26 @@ namespace Cinema.Api.Controllers
         {
             _atorFilmeService = atorFilmeService;
         }
-
-       
-        [HttpPost("Adiciona AtorFilme")]
-        public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
-        {
-            _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
-            return Ok();
-        }
         [HttpGet("LerFilmesPorAtor")]
-        public IActionResult LerFilmesPorAtor([FromQuery]int idAtorFilme)
+        public IActionResult LerFilmesPorAtor([FromQuery] int idAtorFilme)
         {
             var filmes = _atorFilmeService.BuscaFilmesPorAtor(idAtorFilme);
             return Ok(filmes);
         }
-        [HttpGet("Busca Todos")]
+        [HttpGet("BuscaTodos")]
         public IActionResult BuscaTodosAtoresFilmes()
         {
             var at = _atorFilmeService.BuscaTodosAtoresFilmes();
             return Ok(at);
         }
+
+        [HttpPost("AdicionaAtorFilme")]
+        public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
+        {
+            _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
+            return Ok();
+        }
+        
 
     }
 }

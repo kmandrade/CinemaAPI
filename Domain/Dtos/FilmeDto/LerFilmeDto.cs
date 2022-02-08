@@ -1,4 +1,7 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos.AtorDto;
+using Domain.Dtos.DiretorDto;
+using Domain.Dtos.GeneroDto;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,17 +20,14 @@ namespace Domain.Dtos.FilmeDto
         public string Titulo { get; set; }
         public int Duracao { get; set; }
 
-        public virtual Diretor Diretor { get; set; }
-        public int DiretorId { get; set; }
+        public  LerDiretorDto Diretor { get; set; }
+    
+        public  List<LerAtorDto> Atores { get; set; }
+
+        public  List<LerGeneroDto> Generos { get; set; }
 
 
-        public virtual List<AtoresFilme> AtoresFilme { get; set; }
-
-
-        public virtual List<GeneroFilme> GenerosFilme { get; set; }
-
-
-        public virtual IEnumerable<Votos> ?Votos { get; set; }
+       // public virtual IEnumerable<Votos> Votos { get; set; }
 
         public SituacaoFilme Situacao { get; set; }
     }

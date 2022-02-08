@@ -14,17 +14,10 @@ namespace Cinema.Api.Controllers
         {
             _diretorService = diretorService;
         }
-
-        [HttpPost]
-        public IActionResult CadastraDiretor([FromBody]CriarDiretorDto criarDiretorDto)
-        {
-            _diretorService.Cadastra(criarDiretorDto);
-            return Ok();
-        }
         [HttpGet("BuscaFilmesPorDiretor")]
-        public IActionResult BuscaFilmesPorDiretor([FromQuery]  int iDdiretor)
+        public IActionResult BuscaFilmesPorDiretor([FromQuery] int iDdiretor)
         {
-           var filmes = _diretorService.lerFilmeDtosPorDiretor(iDdiretor);
+            var filmes = _diretorService.lerFilmeDtosPorDiretor(iDdiretor);
             if (filmes != null)
             {
                 return Ok(filmes);
@@ -34,9 +27,9 @@ namespace Cinema.Api.Controllers
         [HttpGet("BuscaTodosDiretores")]
         public IActionResult BuscaDiretores()
         {
-            var diretores= _diretorService.ConsultaTodos();
+            var diretores = _diretorService.ConsultaTodos();
 
-            if(diretores != null)
+            if (diretores != null)
             {
                 return Ok(diretores);
             }
@@ -47,11 +40,17 @@ namespace Cinema.Api.Controllers
         {
             var diretor = _diretorService.ConsultaPorId(idDiretor);
 
-            if(diretor != null)
+            if (diretor != null)
             {
                 return Ok(diretor);
             }
             return NotFound();
+        }
+        [HttpPost]
+        public IActionResult CadastraDiretor([FromBody]CriarDiretorDto criarDiretorDto)
+        {
+            _diretorService.Cadastra(criarDiretorDto);
+            return Ok();
         }
         [HttpDelete("{id}")]
         public IActionResult RemoveDiretor(int id)

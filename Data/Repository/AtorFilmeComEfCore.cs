@@ -14,19 +14,24 @@ namespace Data.Repository
     {
         private readonly DbSet<AtoresFilme> _dbset;
         private readonly DbSet<Filme> _dbsetFilme;
+        
         public AtorFilmeComEfCore(MyContext _context):base(_context)
         {
             _dbset = _context.Set<AtoresFilme>();
             _dbsetFilme=_context.Set<Filme>();
         }
 
-        public Filme BuscarFilmesPorAtor(int IdAtorFilme)
+        public  IEnumerable<AtoresFilme> BuscarFilmesPorAtor(int IdAtorFilme)
         {
-           var filme = _dbsetFilme
-                .Include(f=>f.AtoresFilme)
-                .FirstOrDefault(a=>a.IdFilme==IdAtorFilme);
-             return filme;
+            var filmes = _context.Filmes
+                 .Include(at => at.AtoresFilme)
+                 .ThenInclude(a => a.Ator)
+                   .FirstOrDefault();
 
+            foreach (var item in filmes.AtoresFilme)
+            {
+                yield return item;
+            }
         }
     }
 }
