@@ -16,12 +16,7 @@ namespace Cinema.Api.Controllers
         }
 
 
-        [HttpGet("BuscaTodosGenerosFilmes")]
-        public IActionResult BuscaTodosGenerosFilmes()
-        {
-            var gf = _generoFilmeService.BuscaTodosGenerosFilmes();
-            return Ok(gf);
-        }
+        
         [HttpGet("BuscaFilmesPorGenero")]
         public IActionResult BuscarFilmesPorGenero([FromQuery] int iDGenero)
         {
@@ -29,7 +24,7 @@ namespace Cinema.Api.Controllers
             return Ok(gf);
         }
 
-        [HttpPost("AdicionaGeneroFilme")]
+        [HttpPost("AdicionaGeneroEmFilme")]
         public IActionResult AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
             _generoFilmeService.AdicionaGeneroFilme(criarGeneroFilmeDto);

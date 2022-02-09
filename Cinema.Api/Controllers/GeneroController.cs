@@ -15,7 +15,7 @@ namespace Cinema.Api.Controllers
             _generoService = generoService;
         }
 
-        [HttpGet("ConsultaGeneros")]
+        [HttpGet("ConsultaTodosGeneros")]
         public IActionResult ConsultaGeneros()
         {
             var generos = _generoService.ConsultaTodos();
@@ -29,7 +29,7 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
         
-        [HttpDelete("DeletaGeneros/{id}")]
+        [HttpDelete("DeletaGenero/{id}")]
         public IActionResult DeletaGenero(int id)
         {
             _generoService.Excluir(id);

@@ -15,13 +15,13 @@ namespace Serviços.Services.Handlers
     public class AtorFilmeServices:IAtorFilmeService
     {
         IAtorFilme _atorfilme;
-        IFilmeDao _filmeDao;
+        
         private readonly IMapper _mapper;
 
-        public AtorFilmeServices(IMapper mapper, IFilmeDao filmeDao, IAtorFilme atorfilme)
+        public AtorFilmeServices(IMapper mapper, IAtorFilme atorfilme)
         {
             _mapper = mapper;
-            _filmeDao = filmeDao;
+            
             _atorfilme = atorfilme;
         }
 
@@ -38,12 +38,11 @@ namespace Serviços.Services.Handlers
             var atfDto = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atf);
             return atfDto;
         }
-        
-        public IEnumerable<LerAtorFilmeDto> BuscaTodosAtoresFilmes()
+
+        public void DeletaAtorDoFilme(int idAtor)
         {
-            var atoresFilmes = _atorfilme.BuscarTodos();
-            var dtoAt = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atoresFilmes);
-            return dtoAt;
+            var selecionarAtorDoFilme = _atorfilme.BuscaAtorDoFilme(idAtor);
+            _atorfilme.Excluir(selecionarAtorDoFilme);
 
         }
     }

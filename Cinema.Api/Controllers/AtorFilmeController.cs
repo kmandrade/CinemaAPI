@@ -23,10 +23,16 @@ namespace Cinema.Api.Controllers
             return Ok(filmes);
         }
 
-        [HttpPost("AdicionaAtorFilme")]
+        [HttpPost("AdicionaAtorEmFilme")]
         public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
             _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
+            return Ok();
+        }
+        [HttpDelete("DeletaAtorDoFilme/{id}")]
+        public IActionResult DeletaAtorDoFilme(int id)
+        {
+            _atorFilmeService.DeletaAtorDoFilme(id);
             return Ok();
         }
         

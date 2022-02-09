@@ -12,19 +12,15 @@ namespace Data.Repository
 {
     public class AtorComEfCore : BaseRepository<Ator>, IAtorDao
     {
-
-        private readonly DbSet<Ator> _dbset;
-
-        public AtorComEfCore(MyContext _context):base(_context)
+        
+        private readonly DbSet<Ator> _dbSetAtor;
+        private readonly DbSet<AtoresFilme> _dbSetAtoresFilme;
+        public AtorComEfCore(MyContext _context) : base(_context)
         {
-            _dbset = _context.Set<Ator>();
+            _dbSetAtor = _context.Set<Ator>();
+            _dbSetAtoresFilme = _context.Set<AtoresFilme>();
+           
         }
-
-        //public Ator BuscarPorNome(string nome)
-        //{
-        //    var _ator = _context.Atores.Where(a => a.NomeAtor == nome);
-        //    return _ator.FirstOrDefault();
-        //}
 
     }
 }

@@ -29,14 +29,19 @@ namespace Data.Repository
                 .Include(a => a.Ator)
                 .Include(f => f.Filme)
                 .ThenInclude(d=>d.Diretor)
-                .Where(atf => atf.IdAtor == IdAtorFilme).ToList();
+                .Where(atf => atf.IdAtor == IdAtorFilme)
+                .ToList();
             return queryFilmes;
-           
-             
-                
-                
-               
-                
+         
+        }
+        public AtoresFilme BuscaAtorDoFilme(int idAtor)
+        {
+            var query = _context.AtoresFilmes
+                .Include(a => a.Ator)
+                .Include(f => f.Filme)
+                .FirstOrDefault(at=>at.IdAtor==idAtor);
+            //aqui eue tenho o primeiro AtorFilme que possua o mesmo IdAtor
+            return query;
         }
     }
 }

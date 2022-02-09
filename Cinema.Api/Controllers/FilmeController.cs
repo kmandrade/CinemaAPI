@@ -49,7 +49,7 @@ namespace Cinema.Api.Controllers
             return NotFound();
         }
 
-        [HttpPost("CadastraFilme")]
+        [HttpPost("CadastraUmFilme")]
         public IActionResult CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
         {
             _filmeService.Cadastra(criarFilmeDto);
@@ -60,9 +60,9 @@ namespace Cinema.Api.Controllers
         public IActionResult DeletaUmFilme([FromQuery] int idFilme)
         {
             _filmeService.Excluir(idFilme);
-            return NoContent();
+            return Ok();
         }
-        [HttpPut("Arquiva Um Filme{id}")]
+        [HttpPut("ArquivaUmFilme{id}")]
         public IActionResult ArquivarFilme(int id)
         {
             _filmeService.ArquivarFilme(id);

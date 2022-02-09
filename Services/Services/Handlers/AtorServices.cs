@@ -15,14 +15,15 @@ namespace Serviços.Services.Handlers
 {
     public class AtorServices : IAtorService
     {
-        IFilmeDao _filmeDao;
+        
         IAtorDao _atorDao;
+
         private readonly IMapper _mapper;
-        public AtorServices(IAtorDao atorDao, IMapper mapper, IFilmeDao filmeDao)
+        public AtorServices(IAtorDao atorDao, IMapper mapper)
         {
             _atorDao = atorDao;
             _mapper = mapper;
-            _filmeDao = filmeDao;
+            
         }
 
 
@@ -38,14 +39,6 @@ namespace Serviços.Services.Handlers
             var atores = _atorDao.BuscarTodos();
             var atoresDto = _mapper.Map<IEnumerable<LerAtorDto>>(atores);
             return atoresDto;
-        }
-
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorAtor(int  iDAtor)
-        {
-            var filmes = _filmeDao.BuscarPorId(iDAtor);
-
-            var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
-            yield return filmesDto;
         }
 
         public Result Cadastra(CriarAtorDto obj)
@@ -79,5 +72,7 @@ namespace Serviços.Services.Handlers
                 _atorDao.Excluir(atorSelecionado);
             }
         }
+
+    
     }
 }
