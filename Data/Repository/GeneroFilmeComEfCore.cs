@@ -30,5 +30,16 @@ namespace Data.Repository
             .Where(gf => gf.IdGenero == IdGeneroFilme).ToList();
             return queryFilmes;
         }
+
+        public GeneroFilme BuscaGeneroDoFilme(int idGenero)
+        {
+            var query =_context.GenerosFilmes
+                .Include(f => f.Filme)
+                .Include(g=>g.Genero)
+                .FirstOrDefault(gf=>gf.IdGenero==idGenero);
+            //pegar o primeiro GeneroFilme
+            //que possua IdGenero da Entidade igual do parametro
+            return query;
+        }
     }
 }

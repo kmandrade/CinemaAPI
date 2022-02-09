@@ -22,6 +22,7 @@ namespace Cinema.Api.Controllers
             var filmes = _atorFilmeService.BuscaFilmesPorAtor(idAtor);
             return Ok(filmes);
         }
+       
 
         [HttpPost("AdicionaAtorEmFilme")]
         public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
@@ -29,10 +30,10 @@ namespace Cinema.Api.Controllers
             _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
             return Ok();
         }
-        [HttpDelete("DeletaAtorDoFilme/{id}")]
-        public IActionResult DeletaAtorDoFilme(int id)
+        [HttpDelete("DeletaAtorDoFilme")]
+        public IActionResult DeletaAtorDoFilme([FromQuery] int idAtor,int idFilme)
         {
-            _atorFilmeService.DeletaAtorDoFilme(id);
+            _atorFilmeService.DeletaAtorDoFilme(idAtor,idFilme);
             return Ok();
         }
         

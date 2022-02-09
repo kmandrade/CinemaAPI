@@ -15,13 +15,13 @@ namespace Serviços.Services.Handlers
     public class GeneroFilmeServices:IGeneroFilmeService
     {
         IGeneroFilme _generofilme;
-        IFilmeDao _filmeDao;
+        
         private readonly IMapper _mapper;
 
-        public GeneroFilmeServices(IMapper mapper, IFilmeDao filmeDao, IGeneroFilme generofilme)
+        public GeneroFilmeServices(IMapper mapper, IGeneroFilme generofilme)
         {
             _mapper = mapper;
-            _filmeDao = filmeDao;
+            
             _generofilme = generofilme;
         }
 
@@ -39,11 +39,10 @@ namespace Serviços.Services.Handlers
 
         }
 
-        public IEnumerable<LerGeneroFilmeDto> BuscaTodosGenerosFilmes()
+        public void DeletaGeneroDoFilme(int idGenero)
         {
-            var gf = _generofilme.BuscarTodos();
-            var dto = _mapper.Map<IEnumerable<LerGeneroFilmeDto>>(gf);
-            return dto;
+            var selecionarGeneroDoFilme = _generofilme.BuscaGeneroDoFilme(idGenero);
+            _generofilme.Excluir(selecionarGeneroDoFilme);
         }
     }
 }

@@ -39,11 +39,12 @@ namespace Serviços.Services.Handlers
             return atfDto;
         }
 
-        public void DeletaAtorDoFilme(int idAtor)
+        public void DeletaAtorDoFilme(int idAtor,int idFilme)
         {
-            var selecionarAtorDoFilme = _atorfilme.BuscaAtorDoFilme(idAtor);
+            var selecionarAtorDoFilme = _atorfilme.BuscaAtorDoFilme(idAtor,idFilme);
             _atorfilme.Excluir(selecionarAtorDoFilme);
-
         }
+
+        
     }
 }

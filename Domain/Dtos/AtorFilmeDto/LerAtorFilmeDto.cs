@@ -11,7 +11,7 @@ namespace Domain.Dtos.AtorFilme
 {
     public class LerAtorFilmeDto
     {
-        public int Id { get; set; }
+        public int IdAtorFilmeDto { get; set; }
         public LerAtorDto Ator { get; set; }
         public LerFilmeDto Filme { get; set; }
     }

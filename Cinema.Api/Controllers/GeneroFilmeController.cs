@@ -16,7 +16,6 @@ namespace Cinema.Api.Controllers
         }
 
 
-        
         [HttpGet("BuscaFilmesPorGenero")]
         public IActionResult BuscarFilmesPorGenero([FromQuery] int iDGenero)
         {
@@ -28,6 +27,12 @@ namespace Cinema.Api.Controllers
         public IActionResult AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
             _generoFilmeService.AdicionaGeneroFilme(criarGeneroFilmeDto);
+            return Ok();
+        }
+        [HttpDelete("DeletaGeneroDoFilme/{id}")]
+        public IActionResult DeletaGeneroDoFilme(int id)
+        {
+            _generoFilmeService.DeletaGeneroDoFilme(id);
             return Ok();
         }
         

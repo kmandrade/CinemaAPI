@@ -34,14 +34,19 @@ namespace Data.Repository
             return queryFilmes;
          
         }
-        public AtoresFilme BuscaAtorDoFilme(int idAtor)
+        public AtoresFilme BuscaAtorDoFilme(int idAtor, int idFilme)
         {
-            var query = _context.AtoresFilmes
+            var selecionaAtorFilme = _context.AtoresFilmes
                 .Include(a => a.Ator)
                 .Include(f => f.Filme)
-                .FirstOrDefault(at=>at.IdAtor==idAtor);
-            //aqui eue tenho o primeiro AtorFilme que possua o mesmo IdAtor
-            return query;
+                .Where(at => at.IdAtor == idAtor && at.IdFilme == idFilme)
+                .First();
+            return selecionaAtorFilme;
+                
+                
+
+                
+           
         }
     }
 }
