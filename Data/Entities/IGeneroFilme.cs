@@ -10,6 +10,6 @@ namespace Data.Entities
     public interface IGeneroFilme : IRepository<GeneroFilme>
     {
         IEnumerable<GeneroFilme> BuscaFilmesPorGenero(int IdGeneroFilme);
-        GeneroFilme BuscaGeneroDoFilme(int idGenero);
+        GeneroFilme BuscaGeneroDoFilme(int idGenero, int idFilme);
     }
 }

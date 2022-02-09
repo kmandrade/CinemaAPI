@@ -8,7 +8,7 @@ namespace Domain.Models
 {
     public class GeneroFilme
     {
-        public int Id { get; set; }
+        public int IdGeneroFilme { get; set; }
 
         public Filme Filme { get; set; }
         public int IdFilme { get; set; }

@@ -39,9 +39,9 @@ namespace Serviços.Services.Handlers
 
         }
 
-        public void DeletaGeneroDoFilme(int idGenero)
+        public void DeletaGeneroDoFilme(int idGenero, int idFilme)
         {
-            var selecionarGeneroDoFilme = _generofilme.BuscaGeneroDoFilme(idGenero);
+            var selecionarGeneroDoFilme = _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
             _generofilme.Excluir(selecionarGeneroDoFilme);
         }
     }

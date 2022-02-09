@@ -31,14 +31,13 @@ namespace Data.Repository
             return queryFilmes;
         }
 
-        public GeneroFilme BuscaGeneroDoFilme(int idGenero)
+        public GeneroFilme BuscaGeneroDoFilme(int idGenero,int idFilme)
         {
-            var query =_context.GenerosFilmes
+            var query = _context.GenerosFilmes
+                .Include(g => g.Genero)
                 .Include(f => f.Filme)
-                .Include(g=>g.Genero)
-                .FirstOrDefault(gf=>gf.IdGenero==idGenero);
-            //pegar o primeiro GeneroFilme
-            //que possua IdGenero da Entidade igual do parametro
+                .Where(gf => gf.IdGenero == idGenero && gf.IdFilme == idFilme)
+                .First();
             return query;
         }
     }

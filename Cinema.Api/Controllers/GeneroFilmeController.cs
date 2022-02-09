@@ -29,10 +29,10 @@ namespace Cinema.Api.Controllers
             _generoFilmeService.AdicionaGeneroFilme(criarGeneroFilmeDto);
             return Ok();
         }
-        [HttpDelete("DeletaGeneroDoFilme/{id}")]
-        public IActionResult DeletaGeneroDoFilme(int id)
+        [HttpDelete("DeletaGeneroDoFilme")]
+        public IActionResult DeletaGeneroDoFilme([FromQuery] int idGenero,int idFilme)
         {
-            _generoFilmeService.DeletaGeneroDoFilme(id);
+            _generoFilmeService.DeletaGeneroDoFilme(idGenero,idFilme);
             return Ok();
         }
         
