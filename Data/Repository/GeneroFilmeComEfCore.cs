@@ -13,20 +13,22 @@ namespace Data.Repository
     public class GeneroFilmeComEfCore : BaseRepository<GeneroFilme>, IGeneroFilme
     {
         private readonly DbSet<GeneroFilme> _dbset;
-        private readonly DbSet<Filme> _dbsetFilme;
+        
 
         public GeneroFilmeComEfCore(MyContext _context) : base(_context)
         {
             _dbset = _context.Set<GeneroFilme>();
-            _dbsetFilme = _context.Set<Filme>();
+            
         }
 
-        public IEnumerable<Filme> BuscaFilmesPorGenero(int IdGeneroFilme)
+        public IEnumerable<GeneroFilme> BuscaFilmesPorGenero(int IdGeneroFilme)
         {
-            var filmes=_dbsetFilme
-                .Include(f=>f.GenerosFilme)
-                .First(g=>g.IdFilme==IdGeneroFilme);
-            yield return filmes;
+            var queryFilmes = _context.GenerosFilmes
+            .Include(g => g.Genero)
+            .Include(f => f.Filme)
+            .ThenInclude(d => d.Diretor)
+            .Where(gf => gf.IdGenero == IdGeneroFilme).ToList();
+            return queryFilmes;
         }
     }
 }

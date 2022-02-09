@@ -28,8 +28,8 @@ namespace Data.Repository
                 .Include(gf => gf.GenerosFilme)
                 .ThenInclude(g => g.Genero)
                 .Include(d => d.Diretor)
-             
                 .Where(f => f.DiretorId == idDiretor)
+                
                 .ToList();
                 
             return filmes;

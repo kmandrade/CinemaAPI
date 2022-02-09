@@ -11,7 +11,7 @@ namespace Serviços.Services.Entities
     public interface IGeneroFilmeService
     {
         void AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto);
-        IEnumerable<LerFilmeDto> BuscarFilmesPorGenero(int IdGeneroFilme);
+        IEnumerable<LerGeneroFilmeDto> BuscarFilmesPorGenero(int IdGeneroFilme);
         IEnumerable<LerGeneroFilmeDto> BuscaTodosGenerosFilmes();
     }
 }

@@ -8,7 +8,8 @@ namespace Domain.Models
 {
     public class AtoresFilme
     {
-        public int Id { get; set; }
+        
+        public int IdAtoresFilme { get; set; }
 
         public virtual Filme Filme { get; set; }
         public int IdFilme { get; set; }

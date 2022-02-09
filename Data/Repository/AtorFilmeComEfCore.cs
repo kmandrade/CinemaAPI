@@ -1,5 +1,6 @@
 ﻿using Data.Context;
 using Data.Entities;
+using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,26 +13,30 @@ namespace Data.Repository
 {
     public class AtorFilmeComEfCore : BaseRepository<AtoresFilme>, IAtorFilme
     {
-        private readonly DbSet<AtoresFilme> _dbset;
-        private readonly DbSet<Filme> _dbsetFilme;
+        private readonly DbSet<AtoresFilme> _dbsetAtorFilme;
+        
         
         public AtorFilmeComEfCore(MyContext _context):base(_context)
         {
-            _dbset = _context.Set<AtoresFilme>();
-            _dbsetFilme=_context.Set<Filme>();
+            _dbsetAtorFilme = _context.Set<AtoresFilme>();
+            
         }
 
         public  IEnumerable<AtoresFilme> BuscarFilmesPorAtor(int IdAtorFilme)
         {
-            var filmes = _context.Filmes
-                 .Include(at => at.AtoresFilme)
-                 .ThenInclude(a => a.Ator)
-                   .FirstOrDefault();
-
-            foreach (var item in filmes.AtoresFilme)
-            {
-                yield return item;
-            }
+            //sem conseguir acessar genero
+            var queryFilmes = _context.AtoresFilmes
+                .Include(a => a.Ator)
+                .Include(f => f.Filme)
+                .ThenInclude(d=>d.Diretor)
+                .Where(atf => atf.IdAtor == IdAtorFilme).ToList();
+            return queryFilmes;
+           
+             
+                
+                
+               
+                
         }
     }
 }

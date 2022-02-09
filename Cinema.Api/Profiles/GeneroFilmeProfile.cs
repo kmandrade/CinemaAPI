@@ -9,12 +9,17 @@ namespace Cinema.Api.Profiles
     {
         public GeneroFilmeProfile()
         {
-            CreateMap<GeneroFilme, LerGeneroFilmeDto>().ReverseMap();
+            CreateMap<GeneroFilme, LerGeneroFilmeDto>()
+                .ForMember(dto => dto.FilmeDto, opt => opt.MapFrom(f => f.Filme))
+                .ForMember(dto => dto.GeneroDto, opt => opt.MapFrom(g => g.Genero))
+                .ReverseMap();
             CreateMap<CriarGeneroFilmeDto, GeneroFilme>();
             CreateMap<GeneroFilme, LerGeneroDto>()
                 .ForMember(dto => dto.NomeGenero,
                 opt => opt.MapFrom(n => n.Genero.NomeGenero))
                 .ReverseMap();
+
+
                 
         }
 

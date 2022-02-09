@@ -51,6 +51,8 @@ namespace Data.Context
                 .HasOne(atf => atf.Ator)
                 .WithMany(at => at.AtoresFilme)
                 .HasForeignKey(atf => atf.IdAtor);
+            builder.Entity<AtoresFilme>()
+                .HasKey(atf=>atf.IdAtoresFilme);
             //GENEROFILME
             builder.Entity<GeneroFilme>()
                 .HasOne(gf => gf.Filme)

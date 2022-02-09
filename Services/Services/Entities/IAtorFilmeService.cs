@@ -13,7 +13,7 @@ namespace Serviços.Services.Entities
     public interface IAtorFilmeService
     {
         void AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto);
-        IEnumerable<AtoresFilme> BuscaFilmesPorAtor(int  idAtorFilme);
+        IEnumerable<LerAtorFilmeDto> BuscaFilmesPorAtor(int  idAtorFilme);
         IEnumerable<LerAtorFilmeDto> BuscaTodosAtoresFilmes();
     }
 }
