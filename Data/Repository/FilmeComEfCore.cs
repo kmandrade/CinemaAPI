@@ -27,7 +27,6 @@ namespace Data.Repository
         }
         public Filme BuscarPorFilmesCompletoID(int id)
         {
-
             var filme = _context.Filmes
                 .Include(d => d.Diretor)
                 .Include(atf=>atf.AtoresFilme)
@@ -38,9 +37,8 @@ namespace Data.Repository
             
             return filme;
                
-            
-            
         }
+
 
     }
 }

@@ -56,11 +56,18 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("DeletaUmFilme")]
-        public IActionResult DeletaUmFilme([FromQuery] int idFilme)
+        [HttpDelete("DeletaUmFilme/{id}")]
+        public IActionResult DeletaUmFilme(int id)
         {
-            _filmeService.Excluir(idFilme);
+            _filmeService.Excluir(id);
             return Ok();
+        }
+       
+        [HttpPut("AlteraUmFilme")]
+        public IActionResult AlterarFilme(int id,[FromBody]AlterarFilmeDto filmeDto)
+        {
+            _filmeService.Altera(id,filmeDto);
+            return NoContent();
         }
         [HttpPut("ArquivaUmFilme{id}")]
         public IActionResult ArquivarFilme(int id)
@@ -68,14 +75,13 @@ namespace Cinema.Api.Controllers
             _filmeService.ArquivarFilme(id);
             return NoContent();
         }
-
-        [HttpPut("AlteraUmFilme")]
-        public IActionResult AlterarFilme(int id,[FromBody]AlterarFilmeDto filmeDto)
+        [HttpPut("ReativarFilme{id}")]
+        public IActionResult ReativarFilme(int id)
         {
-            _filmeService.Altera(id,filmeDto);
-            return NoContent();
+            _filmeService.ReativarFilme(id);
+            return Ok();
         }
-        
+
 
     }
 }

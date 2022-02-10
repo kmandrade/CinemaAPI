@@ -18,7 +18,7 @@ namespace Serviços.Services.Entities
         LerAtorDto ConsultaPorId(int id);
 
         Result Cadastra(CriarAtorDto obj);
-        void Altera(int id,AlterarAtorDto obj);
+        Result Altera(int id,AlterarAtorDto obj);
         void Excluir(int id);
 
 

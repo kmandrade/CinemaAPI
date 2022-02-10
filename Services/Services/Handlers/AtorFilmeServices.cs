@@ -25,12 +25,7 @@ namespace Serviços.Services.Handlers
             _atorfilme = atorfilme;
         }
 
-        public void AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
-        {
-            var atorFilme = _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
-            _atorfilme.Incluir(atorFilme);
-            
-        }
+        
 
         public IEnumerable<LerAtorFilmeDto> BuscaFilmesPorAtor(int idAtorFilme)
         {
@@ -38,6 +33,14 @@ namespace Serviços.Services.Handlers
             var atfDto = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atf);
             return atfDto;
         }
+
+        public void AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
+        {
+            var atorFilme = _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
+            _atorfilme.Incluir(atorFilme);
+
+        }
+
 
         public void DeletaAtorDoFilme(int idAtor,int idFilme)
         {

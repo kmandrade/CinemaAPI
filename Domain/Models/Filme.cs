@@ -33,10 +33,6 @@ namespace Domain.Models
         public virtual List<GeneroFilme> GenerosFilme { get; set; }
 
         
-        
-
-
-        
         [Range (1,4,ErrorMessage ="O Voto so pode ser de 1 como ruim a 4 como otimo")]
         public virtual IEnumerable<Votos> Votos { get; set; }
 

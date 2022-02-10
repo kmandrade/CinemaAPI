@@ -20,7 +20,7 @@ namespace Domain.Dtos.FilmeDto
         public string Titulo { get; set; }
         public int Duracao { get; set; }
 
-        public LerDiretorDto Diretor { get; set; }
+        public LerDiretorDto DiretorDto { get; set; }
         //passei para o automapper FilmeProfile que 
         //O meu LerFilmeDto que tem como atributo LerAtorDto
         // esse atributo (LerAtorDto) seria mapeado para a entidade de Filme

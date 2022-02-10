@@ -16,7 +16,8 @@ namespace Data.Entities
         void Incluir(T obj);
         void Alterar(T obj);
         void Excluir(T obj);
+        public void Save();
 
-        
+
     }
 }

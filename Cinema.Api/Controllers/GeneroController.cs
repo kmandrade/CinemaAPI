@@ -28,6 +28,14 @@ namespace Cinema.Api.Controllers
             _generoService.Cadastra(generoDto);
             return Ok();
         }
+
+        [HttpPut("AlteraNomeGenero/{id}")]
+        public IActionResult AlteraNomeGenero(int id, AlterarGeneroDto obj)
+        {
+            _generoService.Altera(id, obj);
+            return Ok();
+        }
+
         
         [HttpDelete("DeletaGenero/{id}")]
         public IActionResult DeletaGenero(int id)

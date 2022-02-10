@@ -29,6 +29,14 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
     
+        [HttpPut("AlteraNomeAtor/{id}")]
+        public IActionResult AlteraNomeAtor(int id, AlterarAtorDto obj)
+        {
+            _atorService.Altera(id, obj);
+            return Ok();
+        }
+
+
         [HttpDelete("DeletaAtor/{id}")]
         public IActionResult DeletaAtor(int id)
         {

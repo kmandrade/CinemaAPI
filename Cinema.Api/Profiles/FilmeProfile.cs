@@ -14,12 +14,16 @@ namespace Domain.Profiles
         public FilmeProfile()
         {
             CreateMap<Filme, LerFilmeDto>()
-                .ForMember(dto=>dto.AtoresDto , opt=>opt.MapFrom(f=>f.AtoresFilme))
-                .ForMember(dto=>dto.GenerosDto, opt=>opt.MapFrom(f=>f.GenerosFilme))
+                .ForMember(dto => dto.AtoresDto, opt => opt.MapFrom(f => f.AtoresFilme))
+                .ForMember(dto => dto.GenerosDto, opt => opt.MapFrom(f => f.GenerosFilme))
+                .ForMember(dto => dto.DiretorDto, opt => opt.MapFrom(f => f.Diretor))
                 .ReverseMap();
             CreateMap<CriarFilmeDto, Filme>();
-            CreateMap<AlterarFilmeDto, Filme>();
-            
+            CreateMap<AlterarFilmeDto, Filme>()
+                .ForMember(dto => dto.Titulo, opt => opt.MapFrom(f => f.Titulo))
+                .ForMember(dto => dto.Duracao, opt => opt.MapFrom(f => f.Duracao));
+                
+                
         }
     }
 }

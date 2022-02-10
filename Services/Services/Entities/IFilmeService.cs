@@ -17,10 +17,11 @@ namespace Domain.Services.Entities
 
         LerFilmeDto BuscarFilmeCompleto(int id);
         Result Cadastra(CriarFilmeDto obj);
-        void Altera(int id, AlterarFilmeDto obj);
+        Result Altera(int id, AlterarFilmeDto obj);
         void Excluir(int id);
 
         void ArquivarFilme(int id);
+        void ReativarFilme(int id);
 
     }
 }

@@ -43,10 +43,6 @@ namespace Data.Repository
                 .First();
             return selecionaAtorFilme;
                 
-                
-
-                
-           
         }
     }
 }

@@ -53,15 +53,17 @@ namespace Serviços.Services.Handlers
             return Result.Ok();
         }
 
-        public void Altera(int id, AlterarAtorDto obj)
+        public Result Altera(int id, AlterarAtorDto obj)
         {
             var atorSelecionado = _atorDao.BuscarPorId(id);
-            if (atorSelecionado != null)
+            if (atorSelecionado == null)
             {
-                var atorMapeado = _mapper.Map<Ator>(obj);
-                _atorDao.Alterar(atorMapeado);
+                return Result.Fail("Filme nao existe");
             }
-            
+            _mapper.Map(obj, atorSelecionado);
+            _atorDao.Save();
+            return Result.Ok();
+
         }
 
         public void Excluir(int id)

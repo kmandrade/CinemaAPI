@@ -14,7 +14,6 @@ namespace Serviços.Services.Entities
     {
         
         IEnumerable<LerAtorFilmeDto> BuscaFilmesPorAtor(int  idAtorFilme);
-        
         void AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto);
         void DeletaAtorDoFilme(int idAtor,int idFilme);
        

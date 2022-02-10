@@ -62,6 +62,9 @@ namespace Data.Context
                 .HasOne(gf=>gf.Genero)
                 .WithMany(gen=>gen.GeneroFilmes)
                 .HasForeignKey(gf=>gf.IdGenero);
+            builder.Entity<GeneroFilme>()
+                .HasKey(gf=>gf.IdGeneroFilme);
+
 
 
             //builder.Entity<Filme>()

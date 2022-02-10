@@ -9,5 +9,6 @@ namespace Data.Entities
        
         Filme BuscarPorNome(string nome);
         Filme BuscarPorFilmesCompletoID(int id);
+        
     }
 }

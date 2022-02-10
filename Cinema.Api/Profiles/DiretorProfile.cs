@@ -8,7 +8,9 @@ namespace Cinema.Api.Profiles
     {
         public DiretorProfile()
         {
-            CreateMap<Diretor, LerDiretorDto>().ReverseMap();
+            CreateMap<Diretor, LerDiretorDto>()
+                .ForMember(dto=>dto.NomeDiretor, opt=>opt.MapFrom(d=>d.NomeDiretor))
+                .ReverseMap();
             CreateMap<CriarDiretorDto, Diretor>();
             CreateMap<AlterarDiretorDto, Diretor>();
         }

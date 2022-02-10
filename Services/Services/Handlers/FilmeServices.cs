@@ -36,23 +36,28 @@ namespace Data.Services.Handlers
         public IEnumerable<LerFilmeDto> ConsultaTodos()
         {
             var listadeFilmes = _filmeDao.BuscarTodos();
-            var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(listadeFilmes);
-            
-            return filmesDtos.OrderBy(nome => nome.Titulo);//orderby ja é um enumerable
+            var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoFilme.Ativado);
+            var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesAtivos);
+            return filmesDtos.OrderBy(nome => nome.Titulo);
         }
 
         public LerFilmeDto ConsultaPorId(int id)
         {
-            var filme = _filmeDao.BuscarPorId(id);
+                var filme = _filmeDao.BuscarPorId(id);
+                if (filme==null || filme.Situacao == SituacaoFilme.Arquivado)
+                {
+                    return null;
+                }
                 var filmeDto = _mapper.Map<LerFilmeDto>(filme);
-
-            return filmeDto;
-            
-
+                return filmeDto;
         }
         public LerFilmeDto BuscarFilmeCompleto(int id)
         {
             var filme = _filmeDao.BuscarPorFilmesCompletoID(id);
+            if (filme == null || filme.Situacao == SituacaoFilme.Arquivado)
+            {
+                return null;
+            }
             var filmeMapeado = _mapper.Map<LerFilmeDto>(filme);
             return filmeMapeado;
         }
@@ -70,14 +75,16 @@ namespace Data.Services.Handlers
             return Result.Ok();
         }
 
-        public void Altera(int id, AlterarFilmeDto obj)
+        public Result Altera(int id, AlterarFilmeDto obj)
         {
             var filmeSelecionado = _filmeDao.BuscarPorId(id);
-            if (filmeSelecionado != null)
+            if (filmeSelecionado == null)
             {
-                var filmeMapeado = _mapper.Map<Filme>(obj);
-                _filmeDao.Alterar(filmeMapeado);
+                return Result.Fail("Filme não existe");
             }
+            _mapper.Map(obj, filmeSelecionado);
+            _filmeDao.Save();
+            return Result.Ok();
 
         }
 
@@ -93,10 +100,17 @@ namespace Data.Services.Handlers
         public void ArquivarFilme(int id)
         {
             var filmeSelecionado = _filmeDao.BuscarPorId(id);
-            
+
             filmeSelecionado.Situacao = SituacaoFilme.Arquivado;
+            _filmeDao.Alterar(filmeSelecionado);
             //salvar o dao _filmedao.save(); error por conta que nao tem mais
 
+        }
+        public void ReativarFilme(int id)
+        {
+            var filmeSelecionado = _filmeDao.BuscarPorId(id);
+            filmeSelecionado.Situacao = SituacaoFilme.Ativado;
+            _filmeDao.Alterar(filmeSelecionado);
         }
     }
 }

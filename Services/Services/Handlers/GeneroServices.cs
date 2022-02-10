@@ -16,13 +16,13 @@ namespace Serviços.Services.Handlers
     public class GeneroServices : IGeneroService
     {
         IGeneroDao _generoDao;
-        IFilmeDao _filmeDao;
+        
         private readonly IMapper _mapper;
 
-        public GeneroServices(IMapper mapper, IFilmeDao filmeDao, IGeneroDao generoDao)
+        public GeneroServices(IMapper mapper, IGeneroDao generoDao)
         {
             _mapper = mapper;
-            _filmeDao = filmeDao;
+            
             _generoDao = generoDao;
         }
 
@@ -43,13 +43,7 @@ namespace Serviços.Services.Handlers
             return listaGenerosDto;
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorGenero(int iDgenero)
-        {
-            var filmes = _filmeDao.BuscarPorId(iDgenero);
-
-            var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
-            yield return filmesDto;
-        }
+       
 
         public Result Cadastra(CriarGeneroDto obj)
         {
@@ -63,14 +57,16 @@ namespace Serviços.Services.Handlers
             return Result.Ok();
         }
 
-        public void Altera(int id, AlterarGeneroDto obj)
+        public Result Altera(int id, AlterarGeneroDto obj)
         {
             var generoSelecionado = _generoDao.BuscarPorId(id);
-            if (generoSelecionado != null)
+            if (generoSelecionado == null)
             {
-                var generoMapeado = _mapper.Map<Genero>(obj);
-                _generoDao.Alterar(generoMapeado);
+                return Result.Fail("Genero nao Existe");
             }
+            _mapper.Map(obj,generoSelecionado);
+            _generoDao.Save();
+            return Result.Ok();
         }
 
         public void Excluir(int id)
