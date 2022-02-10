@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220208165651_addChaveAtorFilme")]
-    partial class addChaveAtorFilme
+    [Migration("20220210162449_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -127,11 +127,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Models.GeneroFilme", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdGeneroFilme")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdGeneroFilme"), 1L, 1);
 
                     b.Property<int>("IdFilme")
                         .HasColumnType("int");
@@ -139,13 +139,51 @@ namespace Data.Migrations
                     b.Property<int>("IdGenero")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdGeneroFilme");
 
                     b.HasIndex("IdFilme");
 
                     b.HasIndex("IdGenero");
 
                     b.ToTable("GenerosFilmes");
+                });
+
+            modelBuilder.Entity("Domain.Models.Usuario", b =>
+                {
+                    b.Property<int>("IdUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"), 1L, 1);
+
+                    b.Property<int>("CargoUsuario")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdUsuario");
+
+                    b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            IdUsuario = 1,
+                            CargoUsuario = 1,
+                            Email = "",
+                            NomeUsuario = "admin",
+                            Password = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Votos", b =>
@@ -159,12 +197,17 @@ namespace Data.Migrations
                     b.Property<int>("IdFilme")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.Property<int>("ValorDoVoto")
                         .HasColumnType("int");
 
                     b.HasKey("IdVotos");
 
                     b.HasIndex("IdFilme");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("Votos");
                 });
@@ -226,7 +269,15 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.Usuario", "Usuario")
+                        .WithMany("Votos")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Filme");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Domain.Models.Ator", b =>
@@ -251,6 +302,11 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Models.Genero", b =>
                 {
                     b.Navigation("GeneroFilmes");
+                });
+
+            modelBuilder.Entity("Domain.Models.Usuario", b =>
+                {
+                    b.Navigation("Votos");
                 });
 #pragma warning restore 612, 618
         }

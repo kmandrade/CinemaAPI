@@ -18,12 +18,12 @@ namespace Data.Repository
             _context = context;
         }
 
-        public IEnumerable<Filme> BuscaFilmesMaisVotados(int idFilme)
+        public IEnumerable<Filme> BuscaFilmesMaisVotados()
         {
             throw new NotImplementedException();
         }
 
-        public void VotarEmFilme(int idFilme)
+        public void VotarEmFilme(int idFilme, int ValorDoVoto)
         {
             throw new NotImplementedException();
         }

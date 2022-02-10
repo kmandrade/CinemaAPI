@@ -146,6 +146,44 @@ namespace Data.Migrations
                     b.ToTable("GenerosFilmes");
                 });
 
+            modelBuilder.Entity("Domain.Models.Usuario", b =>
+                {
+                    b.Property<int>("IdUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"), 1L, 1);
+
+                    b.Property<int>("CargoUsuario")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdUsuario");
+
+                    b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            IdUsuario = 1,
+                            CargoUsuario = 1,
+                            Email = "",
+                            NomeUsuario = "admin",
+                            Password = "admin"
+                        });
+                });
+
             modelBuilder.Entity("Domain.Models.Votos", b =>
                 {
                     b.Property<int>("IdVotos")
@@ -157,12 +195,17 @@ namespace Data.Migrations
                     b.Property<int>("IdFilme")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.Property<int>("ValorDoVoto")
                         .HasColumnType("int");
 
                     b.HasKey("IdVotos");
 
                     b.HasIndex("IdFilme");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("Votos");
                 });
@@ -224,7 +267,15 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.Usuario", "Usuario")
+                        .WithMany("Votos")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Filme");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Domain.Models.Ator", b =>
@@ -249,6 +300,11 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Models.Genero", b =>
                 {
                     b.Navigation("GeneroFilmes");
+                });
+
+            modelBuilder.Entity("Domain.Models.Usuario", b =>
+                {
+                    b.Navigation("Votos");
                 });
 #pragma warning restore 612, 618
         }

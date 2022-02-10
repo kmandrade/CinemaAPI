@@ -17,20 +17,16 @@ namespace Data.Services.Handlers
     {
 
         IFilmeDao _filmeDao;
-        IAtorDao _atorDao;
-        IGeneroDao _generoDao;
-        IDiretorDao _diretorDao;
+       
         private readonly IMapper _mapper;
 
         //preciso dizer pra minha aplicação que ela deve fazer o mapeamento
         //implementar o mapeamento, interfaces e utilizar o filmedao para ter acesso ao banco pela interface
-        public FilmeServices(IFilmeDao filmeDao, IMapper mapper, IGeneroDao eneroDao, IAtorDao atorDao, IDiretorDao diretorDao)
+        public FilmeServices(IFilmeDao filmeDao, IMapper mapper)
         {
             _filmeDao = filmeDao;
             _mapper = mapper;
-            _generoDao = eneroDao;
-            _atorDao = atorDao;
-            _diretorDao = diretorDao;
+            
         }
 
         public IEnumerable<LerFilmeDto> ConsultaTodos()

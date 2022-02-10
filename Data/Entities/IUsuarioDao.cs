@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IVotosDao
+    public interface IUsuarioDao : IRepository<Usuario>
     {
-        IEnumerable<Filme> BuscaFilmesMaisVotados();
-        void VotarEmFilme(int idFilme, int ValorDoVoto);
+
     }
 }

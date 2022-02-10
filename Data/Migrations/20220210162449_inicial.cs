@@ -48,6 +48,22 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CargoUsuario = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Filmes",
                 columns: table => new
                 {
@@ -73,14 +89,14 @@ namespace Data.Migrations
                 name: "AtoresFilmes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    IdAtoresFilme = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdFilme = table.Column<int>(type: "int", nullable: false),
                     IdAtor = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AtoresFilmes", x => x.Id);
+                    table.PrimaryKey("PK_AtoresFilmes", x => x.IdAtoresFilme);
                     table.ForeignKey(
                         name: "FK_AtoresFilmes_Atores_IdAtor",
                         column: x => x.IdAtor,
@@ -99,14 +115,14 @@ namespace Data.Migrations
                 name: "GenerosFilmes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    IdGeneroFilme = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdFilme = table.Column<int>(type: "int", nullable: false),
                     IdGenero = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GenerosFilmes", x => x.Id);
+                    table.PrimaryKey("PK_GenerosFilmes", x => x.IdGeneroFilme);
                     table.ForeignKey(
                         name: "FK_GenerosFilmes_Filmes_IdFilme",
                         column: x => x.IdFilme,
@@ -128,7 +144,8 @@ namespace Data.Migrations
                     IdVotos = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ValorDoVoto = table.Column<int>(type: "int", nullable: false),
-                    IdFilme = table.Column<int>(type: "int", nullable: false)
+                    IdFilme = table.Column<int>(type: "int", nullable: false),
+                    IdUsuario = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,7 +156,18 @@ namespace Data.Migrations
                         principalTable: "Filmes",
                         principalColumn: "IdFilme",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Votos_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "IdUsuario", "CargoUsuario", "Email", "NomeUsuario", "Password" },
+                values: new object[] { 1, 1, "", "admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AtoresFilmes_IdAtor",
@@ -170,6 +198,11 @@ namespace Data.Migrations
                 name: "IX_Votos_IdFilme",
                 table: "Votos",
                 column: "IdFilme");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votos_IdUsuario",
+                table: "Votos",
+                column: "IdUsuario");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -191,6 +224,9 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Filmes");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Diretores");
