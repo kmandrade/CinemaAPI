@@ -18,7 +18,9 @@ namespace Cinema.Api.Helper
             services.AddScoped<IGeneroDao, GeneroComEfCore>();
             services.AddScoped<IGeneroFilme, GeneroFilmeComEfCore>();
             services.AddScoped<IAtorFilme, AtorFilmeComEfCore>();
-
+            services.AddScoped<IVotosDao, VotosComEfCore>();
+            services.AddScoped<IUsuarioDao, UsuarioComEfCore>();
+            
             //INTERFACES SERVICES
             services.AddScoped<IFilmeService, FilmeServices>();
             services.AddScoped<IDiretorService, DiretorServices>();
@@ -26,6 +28,8 @@ namespace Cinema.Api.Helper
             services.AddScoped<IGeneroService, GeneroServices>();
             services.AddScoped<IAtorFilmeService, AtorFilmeServices>();
             services.AddScoped<IGeneroFilmeService, GeneroFilmeServices>();
+            services.AddScoped<IVotosService, VotosServices>();
+            services.AddScoped<IUsuarioService, UsuarioServices>();
             
 
             return services;

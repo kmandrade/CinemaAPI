@@ -1,6 +1,7 @@
 ﻿using Data.Context;
 using Data.Entities;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +10,25 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class VotosComEfCore : IVotosDao
+    public class VotosComEfCore : BaseRepository<Votos>,IVotosDao
+
     {
-        private readonly MyContext _context;
+        private readonly DbSet<Votos> _dbSetVotos;
+      
 
-        public VotosComEfCore(MyContext context)
+
+        public VotosComEfCore(MyContext _context) : base(_context)
         {
-            _context = context;
+            _dbSetVotos = _context.Set<Votos>();
+            
         }
 
-        public IEnumerable<Filme> BuscaFilmesMaisVotados()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void VotarEmFilme(int idFilme, int ValorDoVoto)
+        public IEnumerable<Votos> BuscaFilmesMaisVotados()
         {
             throw new NotImplementedException();
         }
+
+
+        
     }
 }

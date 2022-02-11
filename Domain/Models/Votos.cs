@@ -8,7 +8,6 @@ namespace Domain.Models
         [Key]
         public int IdVotos { get; set; }
 
-        
         public int ValorDoVoto { get; set; }
 
         public virtual Filme Filme { get; set; }

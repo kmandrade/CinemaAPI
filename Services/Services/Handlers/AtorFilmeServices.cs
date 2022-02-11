@@ -40,8 +40,6 @@ namespace Serviços.Services.Handlers
             _atorfilme.Incluir(atorFilme);
 
         }
-
-
         public void DeletaAtorDoFilme(int idAtor,int idFilme)
         {
             var selecionarAtorDoFilme = _atorfilme.BuscaAtorDoFilme(idAtor,idFilme);

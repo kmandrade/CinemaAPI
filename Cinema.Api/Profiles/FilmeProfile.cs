@@ -17,6 +17,7 @@ namespace Domain.Profiles
                 .ForMember(dto => dto.AtoresDto, opt => opt.MapFrom(f => f.AtoresFilme))
                 .ForMember(dto => dto.GenerosDto, opt => opt.MapFrom(f => f.GenerosFilme))
                 .ForMember(dto => dto.DiretorDto, opt => opt.MapFrom(f => f.Diretor))
+                .ForMember(dto=>dto.Votos, opt=>opt.MapFrom(v=>v.Votos))
                 .ReverseMap();
             CreateMap<CriarFilmeDto, Filme>();
             CreateMap<AlterarFilmeDto, Filme>()

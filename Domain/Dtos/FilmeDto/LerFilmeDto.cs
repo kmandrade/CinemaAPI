@@ -32,7 +32,7 @@ namespace Domain.Dtos.FilmeDto
         public  List<LerGeneroDto> GenerosDto { get; set; }
 
 
-       // public virtual IEnumerable<Votos> Votos { get; set; }
+        public virtual IEnumerable<Votos> Votos { get; set; }
 
         public SituacaoFilme Situacao { get; set; }
     }
