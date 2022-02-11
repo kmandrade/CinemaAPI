@@ -11,7 +11,7 @@ namespace Domain.Dtos.VotosDto
     {
         public int ValorDoVoto { get; set; }
 
-        public LerFilmeDto LerFilmeDto { get; set; }
+        public string NomeDoFilme { get; set; }
 
         
     }

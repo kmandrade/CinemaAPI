@@ -22,6 +22,6 @@ namespace Domain.Services.Entities
 
         void ArquivarFilme(int id);
         void ReativarFilme(int id);
-
+        IEnumerable<LerFilmeDto> BuscaFilmesArquivados();
     }
 }

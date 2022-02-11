@@ -19,5 +19,11 @@ namespace Cinema.Api.Controllers
             _votosService.AdicionaVotosEmFilme(votosDto);
             return Ok();
         }
+        [HttpGet("BuscaFilmesMaisVotados")]
+        public IActionResult BuscaFilmesMaisVotados()
+        {
+            var filmes = _votosService.BuscaFilmesMaisVotados();
+            return Ok(filmes);
+        }
     }
 }

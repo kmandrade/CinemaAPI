@@ -31,6 +31,12 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
+        [HttpGet("BuscaFilmesArquivados")]
+        public IActionResult BuscaFilmesArquivados()
+        {
+           var filmesArq= _filmeService.BuscaFilmesArquivados();
+            return Ok(filmesArq);
+        }
         [HttpGet("BuscaCompleta/{id}")]
         public IActionResult BuscaCompleta(int id)
         {

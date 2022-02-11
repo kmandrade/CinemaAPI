@@ -108,5 +108,15 @@ namespace Data.Services.Handlers
             filmeSelecionado.Situacao = SituacaoFilme.Ativado;
             _filmeDao.Alterar(filmeSelecionado);
         }
+
+        public IEnumerable<LerFilmeDto> BuscaFilmesArquivados()
+        {
+            var filmes = _filmeDao.BuscarTodos()
+                .Where(f => f.Situacao == SituacaoFilme.Arquivado);
+            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            return filmesDto;
+
+
+        }
     }
 }

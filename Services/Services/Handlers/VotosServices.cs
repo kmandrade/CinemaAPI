@@ -35,5 +35,12 @@ namespace Serviços.Services.Handlers
                 _votosDao.Incluir(votos);
             }
         }
+
+        public IEnumerable<LerVotoDto> BuscaFilmesMaisVotados()
+        {
+            var filmes=_votosDao.BuscaFilmesMaisVotados();
+            var votosDto = mapper.Map<IEnumerable<LerVotoDto>>(filmes);
+            return votosDto;
+        }
     }
 }

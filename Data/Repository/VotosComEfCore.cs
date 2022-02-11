@@ -25,7 +25,10 @@ namespace Data.Repository
 
         public IEnumerable<Votos> BuscaFilmesMaisVotados()
         {
-            throw new NotImplementedException();
+            var query = _context.Votos
+                .Include(f => f.Filme);
+            return query.OrderByDescending(f => f.ValorDoVoto);
+                
         }
 
 
