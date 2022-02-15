@@ -9,6 +9,6 @@ namespace Data.Entities
 {
     public interface IUsuarioDao : IRepository<Usuario>
     {
-
+        public Usuario BuscaUsuarioPorNomeESenha(string nome,string password);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using Domain.Services.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cinema.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("controller")]
     public class FilmeController : ControllerBase
@@ -19,7 +21,7 @@ namespace Cinema.Api.Controllers
         {
             _filmeService = service;
         }
-
+        
         [HttpGet("BuscaTodosFilmes")]
         public IActionResult BuscaFilmes()
         {
@@ -54,7 +56,7 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
-
+        [Authorize(Roles ="Administrador")]
         [HttpPost("CadastraUmFilme")]
         public IActionResult CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
         {

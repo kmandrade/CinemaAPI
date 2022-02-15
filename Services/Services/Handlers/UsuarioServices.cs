@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Domain.Dtos.UsuarioDto;
-using Serviços.Services.Entities;
+using Domain.Models;
+using Servicos.Services.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Serviços.Services.Handlers
+namespace Servicos.Services.Handlers
 {
     public class UsuarioServices : IUsuarioService
     {
@@ -21,9 +22,17 @@ namespace Serviços.Services.Handlers
             _mapper = mapper;
         }
 
+        public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest)
+        {
+            var usuarioSelecionado =
+                _usuarioDao.BuscaUsuarioPorNomeESenha(loginRequest.UserName, loginRequest.Password);
+            return usuarioSelecionado;
+        }
+
         public void CriarUsuarioDto(CriarUsuarioDto criarUsuarioDto)
         {
-            
+            var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
+            _usuarioDao.Incluir(usuario);
         }
 
         public IEnumerable<LerUsuarioDto> LerTodosOsUsuarioDto()

@@ -1,7 +1,7 @@
 ﻿using Domain.Dtos.AtorFilme;
 using Microsoft.AspNetCore.Mvc;
-using Serviços.Services.Entities;
-using Serviços.Services.Handlers;
+using Servicos.Services.Entities;
+using Servicos.Services.Handlers;
 
 namespace Cinema.Api.Controllers
 {

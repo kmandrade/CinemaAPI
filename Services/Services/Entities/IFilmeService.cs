@@ -1,7 +1,7 @@
 ﻿using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using FluentResults;
-using Serviços.Services.Entities;
+using Servicos.Services.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

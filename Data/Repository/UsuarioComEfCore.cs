@@ -18,5 +18,12 @@ namespace Data.Repository
         {
             _dbSetUsuario=_context.Set<Usuario>();
         }
+
+        public Usuario BuscaUsuarioPorNomeESenha(string nome, string password)
+        {
+            var usuario=_context.Usuarios
+                .FirstOrDefault(u=>u.NomeUsuario==nome && u.Password==password);
+            return usuario;
+        }
     }
 }

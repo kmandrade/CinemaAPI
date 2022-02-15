@@ -3,14 +3,14 @@ using Data.Entities;
 using Domain.Dtos.DiretorDto;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
-using Serviços.Services.Entities;
+using Servicos.Services.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Serviços.Services.Handlers
+namespace Servicos.Services.Handlers
 {
     public class DiretorServices : IDiretorService
     {

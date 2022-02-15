@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{2FA1C6AD-86C8-4C59-8BD0-DBE00396E0AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serviços", "Services\Serviços.csproj", "{BF2D1985-02F9-42B2-B1AD-84848D0AB2DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servicos", "Services\Servicos.csproj", "{BF2D1985-02F9-42B2-B1AD-84848D0AB2DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

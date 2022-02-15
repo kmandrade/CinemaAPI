@@ -12,12 +12,12 @@ namespace Data.Context
     {
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
-            this.ChangeTracker.LazyLoadingEnabled = false;
+            this.ChangeTracker.LazyLoadingEnabled = false;  
+
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source = protech-ssc6;Initial Catalog=CinemaMDb;Trusted_Connection=true;");
-
+            optionsBuilder.UseSqlServer("Data Source = protech-ssc6;Initial Catalog=CinemaMDB;Trusted_Connection=true;");
         }
 
         public DbSet<Ator> Atores { get; set; }
@@ -32,6 +32,8 @@ namespace Data.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+            
             //DIRETOR
             builder.Entity<Filme>()
                 .HasOne(filme => filme.Diretor)
@@ -84,7 +86,6 @@ namespace Data.Context
                 .HasForeignKey(gf=>gf.IdGenero);
             builder.Entity<GeneroFilme>()
                 .HasKey(gf=>gf.IdGeneroFilme);
-
 
 
 

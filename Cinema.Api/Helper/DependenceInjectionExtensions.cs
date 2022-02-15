@@ -2,8 +2,9 @@
 using Data.Repository;
 using Data.Services.Handlers;
 using Domain.Services.Entities;
-using Serviços.Services.Entities;
-using Serviços.Services.Handlers;
+using Servicos.Services.Entities;
+using Servicos.Services.Handlers;
+using Servicos.Services.Token;
 
 namespace Cinema.Api.Helper
 {
@@ -30,7 +31,8 @@ namespace Cinema.Api.Helper
             services.AddScoped<IGeneroFilmeService, GeneroFilmeServices>();
             services.AddScoped<IVotosService, VotosServices>();
             services.AddScoped<IUsuarioService, UsuarioServices>();
-            
+            services.AddScoped<ITokenService,TokenService>();
+           
 
             return services;
         }

@@ -1,6 +1,6 @@
 ﻿using Domain.Dtos.GeneroDto;
 using Microsoft.AspNetCore.Mvc;
-using Serviços.Services.Entities;
+using Servicos.Services.Entities;
 
 namespace Cinema.Api.Controllers
 {
