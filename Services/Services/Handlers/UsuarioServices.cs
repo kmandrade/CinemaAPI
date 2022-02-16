@@ -29,7 +29,7 @@ namespace Servicos.Services.Handlers
             return usuarioSelecionado;
         }
 
-        public void CriarUsuarioDto(CriarUsuarioDto criarUsuarioDto)
+        public void CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto)
         {
             var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
             _usuarioDao.Incluir(usuario);

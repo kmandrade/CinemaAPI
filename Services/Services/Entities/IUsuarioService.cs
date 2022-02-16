@@ -11,7 +11,7 @@ namespace Servicos.Services.Entities
     public interface IUsuarioService
     {
         IEnumerable<LerUsuarioDto> LerTodosOsUsuarioDto();
-        void CriarUsuarioDto(CriarUsuarioDto criarUsuarioDto);
+        void CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto);
         Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
     }
 }

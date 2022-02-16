@@ -1,9 +1,11 @@
 ﻿using Domain.Dtos.DiretorDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Servicos.Services.Entities;
 
 namespace Cinema.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class DiretorController : ControllerBase
@@ -46,12 +48,14 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public IActionResult CadastraDiretor([FromBody]CriarDiretorDto criarDiretorDto)
         {
             _diretorService.Cadastra(criarDiretorDto);
             return Ok();
         }
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public IActionResult RemoveDiretor(int id)
         {
@@ -59,6 +63,7 @@ namespace Cinema.Api.Controllers
             return NoContent(); 
             
         }
+        [Authorize(Roles = "Administrador")]
         [HttpPut("{id}")]
         public IActionResult ModificaDiretor( int id, [FromBody] AlterarDiretorDto diretor)
         {

@@ -13,25 +13,28 @@ namespace Servicos.Services.Handlers
 {
     public class VotosServices : IVotosService
     {
+        
         IVotosDao _votosDao;
         IFilmeDao _filmeDao;
         IUsuarioDao _usuarioDao;
         private readonly IMapper mapper;
-        public VotosServices(IVotosDao votosDao, IMapper mapper, IFilmeDao filmeDao, IUsuarioDao usuarioDao)
+        public VotosServices(IVotosDao votosDao, IMapper mapper, IFilmeDao filmeDao, IUsuarioDao usuarioDao )
         {
             _votosDao = votosDao;
             this.mapper = mapper;
             _filmeDao = filmeDao;
             _usuarioDao = usuarioDao;
+            
         }
 
-        public void AdicionaVotosEmFilme(AdicionaVotosDto votosDto)
+        public void AdicionaVotosEmFilme(AdicionaVotosDto votosDto, int idUsuario)
         {
             var filme = _filmeDao.BuscarPorId(votosDto.IdFilmeDto);
-            var usuario=_usuarioDao.BuscarPorId(votosDto.IdUsuarioDto);
-            if(filme!=null && usuario != null)
+ 
+            if(filme!=null)
             {
                 var votos = mapper.Map<Votos>(votosDto);
+                votos.IdUsuario = idUsuario;
                 _votosDao.Incluir(votos);
             }
         }

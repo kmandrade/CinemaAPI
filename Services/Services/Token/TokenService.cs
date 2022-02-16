@@ -22,6 +22,7 @@ namespace Servicos.Services.Token
                 Subject = new ClaimsIdentity(new Claim[] // roles do usuario
                 {
                     new Claim(ClaimTypes.Name,user.NomeUsuario),
+                    new Claim("Id",user.IdUsuario.ToString()),
                     new Claim(ClaimTypes.Role,user.CargoUsuario.ToString()),
                 }),
 

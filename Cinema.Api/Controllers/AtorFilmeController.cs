@@ -1,10 +1,12 @@
 ﻿using Domain.Dtos.AtorFilme;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Servicos.Services.Entities;
 using Servicos.Services.Handlers;
 
 namespace Cinema.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class AtorFilmeController : ControllerBase
@@ -23,13 +25,14 @@ namespace Cinema.Api.Controllers
             return Ok(filmes);
         }
        
-
+        [Authorize(Roles = "Administrador")]
         [HttpPost("AdicionaAtorEmFilme")]
         public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
             _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
             return Ok();
         }
+        [HttpGet("BuscaTodosFilmes")]
         [HttpDelete("DeletaAtorDoFilme")]
         public IActionResult DeletaAtorDoFilme([FromQuery] int idAtor,int idFilme)
         {

@@ -7,6 +7,7 @@ using Servicos.Services.Token;
 
 namespace Cinema.Api.Controllers
 {
+
     [ApiController]
     [Route("Controller")]
     public class LoginController :ControllerBase

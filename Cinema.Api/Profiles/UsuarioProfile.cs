@@ -10,7 +10,11 @@ namespace Cinema.Api.Profiles
         public UsuarioProfile()
         {
             CreateMap<Usuario,LerUsuarioDto>().ReverseMap();
-            CreateMap<CriarUsuarioDto,Usuario>();
+            CreateMap<CriarUsuarioDto, Usuario>()
+                .ForMember(dto => dto.NomeUsuario, opt => opt.MapFrom(u => u.NomeUsuarioDto))
+                .ForMember(dto => dto.Email, opt => opt.MapFrom(u => u.EmailDto))
+                .ForMember(dto => dto.Password, opt => opt.MapFrom(u => u.Password));
+                
             CreateMap<Usuario, LoginRequest>()
                 .ForMember(dto=>dto.UserName ,opt=>opt.MapFrom(u=>u.NomeUsuario))
                 .ForMember(dto=>dto.Password ,opt=>opt.MapFrom(u=>u.Password))

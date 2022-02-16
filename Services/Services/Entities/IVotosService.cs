@@ -9,7 +9,7 @@ namespace Servicos.Services.Entities
 {
     public interface IVotosService
     {
-        void AdicionaVotosEmFilme(AdicionaVotosDto adicionaVotosDto);
+        void AdicionaVotosEmFilme(AdicionaVotosDto adicionaVotosDto, int idUsuario);
         IEnumerable<LerVotoDto> BuscaFilmesMaisVotados();
     }
 }

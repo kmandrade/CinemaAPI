@@ -32,8 +32,8 @@ namespace Cinema.Api.Helper
             services.AddScoped<IVotosService, VotosServices>();
             services.AddScoped<IUsuarioService, UsuarioServices>();
             services.AddScoped<ITokenService,TokenService>();
-           
 
+            
             return services;
         }
     }
