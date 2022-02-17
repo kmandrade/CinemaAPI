@@ -16,14 +16,14 @@ namespace Servicos.Services.Handlers
         
         IVotosDao _votosDao;
         IFilmeDao _filmeDao;
-        IUsuarioDao _usuarioDao;
+       
         private readonly IMapper mapper;
-        public VotosServices(IVotosDao votosDao, IMapper mapper, IFilmeDao filmeDao, IUsuarioDao usuarioDao )
+        public VotosServices(IVotosDao votosDao, IMapper mapper, IFilmeDao filmeDao )
         {
             _votosDao = votosDao;
             this.mapper = mapper;
             _filmeDao = filmeDao;
-            _usuarioDao = usuarioDao;
+         
             
         }
 
