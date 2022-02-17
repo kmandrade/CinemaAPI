@@ -16,13 +16,48 @@ namespace Cinema.Api.Controllers
             _usuarioService = usuarioService;
         }
 
-        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        [HttpGet("BuscaTodosUsuariosComSenha")]
+        public IActionResult BuscaTodosUsuariosComSenha()
+        {
+            var usuarios = _usuarioService.BuscaTodosOsUsuarioDto();
+            return Ok(usuarios);
+        }
+
+        [Authorize(Roles = "Administrador")]
+        [HttpGet("BuscaUsuario/{id}")]
+        public IActionResult BuscaUsuario(int id)
+        {
+            var usuario = _usuarioService.BuscaUsuarioPorId(id);
+            return Ok(usuario);
+        }
+
+        [HttpPost("RegistraUsuario")]
         [AllowAnonymous]
-        public IActionResult CriarUsuario(CriarUsuarioDto usuarioDto)
+        public IActionResult CriarUsuario([FromBody]CriarUsuarioDto usuarioDto)
         {
             _usuarioService.CriarUsuarioNormalDto(usuarioDto);
             return Ok();
         }
+
+
+        [Authorize(Roles = "Administrador")]
+        [HttpPut("AlteraUsuario")]
+        public IActionResult AlteraUsuario([FromQuery]int idUsuario,[FromBody] CriarUsuarioDto criarUsuarioDto)
+        {
+            _usuarioService.AlteraUsuario( idUsuario, criarUsuarioDto);
+            return Ok();
+        }
+
+        [Authorize(Roles = "Administrador")]
+        [HttpDelete("DeletaUsuario/{id}")]
+        public IActionResult DeletaUsuario(int id)
+        {
+            _usuarioService.DeletaUsuario(id);
+            return Ok();
+        }
+
+
 
     }
 }

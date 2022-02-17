@@ -10,8 +10,13 @@ namespace Servicos.Services.Entities
 {
     public interface IUsuarioService
     {
-        IEnumerable<LerUsuarioDto> LerTodosOsUsuarioDto();
+        IEnumerable<LerUsuarioDto> BuscaTodosOsUsuarioDto();
         void CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto);
-        Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
+        void AlteraUsuario(int idUsuario,CriarUsuarioDto criarUsuarioDto);
+        void DeletaUsuario(int idUsuario);
+        LerUsuarioDto BuscaUsuarioPorId(int idUsuario);
+
+
+        public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
     }
 }

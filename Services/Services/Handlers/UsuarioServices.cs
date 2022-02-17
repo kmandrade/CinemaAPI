@@ -22,12 +22,22 @@ namespace Servicos.Services.Handlers
             _mapper = mapper;
         }
 
-        public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest)
+        
+
+        public IEnumerable<LerUsuarioDto> BuscaTodosOsUsuarioDto()
         {
-            var usuarioSelecionado =
-                _usuarioDao.BuscaUsuarioPorNomeESenha(loginRequest.UserName, loginRequest.Password);
-            return usuarioSelecionado;
+            var listaUsuarios = _usuarioDao.BuscarTodos();
+            var usuariosDto = _mapper.Map<IEnumerable<LerUsuarioDto>>(listaUsuarios);
+            return usuariosDto;
         }
+
+        public LerUsuarioDto BuscaUsuarioPorId(int idUsuario)
+        {
+            var usuarioSelecionado = _usuarioDao.BuscarPorId(idUsuario);
+            var usuarioDto = _mapper.Map<LerUsuarioDto>(usuarioSelecionado);
+            return usuarioDto;
+        }
+
 
         public void CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto)
         {
@@ -35,11 +45,31 @@ namespace Servicos.Services.Handlers
             _usuarioDao.Incluir(usuario);
         }
 
-        public IEnumerable<LerUsuarioDto> LerTodosOsUsuarioDto()
+        public void DeletaUsuario(int idUsuario)
         {
-            var listaUsuarios= _usuarioDao.BuscarTodos();
-            var usuariosDto=_mapper.Map<IEnumerable<LerUsuarioDto>>(listaUsuarios);
-            return usuariosDto;
+            var usuarioSelecionado = _usuarioDao.BuscarPorId(idUsuario);
+            _usuarioDao.Excluir(usuarioSelecionado);
         }
+
+        public void AlteraUsuario(int idUsuario, CriarUsuarioDto criarUsuarioDto)
+        {
+            var usuarioSelecionado = _usuarioDao.BuscarPorId(idUsuario);
+            _mapper.Map(usuarioSelecionado, criarUsuarioDto);
+            _usuarioDao.Save();
+        }
+
+
+
+
+       
+       public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest)
+       {
+           var usuarioSelecionado =
+               _usuarioDao.BuscaUsuarioPorNomeESenha(loginRequest.UserName, loginRequest.Password);
+           return usuarioSelecionado;
+       }
+       
+
+
     }
 }
