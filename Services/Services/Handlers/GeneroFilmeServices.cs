@@ -44,5 +44,12 @@ namespace Servicos.Services.Handlers
             var selecionarGeneroDoFilme = _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
             _generofilme.Excluir(selecionarGeneroDoFilme);
         }
+
+        public void AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
+        {
+            var GeneroFilmeSelecionado = _generofilme.BuscaGeneroDoFilme(idGeneroAntigo, idFilme);
+            GeneroFilmeSelecionado.IdGenero = iDGeneroNovo;
+            _generofilme.Save();
+        }
     }
 }

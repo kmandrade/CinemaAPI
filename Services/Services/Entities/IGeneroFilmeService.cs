@@ -12,6 +12,9 @@ namespace Servicos.Services.Entities
     {
         void AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto);
         IEnumerable<LerGeneroFilmeDto> BuscarFilmesPorGenero(int IdGeneroFilme);
-        void DeletaGeneroDoFilme(int idGenero, int idFilme);        
+        void DeletaGeneroDoFilme(int idGenero, int idFilme);
+        void AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo);
+
+
     }
 }

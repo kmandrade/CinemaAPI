@@ -31,6 +31,16 @@ namespace Cinema.Api.Controllers
             _generoFilmeService.AdicionaGeneroFilme(criarGeneroFilmeDto);
             return Ok();
         }
+
+        [Authorize(Roles = "Administrador")]
+        [HttpPost("AlteraGeneroDoFilme")]
+        IActionResult AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
+        {
+            _generoFilmeService.AlteraGeneroDoFilme(idGeneroAntigo, idFilme, iDGeneroNovo);
+            return Ok ();
+        }
+
+
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaGeneroDoFilme")]
         public IActionResult DeletaGeneroDoFilme([FromQuery] int idGenero,int idFilme)

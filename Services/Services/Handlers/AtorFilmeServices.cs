@@ -46,6 +46,11 @@ namespace Servicos.Services.Handlers
             _atorfilme.Excluir(selecionarAtorDoFilme);
         }
 
-        
+        public void AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
+        {
+            var AtorFilmeSelecionado = _atorfilme.BuscaAtorDoFilme(idAtorAtual, idFilme);
+            AtorFilmeSelecionado.IdAtor = idAtorNovo;
+            _atorfilme.Save();
+        }
     }
 }
