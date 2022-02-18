@@ -20,7 +20,7 @@ namespace Data.Repository
         public VotosComEfCore(MyContext _context) : base(_context)
         {
             _dbSetVotos = _context.Set<Votos>();
-            
+ 
         }
 
         public IEnumerable<Votos> BuscaFilmesMaisVotados()
@@ -28,7 +28,6 @@ namespace Data.Repository
             var query = _context.Votos
                 .Include(f => f.Filme);
             return query.OrderByDescending(f => f.ValorDoVoto);
-                
         }
 
 

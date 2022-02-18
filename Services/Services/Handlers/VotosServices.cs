@@ -17,13 +17,12 @@ namespace Servicos.Services.Handlers
         IVotosDao _votosDao;
         IFilmeDao _filmeDao;
        
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
         public VotosServices(IVotosDao votosDao, IMapper mapper, IFilmeDao filmeDao )
         {
             _votosDao = votosDao;
-            this.mapper = mapper;
+            _mapper = mapper;
             _filmeDao = filmeDao;
-         
             
         }
 
@@ -33,7 +32,7 @@ namespace Servicos.Services.Handlers
  
             if(filme!=null)
             {
-                var votos = mapper.Map<Votos>(votosDto);
+                var votos = _mapper.Map<Votos>(votosDto);
                 votos.IdUsuario = idUsuario;
                 _votosDao.Incluir(votos);
             }
@@ -42,8 +41,22 @@ namespace Servicos.Services.Handlers
         public IEnumerable<LerVotoDto> BuscaFilmesMaisVotados()
         {
             var filmes=_votosDao.BuscaFilmesMaisVotados();
-            var votosDto = mapper.Map<IEnumerable<LerVotoDto>>(filmes);
+            var votosDto = _mapper.Map<IEnumerable<LerVotoDto>>(filmes);
             return votosDto;
         }
+
+        public void AlteraValorDoVotoEmFilme(int idVoto, int valorDoVoto)
+        {
+            var votoSelecionado = _votosDao.BuscarPorId(idVoto);
+            votoSelecionado.ValorDoVoto=valorDoVoto;
+            _votosDao.Save();
+        }
+        public void RemoverVoto(int idVoto)
+        {
+            var votoSelecionado = _votosDao.BuscarPorId(idVoto);
+            _votosDao.Excluir(votoSelecionado);
+        }
+
+      
     }
 }

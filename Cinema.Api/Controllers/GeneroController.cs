@@ -24,6 +24,7 @@ namespace Cinema.Api.Controllers
             var generos = _generoService.ConsultaTodos();
             return Ok(generos);
         }
+
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         public IActionResult CadastraGenero([FromBody]CriarGeneroDto generoDto)
@@ -31,6 +32,7 @@ namespace Cinema.Api.Controllers
             _generoService.Cadastra(generoDto);
             return Ok();
         }
+
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraNomeGenero/{id}")]
         public IActionResult AlteraNomeGenero(int id, AlterarGeneroDto obj)

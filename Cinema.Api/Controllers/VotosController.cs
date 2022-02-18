@@ -15,18 +15,37 @@ namespace Cinema.Api.Controllers
         {
             _votosService = votosService;
         }
-        [HttpPost("AdicionaVotoEmFilme")]
-        public IActionResult AdicionaVotoEmFilme(AdicionaVotosDto votosDto)
-        {
-            var Id = User.Claims.First(u => u.Type == "Id").Value;
-            _votosService.AdicionaVotosEmFilme(votosDto,int.Parse(Id));
-            return Ok();
-        }
+       
         [HttpGet("BuscaFilmesMaisVotados")]
         public IActionResult BuscaFilmesMaisVotados()
         {
             var filmes = _votosService.BuscaFilmesMaisVotados();
             return Ok(filmes);
         }
+
+        [HttpPost("AdicionaVotoEmFilme")]
+        public IActionResult AdicionaVotoEmFilme([FromBody]AdicionaVotosDto votosDto)
+        {
+            var Id = User.Claims.First(u => u.Type == "Id").Value;
+            _votosService.AdicionaVotosEmFilme(votosDto, int.Parse(Id));
+            return Ok();
+        }
+
+
+        [HttpPut("AlteraValorDoVotoEmFilme")]
+        public IActionResult AlteraVotoEmFilme ([FromQuery]int idVoto, int valorDoVoto)
+        {
+            _votosService.AlteraValorDoVotoEmFilme(idVoto, valorDoVoto); 
+            return Ok();
+        }
+
+
+        [HttpDelete("DeletaVotoEmFilme/{id}")]
+        public IActionResult DeletaVotoEmFilme(int id)
+        {
+            _votosService.RemoverVoto(id);
+            return Ok();
+        }
+
     }
 }

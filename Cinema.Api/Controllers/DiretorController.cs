@@ -48,6 +48,8 @@ namespace Cinema.Api.Controllers
             }
             return NotFound();
         }
+
+
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         public IActionResult CadastraDiretor([FromBody]CriarDiretorDto criarDiretorDto)
@@ -55,6 +57,17 @@ namespace Cinema.Api.Controllers
             _diretorService.Cadastra(criarDiretorDto);
             return Ok();
         }
+
+
+        [Authorize(Roles = "Administrador")]
+        [HttpPut("{id}")]
+        public IActionResult ModificaDiretor(int id, [FromBody] AlterarDiretorDto diretor)
+        {
+            _diretorService.Altera(id, diretor);
+            return NoContent();
+
+        }
+
         [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public IActionResult RemoveDiretor(int id)
@@ -63,14 +76,7 @@ namespace Cinema.Api.Controllers
             return NoContent(); 
             
         }
-        [Authorize(Roles = "Administrador")]
-        [HttpPut("{id}")]
-        public IActionResult ModificaDiretor( int id, [FromBody] AlterarDiretorDto diretor)
-        {
-            _diretorService.Altera(id,diretor);
-            return NoContent();
-
-        }
+       
 
     }
 }

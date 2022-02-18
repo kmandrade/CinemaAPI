@@ -24,6 +24,7 @@ namespace Cinema.Api.Controllers
             var gf = _generoFilmeService.BuscarFilmesPorGenero(iDGenero);
             return Ok(gf);
         }
+
         [Authorize(Roles = "Administrador")]
         [HttpPost("AdicionaGeneroEmFilme")]
         public IActionResult AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
@@ -33,13 +34,14 @@ namespace Cinema.Api.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpPost("AlteraGeneroDoFilme")]
+        [HttpPut("AlteraGeneroDoFilme")]
         IActionResult AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
         {
             _generoFilmeService.AlteraGeneroDoFilme(idGeneroAntigo, idFilme, iDGeneroNovo);
             return Ok ();
         }
 
+        
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaGeneroDoFilme")]

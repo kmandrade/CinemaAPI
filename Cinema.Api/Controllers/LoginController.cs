@@ -20,8 +20,8 @@ namespace Cinema.Api.Controllers
             _usuarioService = usuarioService;
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("Login")]
+        
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginRequest request)
         {
             //recupera o usuario

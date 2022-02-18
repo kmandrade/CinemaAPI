@@ -59,8 +59,6 @@ namespace Servicos.Services.Handlers
         }
 
 
-
-
        
        public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest)
        {

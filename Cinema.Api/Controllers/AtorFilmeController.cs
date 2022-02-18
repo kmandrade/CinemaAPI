@@ -25,14 +25,6 @@ namespace Cinema.Api.Controllers
             return Ok(filmes);
         }
 
-        [Authorize(Roles = "Administrador")]
-        [HttpPut("AlteraAtorDofilme")]
-        public IActionResult AlteraAtorDofilme([FromQuery]int idAtorAtual,int idFilme,int idAtorNovo)
-        {
-            _atorFilmeService.AlteraAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
-            return Ok();
-        }
-
 
 
         [Authorize(Roles = "Administrador")]
@@ -43,6 +35,13 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Administrador")]
+        [HttpPut("AlteraAtorDofilme")]
+        public IActionResult AlteraAtorDofilme([FromQuery] int idAtorAtual, int idFilme, int idAtorNovo)
+        {
+            _atorFilmeService.AlteraAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
+            return Ok();
+        }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaAtorDoFilme")]

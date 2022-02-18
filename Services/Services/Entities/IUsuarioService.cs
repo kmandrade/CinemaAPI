@@ -16,7 +16,6 @@ namespace Servicos.Services.Entities
         void DeletaUsuario(int idUsuario);
         LerUsuarioDto BuscaUsuarioPorId(int idUsuario);
 
-
         public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
     }
 }
