@@ -1,6 +1,7 @@
 ﻿using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using Domain.Services.Entities;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -69,7 +70,11 @@ namespace Cinema.Api.Controllers
         [HttpPut("AlteraUmFilme")]
         public IActionResult AlterarFilme(int id, [FromBody] AlterarFilmeDto filmeDto)
         {
-            _filmeService.Altera(id, filmeDto);
+            Result resultado = _filmeService.Altera(id, filmeDto);
+            if (resultado.IsFailed)
+            {
+                return NotFound();
+            }
             return NoContent();
         }
 

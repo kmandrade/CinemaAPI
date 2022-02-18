@@ -33,7 +33,7 @@ namespace Servicos.Services.Handlers
 
             var votoSelecionado = _votosDao.BuscaVotoPorFilmeEUsuario(votosDto.IdFilmeDto, idUsuario);
             //verifica se existe ja existe um voto desse usuario nesse filme
-            if (votoSelecionado.IdUsuario != idUsuario && votoSelecionado.IdFilme != votosDto.IdFilmeDto)
+            if (votoSelecionado==null)
             {
                 var voto = _mapper.Map<Votos>(votosDto);
                 voto.IdUsuario = idUsuario;
