@@ -26,25 +26,31 @@ namespace Cinema.Api.Controllers
         [HttpPost("AdicionaVotoEmFilme")]
         public IActionResult AdicionaVotoEmFilme([FromBody]AdicionaVotosDto votosDto)
         {
-            var Id = User.Claims.First(u => u.Type == "Id").Value;
-            _votosService.AdicionaVotosEmFilme(votosDto, int.Parse(Id));
+            _votosService.AdicionaVotosEmFilme(votosDto, BuscaIdUsuarioPorJWT());
             return Ok();
         }
 
 
         [HttpPut("AlteraValorDoVotoEmFilme")]
-        public IActionResult AlteraVotoEmFilme ([FromQuery]int idVoto, int valorDoVoto)
+        public IActionResult AlteraVotoEmFilme ([FromQuery] int idVoto,int valorDoVoto)
         {
-            _votosService.AlteraValorDoVotoEmFilme(idVoto, valorDoVoto); 
+            
+            _votosService.AlteraValorDoVotoEmFilme(idVoto, valorDoVoto, BuscaIdUsuarioPorJWT()); 
             return Ok();
         }
 
-
-        [HttpDelete("DeletaVotoEmFilme/{id}")]
-        public IActionResult DeletaVotoEmFilme(int id)
+        [HttpDelete("DeletaVotoEmFilme")]
+        public IActionResult DeletaVotoEmFilme([FromQuery]int idVoto)
         {
-            _votosService.RemoverVoto(id);
+            
+            _votosService.RemoverVoto(idVoto, BuscaIdUsuarioPorJWT());
             return Ok();
+        }
+
+        private int BuscaIdUsuarioPorJWT()
+        {
+            var idUsuario = User.Claims.First(u => u.Type == "Id").Value;
+            return int.Parse(idUsuario);
         }
 
     }

@@ -10,6 +10,7 @@ namespace Data.Entities
     public interface IVotosDao: IRepository<Votos>
     {
         IEnumerable<Votos> BuscaFilmesMaisVotados();
-      
+        Votos BuscaVotoPorFilmeEUsuario(int idFilme, int idUsuario);
+
     }
 }

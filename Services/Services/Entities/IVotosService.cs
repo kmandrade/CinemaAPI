@@ -11,7 +11,7 @@ namespace Servicos.Services.Entities
     {
         void AdicionaVotosEmFilme(AdicionaVotosDto adicionaVotosDto, int idUsuario);
         IEnumerable<LerVotoDto> BuscaFilmesMaisVotados();
-        void AlteraValorDoVotoEmFilme(int idVoto, int valorDoVoto);
-        void RemoverVoto(int idVoto);
+        void AlteraValorDoVotoEmFilme(int idVoto, int valorDoVoto, int idUsuario);
+        void RemoverVoto(int idVoto, int idUsuario);
     }
 }

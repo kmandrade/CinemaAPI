@@ -30,7 +30,14 @@ namespace Data.Repository
             return query.OrderByDescending(f => f.ValorDoVoto);
         }
 
-
-        
+        public Votos BuscaVotoPorFilmeEUsuario(int idFilme, int idUsuario)
+        {
+            var query = _context.Votos
+                .Include(f => f.Filme)
+                .Include(u=>u.Usuario)
+                .FirstOrDefault(v=>v.IdFilme == idFilme && v.IdUsuario==idUsuario);
+            return query;
+                
+        }
     }
 }

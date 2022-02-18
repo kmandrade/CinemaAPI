@@ -29,13 +29,17 @@ namespace Servicos.Services.Handlers
         public void AdicionaVotosEmFilme(AdicionaVotosDto votosDto, int idUsuario)
         {
             var filme = _filmeDao.BuscarPorId(votosDto.IdFilmeDto);
- 
-            if(filme!=null)
+            //buscar o voto por filme e usuario
+
+            var votoSelecionado = _votosDao.BuscaVotoPorFilmeEUsuario(votosDto.IdFilmeDto, idUsuario);
+            //verifica se existe ja existe um voto desse usuario nesse filme
+            if (votoSelecionado.IdUsuario != idUsuario && votoSelecionado.IdFilme != votosDto.IdFilmeDto)
             {
-                var votos = _mapper.Map<Votos>(votosDto);
-                votos.IdUsuario = idUsuario;
-                _votosDao.Incluir(votos);
+                var voto = _mapper.Map<Votos>(votosDto);
+                voto.IdUsuario = idUsuario;
+                _votosDao.Incluir(voto);
             }
+            
         }
 
         public IEnumerable<LerVotoDto> BuscaFilmesMaisVotados()
@@ -45,16 +49,25 @@ namespace Servicos.Services.Handlers
             return votosDto;
         }
 
-        public void AlteraValorDoVotoEmFilme(int idVoto, int valorDoVoto)
+        public void AlteraValorDoVotoEmFilme(int idVoto, int valorDoVoto, int idUsuario)
         {
             var votoSelecionado = _votosDao.BuscarPorId(idVoto);
-            votoSelecionado.ValorDoVoto=valorDoVoto;
-            _votosDao.Save();
+
+            if (votoSelecionado != null && votoSelecionado.IdUsuario==idUsuario)
+            {
+                votoSelecionado.ValorDoVoto = valorDoVoto;
+                _votosDao.Save();
+
+            }
         }
-        public void RemoverVoto(int idVoto)
+        public void RemoverVoto(int idVoto, int idUsuario)
         {
             var votoSelecionado = _votosDao.BuscarPorId(idVoto);
-            _votosDao.Excluir(votoSelecionado);
+            if(votoSelecionado!=null && votoSelecionado.IdUsuario == idUsuario)
+            {
+                _votosDao.Excluir(votoSelecionado);
+            }
+            
         }
 
       
