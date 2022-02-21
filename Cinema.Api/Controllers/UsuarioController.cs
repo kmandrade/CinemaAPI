@@ -18,9 +18,9 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpGet("BuscaTodosUsuariosComSenha")]
-        public IActionResult BuscaTodosUsuariosComSenha()
+        public IActionResult BuscaTodosUsuariosComSenha([FromQuery] int skip, int take)
         {
-            var usuarios = _usuarioService.BuscaTodosOsUsuarioDto();
+            var usuarios = _usuarioService.BuscaTodosOsUsuarioDto(skip,take);
             return Ok(usuarios);
         }
 

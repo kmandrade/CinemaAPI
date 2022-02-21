@@ -12,7 +12,7 @@ namespace Domain.Services.Entities
 {
     public interface IFilmeService
     {
-        IEnumerable<LerFilmeDto> ConsultaTodos();
+        IEnumerable<LerFilmeDto> ConsultaTodos(int skip, int take);
         LerFilmeDto ConsultaPorId(int id);
 
         LerFilmeDto BuscarFilmeCompleto(int id);
@@ -22,6 +22,6 @@ namespace Domain.Services.Entities
 
         void ArquivarFilme(int id);
         void ReativarFilme(int id);
-        IEnumerable<LerFilmeDto> BuscaFilmesArquivados();
+        IEnumerable<LerFilmeDto> BuscaFilmesArquivados(int skip, int take);
     }
 }

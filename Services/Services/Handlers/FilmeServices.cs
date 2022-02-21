@@ -29,9 +29,9 @@ namespace Data.Services.Handlers
             
         }
 
-        public IEnumerable<LerFilmeDto> ConsultaTodos()
+        public IEnumerable<LerFilmeDto> ConsultaTodos(int skip, int take)
         {
-            var listadeFilmes = _filmeDao.BuscarTodos();
+            var listadeFilmes = _filmeDao.BuscarTodos().Skip(skip).Take(take).ToList();
             var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoFilme.Ativado);
             var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesAtivos);
             return filmesDtos.OrderBy(nome => nome.Titulo);
@@ -109,10 +109,10 @@ namespace Data.Services.Handlers
             _filmeDao.Alterar(filmeSelecionado);
         }
 
-        public IEnumerable<LerFilmeDto> BuscaFilmesArquivados()
+        public IEnumerable<LerFilmeDto> BuscaFilmesArquivados(int skip, int take)
         {
             var filmes = _filmeDao.BuscarTodos()
-                .Where(f => f.Situacao == SituacaoFilme.Arquivado);
+                .Where(f => f.Situacao == SituacaoFilme.Arquivado).Skip(skip).Take(take).ToList();
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
             return filmesDto;
 

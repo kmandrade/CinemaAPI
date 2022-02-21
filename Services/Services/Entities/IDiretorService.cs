@@ -13,9 +13,8 @@ namespace Servicos.Services.Entities
     {
         IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(int idDiretor);
 
-        IEnumerable<LerDiretorDto> ConsultaTodos();
+        IEnumerable<LerDiretorDto> ConsultaTodos(int skip, int take);
         LerDiretorDto ConsultaPorId(int id);
-
 
         void Cadastra(CriarDiretorDto obj);
         void Altera(int id, AlterarDiretorDto obj);

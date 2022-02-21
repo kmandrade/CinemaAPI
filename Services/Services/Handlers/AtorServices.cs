@@ -34,9 +34,9 @@ namespace Servicos.Services.Handlers
             return atorDto;
         }
 
-        public IEnumerable<LerAtorDto> ConsultaTodos()
+        public IEnumerable<LerAtorDto> ConsultaTodos(int skip, int take)
         {
-            var atores = _atorDao.BuscarTodos();
+            var atores = _atorDao.BuscarTodos().Skip(skip).Take(take).ToList();
             var atoresDto = _mapper.Map<IEnumerable<LerAtorDto>>(atores);
             return atoresDto;
         }

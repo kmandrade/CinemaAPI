@@ -18,9 +18,9 @@ namespace Cinema.Api.Controllers
         }
         
         [HttpGet("ConsultaAtores")]
-        public IActionResult ConsultaAtores()
+        public IActionResult ConsultaAtores([FromQuery] int skip, int take)
         {
-            var atores = _atorService.ConsultaTodos();
+            var atores = _atorService.ConsultaTodos( skip,  take);
             return Ok(atores);
         }
         [Authorize(Roles = "Administrador")]

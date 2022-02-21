@@ -27,15 +27,11 @@ namespace Cinema.Api.Controllers
             return NotFound();
         }
         [HttpGet("BuscaTodosDiretores")]
-        public IActionResult BuscaDiretores()
+        public IActionResult BuscaDiretores([FromQuery]int skip, int take)
         {
-            var diretores = _diretorService.ConsultaTodos();
-
-            if (diretores != null)
-            {
-                return Ok(diretores);
-            }
-            return NotFound();
+            var diretores = _diretorService.ConsultaTodos(skip, take);
+            return Ok(diretores);
+            
         }
         [HttpGet("{id}")]
         public IActionResult BuscaDiretoresPorId(int idDiretor)

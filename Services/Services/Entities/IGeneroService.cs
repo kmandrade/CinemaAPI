@@ -13,7 +13,7 @@ namespace Servicos.Services.Entities
     public interface IGeneroService
     {
         
-        IEnumerable<LerGeneroDto> ConsultaTodos();
+        IEnumerable<LerGeneroDto> ConsultaTodos(int skip, int take);
         LerGeneroDto ConsultaPorId(int id);
 
 

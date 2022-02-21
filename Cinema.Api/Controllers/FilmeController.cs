@@ -24,9 +24,9 @@ namespace Cinema.Api.Controllers
         }
         
         [HttpGet("BuscaTodosFilmes")]
-        public IActionResult BuscaFilmes()
+        public IActionResult BuscaFilmes([FromQuery] int skip, int take)
         {
-            var filmes = _filmeService.ConsultaTodos();
+            var filmes = _filmeService.ConsultaTodos(skip,take);
 
             if (filmes != null)
             {
@@ -36,9 +36,9 @@ namespace Cinema.Api.Controllers
         }
         [Authorize(Roles = "Administrador")]
         [HttpGet("BuscaFilmesArquivados")]
-        public IActionResult BuscaFilmesArquivados()
+        public IActionResult BuscaFilmesArquivados([FromQuery] int skip, int take)
         {
-           var filmesArq= _filmeService.BuscaFilmesArquivados();
+           var filmesArq= _filmeService.BuscaFilmesArquivados(skip,take);
             return Ok(filmesArq);
         }
         [HttpGet("BuscaCompleta/{id}")]

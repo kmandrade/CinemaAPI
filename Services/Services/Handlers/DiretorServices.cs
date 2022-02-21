@@ -37,11 +37,11 @@ namespace Servicos.Services.Handlers
             //    yield return filmesDto;
         }
 
-        public IEnumerable<LerDiretorDto> ConsultaTodos()
+        public IEnumerable<LerDiretorDto> ConsultaTodos(int skip, int take)
         {
-            var diretores = _diretorDao.BuscarTodos();
-            var diretoresDto = _mapper.Map<IEnumerable<LerDiretorDto>>(diretores);
-            return diretoresDto;
+            var diretoresPaginados = _diretorDao.BuscarTodos().Skip(skip).Take(take).ToList();
+            var diretoresMapeados = _mapper.Map<IEnumerable<LerDiretorDto>>(diretoresPaginados);
+            return diretoresMapeados;
         }
 
         public LerDiretorDto ConsultaPorId(int id)
@@ -76,5 +76,7 @@ namespace Servicos.Services.Handlers
                 _diretorDao.Excluir(diretorSelecionado);
             }
         }
+
+       
     }
 }

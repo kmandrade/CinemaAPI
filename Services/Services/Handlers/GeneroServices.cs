@@ -36,9 +36,9 @@ namespace Servicos.Services.Handlers
             
         }
 
-        public IEnumerable<LerGeneroDto> ConsultaTodos()
+        public IEnumerable<LerGeneroDto> ConsultaTodos(int skip, int take)
         {
-            var listaGeneros = _generoDao.BuscarTodos();
+            var listaGeneros = _generoDao.BuscarTodos().Skip(skip).Take(take).ToList();
             var listaGenerosDto = _mapper.Map<IEnumerable<LerGeneroDto>>(listaGeneros);
             return listaGenerosDto;
         }

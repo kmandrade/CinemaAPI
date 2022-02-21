@@ -24,9 +24,9 @@ namespace Servicos.Services.Handlers
 
         
 
-        public IEnumerable<LerUsuarioDto> BuscaTodosOsUsuarioDto()
+        public IEnumerable<LerUsuarioDto> BuscaTodosOsUsuarioDto(int skip, int take)
         {
-            var listaUsuarios = _usuarioDao.BuscarTodos();
+            var listaUsuarios = _usuarioDao.BuscarTodos().Skip(skip).Take(take).ToList();
             var usuariosDto = _mapper.Map<IEnumerable<LerUsuarioDto>>(listaUsuarios);
             return usuariosDto;
         }

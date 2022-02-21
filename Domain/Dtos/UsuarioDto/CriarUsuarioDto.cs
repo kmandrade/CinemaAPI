@@ -12,7 +12,7 @@ namespace Domain.Dtos.UsuarioDto
         [Required]
         public string NomeUsuarioDto { get; set; }
 
-        
+        [Required]
         public string EmailDto { get; set; }
 
 

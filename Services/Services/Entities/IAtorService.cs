@@ -14,7 +14,7 @@ namespace Servicos.Services.Entities
     {
         
 
-        IEnumerable<LerAtorDto> ConsultaTodos();
+        IEnumerable<LerAtorDto> ConsultaTodos(int skip, int take);
         LerAtorDto ConsultaPorId(int id);
 
         Result Cadastra(CriarAtorDto obj);

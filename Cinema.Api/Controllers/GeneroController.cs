@@ -19,9 +19,9 @@ namespace Cinema.Api.Controllers
         }
 
         [HttpGet("ConsultaTodosGeneros")]
-        public IActionResult ConsultaGeneros()
+        public IActionResult ConsultaGeneros([FromQuery] int skip, int take)
         {
-            var generos = _generoService.ConsultaTodos();
+            var generos = _generoService.ConsultaTodos(skip,take);
             return Ok(generos);
         }
 

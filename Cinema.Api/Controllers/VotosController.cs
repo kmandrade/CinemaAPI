@@ -17,9 +17,9 @@ namespace Cinema.Api.Controllers
         }
        
         [HttpGet("BuscaFilmesMaisVotados")]
-        public IActionResult BuscaFilmesMaisVotados()
+        public IActionResult BuscaFilmesMaisVotados([FromQuery] int skip, int take)
         {
-            var filmes = _votosService.BuscaFilmesMaisVotados();
+            var filmes = _votosService.BuscaFilmesMaisVotados(skip,take);
             return Ok(filmes);
         }
 

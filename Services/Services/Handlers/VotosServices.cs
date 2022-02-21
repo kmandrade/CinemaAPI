@@ -42,9 +42,9 @@ namespace Servicos.Services.Handlers
             
         }
 
-        public IEnumerable<LerVotoDto> BuscaFilmesMaisVotados()
+        public IEnumerable<LerVotoDto> BuscaFilmesMaisVotados(int skip, int take)
         {
-            var filmes=_votosDao.BuscaFilmesMaisVotados();
+            var filmes=_votosDao.BuscaFilmesMaisVotados().Skip(skip).Take(take).ToList();
             var votosDto = _mapper.Map<IEnumerable<LerVotoDto>>(filmes);
             return votosDto;
         }

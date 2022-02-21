@@ -12,7 +12,5 @@ namespace Domain.Dtos.AtorDto
         [Required]
         public string NomeAtor { get; set; }
 
-
-
     }
 }
