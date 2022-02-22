@@ -24,5 +24,7 @@ namespace Domain.Models
         public List<Votos> Votos { get; set; }
 
         public CargoUsuario CargoUsuario { get; set; }
+
+        public SituacaoEntities Situacao { get; set; }
     }
 }

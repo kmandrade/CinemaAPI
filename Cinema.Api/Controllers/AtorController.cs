@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos.AtorDto;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Servicos.Services.Entities;
@@ -20,14 +21,33 @@ namespace Cinema.Api.Controllers
         [HttpGet("ConsultaAtores")]
         public IActionResult ConsultaAtores([FromQuery] int skip, int take)
         {
-            var atores = _atorService.ConsultaTodos( skip,  take);
+            if (skip < 0 || take < 0) return BadRequest();
+            var atores = _atorService.ConsultaTodos(skip,  take);
+            if (atores == null) return BadRequest();
             return Ok(atores);
         }
+
+        [HttpGet("ConsultaAtorPorId/{id}")]
+        public IActionResult ConsultaAtorPorId(int id)
+        {
+            var atores = _atorService.ConsultaPorId(id);
+            if (id < 0 || id == null || atores==null)
+            {
+                return BadRequest();
+            }
+            return Ok(atores);
+
+        }
+
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         public IActionResult CadastraAtor([FromBody]CriarAtorDto atorDto)
         {
-            _atorService.Cadastra(atorDto);
+           Result resultado =  _atorService.Cadastra(atorDto);
+            if (resultado.IsFailed)
+            {
+                return BadRequest();
+            }
             return Ok();
         }
         [Authorize(Roles = "Administrador")]

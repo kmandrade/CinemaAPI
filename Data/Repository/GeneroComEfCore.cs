@@ -20,12 +20,6 @@ namespace Data.Repository
         }
 
 
-        //public Genero BuscarPorNome(string nome)
-        //{
-        //    var _genero = _context.Generos.Where(g => g.NomeGenero == nome);
-        //    return _genero.FirstOrDefault();
-        //}
-
-
+   
     }
 }

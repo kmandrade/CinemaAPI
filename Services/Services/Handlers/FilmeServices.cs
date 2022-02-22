@@ -32,7 +32,7 @@ namespace Data.Services.Handlers
         public IEnumerable<LerFilmeDto> ConsultaTodos(int skip, int take)
         {
             var listadeFilmes = _filmeDao.BuscarTodos().Skip(skip).Take(take).ToList();
-            var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoFilme.Ativado);
+            var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoEntities.Ativado);
             var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesAtivos);
             return filmesDtos.OrderBy(nome => nome.Titulo);
         }
@@ -40,7 +40,7 @@ namespace Data.Services.Handlers
         public LerFilmeDto ConsultaPorId(int id)
         {
                 var filme = _filmeDao.BuscarPorId(id);
-                if (filme==null || filme.Situacao == SituacaoFilme.Arquivado)
+                if (filme==null || filme.Situacao == SituacaoEntities.Arquivado)
                 {
                     return null;
                 }
@@ -50,7 +50,7 @@ namespace Data.Services.Handlers
         public LerFilmeDto BuscarFilmeCompleto(int id)
         {
             var filme = _filmeDao.BuscarPorFilmesCompletoID(id);
-            if (filme == null || filme.Situacao == SituacaoFilme.Arquivado)
+            if (filme == null || filme.Situacao == SituacaoEntities.Arquivado)
             {
                 return null;
             }
@@ -97,7 +97,7 @@ namespace Data.Services.Handlers
         {
             var filmeSelecionado = _filmeDao.BuscarPorId(id);
 
-            filmeSelecionado.Situacao = SituacaoFilme.Arquivado;
+            filmeSelecionado.Situacao = SituacaoEntities.Arquivado;
             _filmeDao.Alterar(filmeSelecionado);
             //salvar o dao _filmedao.save(); error por conta que nao tem mais
 
@@ -105,14 +105,14 @@ namespace Data.Services.Handlers
         public void ReativarFilme(int id)
         {
             var filmeSelecionado = _filmeDao.BuscarPorId(id);
-            filmeSelecionado.Situacao = SituacaoFilme.Ativado;
+            filmeSelecionado.Situacao = SituacaoEntities.Ativado;
             _filmeDao.Alterar(filmeSelecionado);
         }
 
         public IEnumerable<LerFilmeDto> BuscaFilmesArquivados(int skip, int take)
         {
             var filmes = _filmeDao.BuscarTodos()
-                .Where(f => f.Situacao == SituacaoFilme.Arquivado).Skip(skip).Take(take).ToList();
+                .Where(f => f.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take).ToList();
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
             return filmesDto;
 

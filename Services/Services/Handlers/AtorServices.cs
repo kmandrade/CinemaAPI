@@ -30,24 +30,32 @@ namespace Servicos.Services.Handlers
         public LerAtorDto ConsultaPorId(int id)
         {
             var atores = _atorDao.BuscarPorId(id);
+            if (atores == null)
+            {
+                return null;
+            }
             var atorDto = _mapper.Map<LerAtorDto>(atores);
             return atorDto;
+
         }
 
         public IEnumerable<LerAtorDto> ConsultaTodos(int skip, int take)
         {
             var atores = _atorDao.BuscarTodos().Skip(skip).Take(take).ToList();
+            if (atores == null)
+            {
+                return null;
+            }
             var atoresDto = _mapper.Map<IEnumerable<LerAtorDto>>(atores);
             return atoresDto;
         }
 
         public Result Cadastra(CriarAtorDto obj)
         {
-            //var ator = _atorDao.BuscarPorNome(obj.NomeAtor);
-            //if(ator != null)
-            //{
-            //    return Result.Fail("Ator ja existe ");
-            //}
+            var buscaAtor = _atorDao.BuscarTodos().Where(a => a.NomeAtor == obj.NomeAtor);
+            if (buscaAtor!=null){
+                return Result.Fail("Ator ja existe");
+            }
             var atorMapeado = _mapper.Map<Ator>(obj);
             _atorDao.Incluir(atorMapeado);
             return Result.Ok();
@@ -66,13 +74,15 @@ namespace Servicos.Services.Handlers
 
         }
 
-        public void Excluir(int id)
+        public Result Excluir(int id)
         {
             var atorSelecionado = _atorDao.BuscarPorId(id);
             if (atorSelecionado != null)
             {
                 _atorDao.Excluir(atorSelecionado);
+                return Result.Ok();
             }
+            return Result.Fail("Esse Ator nao existe");
         }
 
     

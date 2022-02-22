@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public enum SituacaoFilme
+    public enum SituacaoEntities
     {
         Arquivado,
         Ativado
-        
+
     }
 }

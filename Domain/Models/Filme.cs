@@ -36,7 +36,7 @@ namespace Domain.Models
         [Range (1,4,ErrorMessage ="O Voto so pode ser de 1 como ruim a 4 como otimo")]
         public virtual List<Votos> Votos { get; set; }
 
-        public SituacaoFilme Situacao { get; set; }
+        public SituacaoEntities Situacao { get; set; }
 
        
     }

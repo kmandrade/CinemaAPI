@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos.AtorFilme;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Servicos.Services.Entities;
@@ -18,37 +19,55 @@ namespace Cinema.Api.Controllers
         {
             _atorFilmeService = atorFilmeService;
         }
-        [HttpGet("LerFilmesPorAtor")]
-        public IActionResult LerFilmesPorAtor([FromQuery] int idAtor)
+        [HttpGet("BuscaFilmesPorAtor")]
+        public  IActionResult BuscaFilmesPorAtor([FromQuery] int idAtor)
         {
             var filmes = _atorFilmeService.BuscaFilmesPorAtor(idAtor);
-            return Ok(filmes);
+            if (filmes != null)
+            {
+                return Ok(filmes);
+            }
+            return NotFound();
         }
-
 
 
         [Authorize(Roles = "Administrador")]
         [HttpPost("AdicionaAtorEmFilme")]
         public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
-            _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
+            
+            Result resultado = _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
+            if(resultado.IsFailed)
+            {
+                return BadRequest();
+            }
             return Ok();
+            
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraAtorDofilme")]
         public IActionResult AlteraAtorDofilme([FromQuery] int idAtorAtual, int idFilme, int idAtorNovo)
         {
-            _atorFilmeService.AlteraAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
+            Result resultado =  _atorFilmeService.AlteraAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
+            if (resultado.IsFailed)
+            {
+                return BadRequest();
+            }
             return Ok();
+
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaAtorDoFilme")]
         public IActionResult DeletaAtorDoFilme([FromQuery] int idAtor,int idFilme)
         {
-            _atorFilmeService.DeletaAtorDoFilme(idAtor,idFilme);
-            return Ok();
+            Result resultado = _atorFilmeService.DeletaAtorDoFilme(idAtor,idFilme);
+            if (resultado != null)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
         
 

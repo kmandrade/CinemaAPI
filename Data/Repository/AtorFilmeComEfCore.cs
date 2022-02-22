@@ -36,12 +36,15 @@ namespace Data.Repository
         }
         public AtoresFilme BuscaAtorDoFilme(int idAtor, int idFilme)
         {
-            var selecionaAtorFilme = _context.AtoresFilmes
+            
+                var selecionaAtorFilme = _context.AtoresFilmes
                 .Include(a => a.Ator)
                 .Include(f => f.Filme)
                 .Where(at => at.IdAtor == idAtor && at.IdFilme == idFilme)
                 .First();
-            return selecionaAtorFilme;
+            
+                return selecionaAtorFilme;
+            
                 
         }
     }

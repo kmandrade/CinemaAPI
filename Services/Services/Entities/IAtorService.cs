@@ -19,7 +19,7 @@ namespace Servicos.Services.Entities
 
         Result Cadastra(CriarAtorDto obj);
         Result Altera(int id,AlterarAtorDto obj);
-        void Excluir(int id);
+        Result Excluir(int id);
 
 
     }

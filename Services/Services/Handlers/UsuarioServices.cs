@@ -42,6 +42,7 @@ namespace Servicos.Services.Handlers
         public void CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto)
         {
             var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
+            usuario.Situacao = SituacaoEntities.Ativado;
             _usuarioDao.Incluir(usuario);
         }
 
@@ -58,8 +59,28 @@ namespace Servicos.Services.Handlers
             _usuarioDao.Save();
         }
 
+        public void ArquivarUsuario(int id)
+        {
+            var usuarioSelecionado = _usuarioDao.BuscarPorId(id);
+            usuarioSelecionado.Situacao = SituacaoEntities.Arquivado;
+            _usuarioDao.Alterar(usuarioSelecionado);
+        }
+        public void ReativarUsuario(int id)
+        {
+            var usuarioSelecionado = _usuarioDao.BuscarPorId(id);
+            usuarioSelecionado.Situacao = SituacaoEntities.Ativado;
+            _usuarioDao.Alterar(usuarioSelecionado);
+        }
 
-       
+        public IEnumerable<LerUsuarioDto> BuscaUsuariosArquivados(int skip, int take)
+        {
+            var ususarios = _usuarioDao.BuscarTodos()
+                .Where(u => u.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take)
+                .ToList();
+            var ususariosMapeados = _mapper.Map<IEnumerable<LerUsuarioDto>>(ususarios);
+            return ususariosMapeados;
+        }
+
        public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest)
        {
            var usuarioSelecionado =

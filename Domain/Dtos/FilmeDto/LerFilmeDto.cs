@@ -34,6 +34,6 @@ namespace Domain.Dtos.FilmeDto
 
         public virtual IEnumerable<Votos> Votos { get; set; }
 
-        public SituacaoFilme Situacao { get; set; }
+        public SituacaoEntities Situacao { get; set; }
     }
 }

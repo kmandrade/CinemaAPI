@@ -60,7 +60,8 @@ namespace Data.Context
                     Password = "admin",
                     Email = "",
                     NomeUsuario = "admin",
-                    Votos = null
+                    Votos = null,
+                    Situacao=SituacaoEntities.Ativado
                 });
 
             //ATORFILME

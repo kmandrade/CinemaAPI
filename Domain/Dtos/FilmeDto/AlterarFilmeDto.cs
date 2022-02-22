@@ -18,7 +18,7 @@ namespace Domain.Dtos.FilmeDto
         public int idDiretor { get; set; }
 
 
-        public SituacaoFilme Situacao { get; set; }
+        public SituacaoEntities Situacao { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,6 @@ namespace Domain.Dtos.UsuarioDto
         public string Email { get; set; }
 
         public string Password { get; set; }
+        public SituacaoEntities Situacao { get; set; }
     }
 }

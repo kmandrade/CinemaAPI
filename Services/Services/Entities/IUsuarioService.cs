@@ -15,7 +15,9 @@ namespace Servicos.Services.Entities
         void AlteraUsuario(int idUsuario,CriarUsuarioDto criarUsuarioDto);
         void DeletaUsuario(int idUsuario);
         LerUsuarioDto BuscaUsuarioPorId(int idUsuario);
-
-        public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
+        Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
+        void ArquivarUsuario(int id);
+        void ReativarUsuario(int id);
+        IEnumerable<LerUsuarioDto> BuscaUsuariosArquivados(int skip, int take);
     }
 }
