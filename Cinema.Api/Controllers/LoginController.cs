@@ -28,7 +28,7 @@ namespace Cinema.Api.Controllers
             var usuario = _usuarioService.BuscaUsuarioPorLogin(request);
             
            //verifica se usuario existe
-            if (usuario == null)
+            if (usuario == null || usuario.Situacao==SituacaoEntities.Arquivado)
             {
                 return NotFound(new { message = "Usuario ou senha invalidos" });
             }

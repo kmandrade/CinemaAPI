@@ -2,6 +2,7 @@
 using Data.Entities;
 using Domain.Dtos.UsuarioDto;
 using Domain.Models;
+using FluentResults;
 using Servicos.Services.Entities;
 using System;
 using System.Collections.Generic;
@@ -59,17 +60,27 @@ namespace Servicos.Services.Handlers
             _usuarioDao.Save();
         }
 
-        public void ArquivarUsuario(int id)
+        public Result ArquivarUsuario(int id)
         {
             var usuarioSelecionado = _usuarioDao.BuscarPorId(id);
+            if(usuarioSelecionado==null || usuarioSelecionado.Situacao == SituacaoEntities.Arquivado)
+            {
+                return Result.Fail("Usuario nao existe ou ja arquivado");
+            }
             usuarioSelecionado.Situacao = SituacaoEntities.Arquivado;
             _usuarioDao.Alterar(usuarioSelecionado);
+            return Result.Ok();
         }
-        public void ReativarUsuario(int id)
+        public Result ReativarUsuario(int id)
         {
             var usuarioSelecionado = _usuarioDao.BuscarPorId(id);
+            if (usuarioSelecionado == null || usuarioSelecionado.Situacao == SituacaoEntities.Ativado)
+            {
+                return Result.Fail("Usuario nao existe ou ja ativado");
+            }
             usuarioSelecionado.Situacao = SituacaoEntities.Ativado;
             _usuarioDao.Alterar(usuarioSelecionado);
+            return Result.Ok();
         }
 
         public IEnumerable<LerUsuarioDto> BuscaUsuariosArquivados(int skip, int take)

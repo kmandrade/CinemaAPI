@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos.UsuarioDto;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Servicos.Services.Entities;
@@ -40,6 +41,31 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Administrador")]
+        [HttpPut("ArquivaUsuario/{id}")]
+        public IActionResult ArquivaUsuario(int id)
+        {
+            Result resultado = _usuarioService.ArquivarUsuario(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = "Usuario nao existe ou ja arquivado" });
+            }
+            return Ok(resultado);
+          
+        }
+
+        [Authorize(Roles = "Administrador")]
+        [HttpPut("ReativarUsuario/{id}")]
+        public IActionResult ReativarUsuario(int id)
+        {
+            Result resultado = _usuarioService.ReativarUsuario(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = "Usuario nao existe ou ja ativado" });
+            }
+            return Ok(new { message = "Usuario Ativado" });
+
+        }
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraUsuario")]

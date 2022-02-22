@@ -28,11 +28,12 @@ namespace Servicos.Services.Handlers
 
         public void AdicionaVotosEmFilme(AdicionaVotosDto votosDto, int idUsuario)
         {
+            //busca filme pelo Dto
             var filme = _filmeDao.BuscarPorId(votosDto.IdFilmeDto);
-            //buscar o voto por filme e usuario
-
-            var votoSelecionado = _votosDao.BuscaVotoPorFilmeEUsuario(votosDto.IdFilmeDto, idUsuario);
+            
             //verifica se existe ja existe um voto desse usuario nesse filme
+            var votoSelecionado = _votosDao.BuscaVotoPorFilmeEUsuario(votosDto.IdFilmeDto, idUsuario);
+            
             if (votoSelecionado==null)
             {
                 var voto = _mapper.Map<Votos>(votosDto);

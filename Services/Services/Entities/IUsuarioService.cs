@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos.UsuarioDto;
 using Domain.Models;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace Servicos.Services.Entities
         void DeletaUsuario(int idUsuario);
         LerUsuarioDto BuscaUsuarioPorId(int idUsuario);
         Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
-        void ArquivarUsuario(int id);
-        void ReativarUsuario(int id);
+        Result ArquivarUsuario(int id);
+        Result ReativarUsuario(int id);
         IEnumerable<LerUsuarioDto> BuscaUsuariosArquivados(int skip, int take);
     }
 }
