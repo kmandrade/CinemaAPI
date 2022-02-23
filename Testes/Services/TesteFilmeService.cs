@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Data.Services.Handlers;
+using Domain.Dtos.FilmeDto;
+using Domain.Models;
 using Domain.Profiles;
 using Domain.Services.Entities;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit;
 
 namespace Testes.Services
 {
@@ -30,5 +28,33 @@ namespace Testes.Services
             _filmeDao = new Mock<IFilmeDao>();
             _filmeService = new FilmeServices(_filmeDao.Object, _mapper);
         }
+
+        [Fact]
+        public void BuscaFilmePorId_RetornaNullFilmeInexistente()
+        {
+
+            //Arranje
+            int id = 2;
+            _filmeDao.Setup(f => f.BuscarPorId(id)).Returns(null as Filme);
+            //Act
+            var resultadoService=_filmeService.ConsultaPorId(id);            
+            //Assert
+            Assert.Equal(null, resultadoService);
+        }
+        [Theory]
+        [InlineData(1)]
+        public void BuscaFilmePorId_RetornaFilmeArquivado(int id)
+        {
+            //Arranje
+            var filme = new Filme()
+            {
+               
+            };
+            //Act
+            
+            //Assert
+
+        }
+
     }
 }
