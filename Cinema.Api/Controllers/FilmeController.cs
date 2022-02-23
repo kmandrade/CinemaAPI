@@ -62,6 +62,12 @@ namespace Cinema.Api.Controllers
         [HttpPost("CadastraUmFilme")]
         public IActionResult CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
         {
+            /*
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            */
             _filmeService.Cadastra(criarFilmeDto);
             return Ok();
         }

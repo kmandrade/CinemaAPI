@@ -10,11 +10,7 @@ namespace Domain.Models
 {
     public class Filme
     {
-        //public Filme()
-        //{
-        //    Atores = new HashSet<Ator>();
-        //}
-
+      
 
         [Key]
         [Required]
@@ -33,7 +29,7 @@ namespace Domain.Models
         public virtual List<GeneroFilme> GenerosFilme { get; set; }
 
         
-        [Range (1,4,ErrorMessage ="O Voto so pode ser de 1 como ruim a 4 como otimo")]
+        [Range (0,4,ErrorMessage ="O Voto so pode ser de 0 como ruim a 4 como otimo")]
         public virtual List<Votos> Votos { get; set; }
 
         public SituacaoEntities Situacao { get; set; }
