@@ -34,7 +34,7 @@ namespace Testes.Services
         public  async void BuscaFilmePorId_RetornaNullFilmeInexistente()
         {
 
-            //Arranje
+            //Arrange
             int id = 2;
                _filmeDao.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
             //Act
@@ -46,7 +46,7 @@ namespace Testes.Services
         [InlineData(1)]
         public async void BuscaFilmePorId_Retorna_NUll_SeFilmeArquivado(int id)
         {
-            //Arranje
+            //Arrange
              
             var filmeDto = new LerFilmeDto()
             {
@@ -59,9 +59,9 @@ namespace Testes.Services
             var filme = _mapper.Map<Filme>(filmeDto);
             _filmeDao.Setup(f=>f.BuscarPorId(id)).ReturnsAsync(filme);
             //Act
-            var act = _filmeService.ConsultaPorId(id);
+            var act = await _filmeService.ConsultaPorId(id);
             //Assert
-            Assert.Null(act.Result);
+            Assert.Null(act);//ou tira o await e bota act.Result
         }
 
     }
