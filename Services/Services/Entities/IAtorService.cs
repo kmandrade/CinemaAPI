@@ -14,12 +14,12 @@ namespace Servicos.Services.Entities
     {
         
 
-        IEnumerable<LerAtorDto> ConsultaTodos(int skip, int take);
-        LerAtorDto ConsultaPorId(int id);
+        Task<IEnumerable<LerAtorDto>> ConsultaTodos(int skip, int take);
+        Task<LerAtorDto> ConsultaPorId(int id);
 
-        Result Cadastra(CriarAtorDto obj);
-        Result Altera(int id,AlterarAtorDto obj);
-        Result Excluir(int id);
+        Task<Result> Cadastra(CriarAtorDto obj);
+        Task<Result> Altera(int id,AlterarAtorDto obj);
+        Task<Result> Excluir(int id);
 
 
     }

@@ -29,17 +29,18 @@ namespace Data.Services.Handlers
             
         }
 
-        public IEnumerable<LerFilmeDto> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerFilmeDto>> ConsultaTodos(int skip, int take)
         {
-            var listadeFilmes = _filmeDao.BuscarTodos().Skip(skip).Take(take).ToList();
-            var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoEntities.Ativado);
+            var listadeFilmes = await _filmeDao.BuscarTodos();
+            var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoEntities.Ativado)
+                .Skip(skip).Take(take).ToList();
             var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesAtivos);
-            return filmesDtos.OrderBy(nome => nome.Titulo);
+            return (filmesDtos.OrderBy(nome => nome.Titulo));
         }
-
-        public LerFilmeDto ConsultaPorId(int id)
+        
+        public async Task<LerFilmeDto> ConsultaPorId(int id)
         {
-                var filme = _filmeDao.BuscarPorId(id);
+                var filme = await _filmeDao.BuscarPorId(id);
                 if (filme==null || filme.Situacao == SituacaoEntities.Arquivado)
                 {
                     return null;
@@ -47,9 +48,9 @@ namespace Data.Services.Handlers
                 var filmeDto = _mapper.Map<LerFilmeDto>(filme);
                 return filmeDto;
         }
-        public LerFilmeDto BuscarFilmeCompleto(int id)
+        public async Task<LerFilmeDto> BuscarFilmeCompleto(int id)
         {
-            var filme = _filmeDao.BuscarPorFilmesCompletoID(id);
+            var filme = await _filmeDao.BuscarPorFilmesCompletoID(id);
             if (filme == null || filme.Situacao == SituacaoEntities.Arquivado)
             {
                 return null;
@@ -59,7 +60,7 @@ namespace Data.Services.Handlers
         }
 
         
-        public Result Cadastra(CriarFilmeDto obj)
+        public async Task<Result> Cadastra(CriarFilmeDto obj)
         {
             var filme = _filmeDao.BuscarPorNome(obj.Titulo);
             if (filme != null)
@@ -67,56 +68,72 @@ namespace Data.Services.Handlers
                 return Result.Fail("Filme ja existe");
             }
             var filmeMapeado = _mapper.Map<Filme>(obj);
-            _filmeDao.Incluir(filmeMapeado);
+            await _filmeDao.Incluir(filmeMapeado);
             return Result.Ok();
         }
 
-        public Result Altera(int id, AlterarFilmeDto obj)
+        public async Task<Result> Altera(int id, AlterarFilmeDto obj)
         {
-            var filmeSelecionado = _filmeDao.BuscarPorId(id);
+            var filmeSelecionado = await _filmeDao.BuscarPorId(id);
             if (filmeSelecionado == null)
             {
                 return Result.Fail("Filme não existe");
             }
             _mapper.Map(obj, filmeSelecionado);
-            _filmeDao.Save();
+            await _filmeDao.Save();
             return Result.Ok();
 
         }
 
-        public void Excluir(int id)
-        {
-            var filmeSelecionado = _filmeDao.BuscarPorId(id);
-            if (filmeSelecionado != null)
-            {
-                _filmeDao.Excluir(filmeSelecionado);
-            }
-        }
 
-        public void ArquivarFilme(int id)
+
+        public async Task<Result> ArquivarFilme(int id)
         {
-            var filmeSelecionado = _filmeDao.BuscarPorId(id);
+            var filmeSelecionado = await _filmeDao.BuscarPorId(id);
+            if(filmeSelecionado == null || filmeSelecionado.Situacao==SituacaoEntities.Arquivado)
+            {
+                return Result.Fail("Filme nao existe");
+            }
 
             filmeSelecionado.Situacao = SituacaoEntities.Arquivado;
-            _filmeDao.Alterar(filmeSelecionado);
-            //salvar o dao _filmedao.save(); error por conta que nao tem mais
+            await _filmeDao.Alterar(filmeSelecionado);
+            return Result.Ok();
+            
 
         }
-        public void ReativarFilme(int id)
+        public async Task<Result> ReativarFilme(int id)
         {
-            var filmeSelecionado = _filmeDao.BuscarPorId(id);
+            var filmeSelecionado = await _filmeDao.BuscarPorId(id);
+            if(filmeSelecionado==null || filmeSelecionado.Situacao == SituacaoEntities.Ativado)
+            {
+                return Result.Fail("Filme ja ativado ou Nao existe");
+            }
             filmeSelecionado.Situacao = SituacaoEntities.Ativado;
-            _filmeDao.Alterar(filmeSelecionado);
+            await _filmeDao.Alterar(filmeSelecionado);
+            return Result.Ok();
         }
 
-        public IEnumerable<LerFilmeDto> BuscaFilmesArquivados(int skip, int take)
+        public async Task<IEnumerable<LerFilmeDto>> BuscaFilmesArquivados(int skip, int take)
         {
-            var filmes = _filmeDao.BuscarTodos()
+            var filmes = await _filmeDao.BuscarTodos();
+            var filmesPaginados = filmes
                 .Where(f => f.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take).ToList();
-            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
+            var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesPaginados);
             return filmesDto;
 
 
+        }
+        public async Task<Result> Excluir(int id)
+        {
+
+            var filmeSelecionado = await _filmeDao.BuscarPorId(id);
+            if (filmeSelecionado == null)
+            {
+                return Result.Fail("Filme nao existe");
+            }
+
+            _filmeDao.Excluir(filmeSelecionado);
+            return Result.Ok();
         }
     }
 }

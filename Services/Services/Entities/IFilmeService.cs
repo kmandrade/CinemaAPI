@@ -12,16 +12,16 @@ namespace Domain.Services.Entities
 {
     public interface IFilmeService
     {
-        IEnumerable<LerFilmeDto> ConsultaTodos(int skip, int take);
-        LerFilmeDto ConsultaPorId(int id);
+        Task<IEnumerable<LerFilmeDto>> ConsultaTodos(int skip, int take);
+        Task<LerFilmeDto> ConsultaPorId(int id);
 
-        LerFilmeDto BuscarFilmeCompleto(int id);
-        Result Cadastra(CriarFilmeDto obj);
-        Result Altera(int id, AlterarFilmeDto obj);
-        void Excluir(int id);
+        Task<LerFilmeDto> BuscarFilmeCompleto(int id);
+        Task<Result> Cadastra(CriarFilmeDto obj);
+        Task<Result> Altera(int id, AlterarFilmeDto obj);
+        Task<Result> Excluir(int id);
 
-        void ArquivarFilme(int id);
-        void ReativarFilme(int id);
-        IEnumerable<LerFilmeDto> BuscaFilmesArquivados(int skip, int take);
+        Task<Result> ArquivarFilme(int id);
+        Task<Result> ReativarFilme(int id);
+        Task<IEnumerable<LerFilmeDto>> BuscaFilmesArquivados(int skip, int take);
     }
 }

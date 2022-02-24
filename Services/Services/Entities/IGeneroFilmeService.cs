@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos.FilmeDto;
 using Domain.Dtos.FilmeGenero;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Servicos.Services.Entities
 {
     public interface IGeneroFilmeService
     {
-        void AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto);
-        IEnumerable<LerGeneroFilmeDto> BuscarFilmesPorGenero(int IdGeneroFilme);
-        void DeletaGeneroDoFilme(int idGenero, int idFilme);
-        void AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo);
+        Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto);
+        Task<IEnumerable<LerGeneroFilmeDto>> BuscarFilmesPorGenero(int IdGeneroFilme);
+        Task<Result> DeletaGeneroDoFilme(int idGenero, int idFilme);
+        Task<Result> AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo);
 
 
     }

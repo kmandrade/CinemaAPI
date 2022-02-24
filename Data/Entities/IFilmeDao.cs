@@ -7,8 +7,8 @@ namespace Data.Entities
     {
         //IEnumerable<Filme> BuscaFilmesMaisVotados(Votos votos);
        
-        Filme BuscarPorNome(string nome);
-        Filme BuscarPorFilmesCompletoID(int id);
+       Task<Filme> BuscarPorNome(string nome);
+       Task<Filme> BuscarPorFilmesCompletoID(int id);
         
     }
 }

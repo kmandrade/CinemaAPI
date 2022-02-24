@@ -19,33 +19,33 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpGet("BuscaTodosUsuariosComSenha")]
-        public IActionResult BuscaTodosUsuariosComSenha([FromQuery] int skip, int take)
+        public async Task<IActionResult> BuscaTodosUsuariosComSenha([FromQuery] int skip, int take)
         {
-            var usuarios = _usuarioService.BuscaTodosOsUsuarioDto(skip,take);
+            var usuarios = await _usuarioService.BuscaTodosOsUsuarioDto(skip,take);
             return Ok(usuarios);
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpGet("BuscaUsuario/{id}")]
-        public IActionResult BuscaUsuario(int id)
+        public async Task<IActionResult> BuscaUsuario(int id)
         {
-            var usuario = _usuarioService.BuscaUsuarioPorId(id);
+            var usuario = await _usuarioService.BuscaUsuarioPorId(id);
             return Ok(usuario);
         }
 
         [HttpPost("RegistraUsuario")]
         [AllowAnonymous]
-        public IActionResult CriarUsuario([FromBody]CriarUsuarioDto usuarioDto)
+        public async Task<IActionResult> CriarUsuario([FromBody]CriarUsuarioDto usuarioDto)
         {
-            _usuarioService.CriarUsuarioNormalDto(usuarioDto);
+            await _usuarioService.CriarUsuarioNormalDto(usuarioDto);
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("ArquivaUsuario/{id}")]
-        public IActionResult ArquivaUsuario(int id)
+        public async Task<IActionResult> ArquivaUsuario(int id)
         {
-            Result resultado = _usuarioService.ArquivarUsuario(id);
+            Result resultado = await _usuarioService.ArquivarUsuario(id);
             if (resultado.IsFailed)
             {
                 return BadRequest(new { message = "Usuario nao existe ou ja arquivado" });
@@ -56,9 +56,9 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("ReativarUsuario/{id}")]
-        public IActionResult ReativarUsuario(int id)
+        public async Task<IActionResult> ReativarUsuario(int id)
         {
-            Result resultado = _usuarioService.ReativarUsuario(id);
+            Result resultado = await _usuarioService.ReativarUsuario(id);
             if (resultado.IsFailed)
             {
                 return BadRequest(new { message = "Usuario nao existe ou ja ativado" });
@@ -69,17 +69,17 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraUsuario")]
-        public IActionResult AlteraUsuario([FromQuery]int idUsuario,[FromBody] CriarUsuarioDto criarUsuarioDto)
+        public async Task<IActionResult> AlteraUsuario([FromQuery]int idUsuario,[FromBody] CriarUsuarioDto criarUsuarioDto)
         {
-            _usuarioService.AlteraUsuario( idUsuario, criarUsuarioDto);
+            await _usuarioService.AlteraUsuario( idUsuario, criarUsuarioDto);
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaUsuario/{id}")]
-        public IActionResult DeletaUsuario(int id)
+        public async Task<IActionResult> DeletaUsuario(int id)
         {
-            _usuarioService.DeletaUsuario(id);
+            await _usuarioService.DeletaUsuario(id);
             return Ok();
         }
 

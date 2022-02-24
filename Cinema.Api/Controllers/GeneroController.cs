@@ -19,33 +19,33 @@ namespace Cinema.Api.Controllers
         }
 
         [HttpGet("ConsultaTodosGeneros")]
-        public IActionResult ConsultaGeneros([FromQuery] int skip, int take)
+        public async Task<IActionResult> ConsultaGeneros([FromQuery] int skip, int take)
         {
-            var generos = _generoService.ConsultaTodos(skip,take);
+            var generos = await _generoService.ConsultaTodos(skip,take);
             return Ok(generos);
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
-        public IActionResult CadastraGenero([FromBody]CriarGeneroDto generoDto)
+        public async Task<IActionResult> CadastraGenero([FromBody]CriarGeneroDto generoDto)
         {
-            _generoService.Cadastra(generoDto);
+           await _generoService.Cadastra(generoDto);
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraNomeGenero/{id}")]
-        public IActionResult AlteraNomeGenero(int id, AlterarGeneroDto obj)
+        public async Task<IActionResult> AlteraNomeGenero(int id, AlterarGeneroDto obj)
         {
-            _generoService.Altera(id, obj);
+            await _generoService.Altera(id, obj);
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaGenero/{id}")]
-        public IActionResult DeletaGenero(int id)
+        public async Task<IActionResult> DeletaGenero(int id)
         {
-            _generoService.Excluir(id);
+            await _generoService.Excluir(id);
             return Ok();
         }
     }

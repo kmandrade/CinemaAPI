@@ -17,9 +17,9 @@ namespace Cinema.Api.Controllers
             _diretorService = diretorService;
         }
         [HttpGet("BuscaFilmesPorDiretor")]
-        public IActionResult BuscaFilmesPorDiretor([FromQuery] int iDdiretor)
+        public async Task<IActionResult> BuscaFilmesPorDiretor([FromQuery] int iDdiretor)
         {
-            var filmes = _diretorService.lerFilmeDtosPorDiretor(iDdiretor);
+            var filmes = await _diretorService.lerFilmeDtosPorDiretor(iDdiretor);
             if (filmes != null)
             {
                 return Ok(filmes);
@@ -27,16 +27,16 @@ namespace Cinema.Api.Controllers
             return NotFound();
         }
         [HttpGet("BuscaTodosDiretores")]
-        public IActionResult BuscaDiretores([FromQuery]int skip, int take)
+        public async Task<IActionResult> BuscaDiretores([FromQuery]int skip, int take)
         {
-            var diretores = _diretorService.ConsultaTodos(skip, take);
+            var diretores = await _diretorService.ConsultaTodos(skip, take);
             return Ok(diretores);
             
         }
         [HttpGet("{id}")]
-        public IActionResult BuscaDiretoresPorId(int idDiretor)
+        public async Task<IActionResult> BuscaDiretoresPorId(int idDiretor)
         {
-            var diretor = _diretorService.ConsultaPorId(idDiretor);
+            var diretor = await _diretorService.ConsultaPorId(idDiretor);
 
             if (diretor != null)
             {
@@ -48,27 +48,27 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
-        public IActionResult CadastraDiretor([FromBody]CriarDiretorDto criarDiretorDto)
+        public async Task<IActionResult> CadastraDiretor([FromBody]CriarDiretorDto criarDiretorDto)
         {
-            _diretorService.Cadastra(criarDiretorDto);
+            await _diretorService.Cadastra(criarDiretorDto);
             return Ok();
         }
 
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("{id}")]
-        public IActionResult ModificaDiretor(int id, [FromBody] AlterarDiretorDto diretor)
+        public async Task<IActionResult> ModificaDiretor(int id, [FromBody] AlterarDiretorDto diretor)
         {
-            _diretorService.Altera(id, diretor);
+            await _diretorService.Altera(id, diretor);
             return NoContent();
 
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
-        public IActionResult RemoveDiretor(int id)
+        public async Task<IActionResult> RemoveDiretor(int id)
         {
-            _diretorService.Excluir(id);
+            await _diretorService.Excluir(id);
             return NoContent(); 
             
         }

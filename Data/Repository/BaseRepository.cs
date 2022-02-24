@@ -13,43 +13,48 @@ namespace Data.Repository
     {
         protected readonly MyContext _context;
         protected readonly DbSet<T> _dbSet;
+
         public BaseRepository(MyContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();
         }
 
-        public T BuscarPorId(int id)
+        public async Task<T> BuscarPorId(int id)
         {
-            return _dbSet.Find(id);
+            return  await _dbSet.FindAsync(id);
         }
         
-        public IEnumerable<T> BuscarTodos()
+        public async Task<IEnumerable<T>> BuscarTodos()
         {
-            return _dbSet.ToList();
+            return await _dbSet.ToListAsync();
         }
 
-        public void Excluir(T obj)
+        public virtual void Excluir(T obj)
         {
             _dbSet.Remove(obj);
             Save();
 
         }
-        public void Alterar(T obj)
+        public virtual async Task Alterar(T obj)
         {
             _dbSet.Update(obj);
-            Save();
+            await Save();
         }
-        public void Incluir(T obj)
+        public virtual async Task Incluir(T obj)
         {
             _dbSet.Add(obj);
-            Save();
+            await Save();
         }
-        public void Save()
+        public async Task<int> Save()
         {
             
-            _context.SaveChanges();
-            _context.Dispose();
+           return await _context.SaveChangesAsync();
+            
+        }
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

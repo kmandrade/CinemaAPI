@@ -9,14 +9,14 @@ namespace Data.Entities
     public interface IRepository<T>
     {
 
-        IEnumerable<T> BuscarTodos();
+        Task<IEnumerable<T>> BuscarTodos();
         
-        T BuscarPorId(int id); 
+        Task<T> BuscarPorId(int id); 
 
-        void Incluir(T obj);
-        void Alterar(T obj);
+        Task Incluir(T obj);
+        Task Alterar(T obj);
         void Excluir(T obj);
-        public void Save();
+        Task<int> Save();
 
 
     }

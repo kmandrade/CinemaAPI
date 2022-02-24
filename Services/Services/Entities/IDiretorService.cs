@@ -1,6 +1,7 @@
 ﻿using Domain.Dtos.DiretorDto;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,13 @@ namespace Servicos.Services.Entities
 {
     public interface IDiretorService
     {
-        IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(int idDiretor);
+        Task<IEnumerable<LerFilmeDto>> lerFilmeDtosPorDiretor(int idDiretor);
 
-        IEnumerable<LerDiretorDto> ConsultaTodos(int skip, int take);
-        LerDiretorDto ConsultaPorId(int id);
+        Task<IEnumerable<LerDiretorDto>> ConsultaTodos(int skip, int take);
+        Task<LerDiretorDto> ConsultaPorId(int id);
 
-        void Cadastra(CriarDiretorDto obj);
-        void Altera(int id, AlterarDiretorDto obj);
-        void Excluir(int id);
+        Task<Result> Cadastra(CriarDiretorDto obj);
+        Task<Result> Altera(int id, AlterarDiretorDto obj);
+        Task<Result> Excluir(int id);
     }
 }

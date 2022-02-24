@@ -20,20 +20,23 @@ namespace Data.Repository
         {
             _dbset = _context.Set<Filme>();
         }
-        public Filme BuscarPorNome(string nome)
+        public async Task<Filme> BuscarPorNome(string nome)
         {
-            var _filme = _context.Filmes.Where(f => f.Titulo == nome);
-            return _filme.FirstOrDefault();
+            var _filme = await _context.Filmes
+                .Where(f => f.Titulo == nome)
+                .FirstOrDefaultAsync();
+
+            return _filme;
         }
-        public Filme BuscarPorFilmesCompletoID(int id)
+        public async Task<Filme> BuscarPorFilmesCompletoID(int id)
         {
-            var filme = _context.Filmes
+            var filme = await _context.Filmes
                 .Include(d => d.Diretor)
                 .Include(atf=>atf.AtoresFilme)
                 .ThenInclude(a=>a.Ator)
                 .Include(gf=>gf.GenerosFilme)
                 .ThenInclude(g=>g.Genero)
-                .FirstOrDefault(f => f.IdFilme == id);
+                .FirstOrDefaultAsync(f => f.IdFilme == id);
             
             return filme;
                

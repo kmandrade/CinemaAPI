@@ -19,19 +19,19 @@ namespace Cinema.Api.Controllers
         }
         
         [HttpGet("ConsultaAtores")]
-        public IActionResult ConsultaAtores([FromQuery] int skip, int take)
+        public async Task<IActionResult> ConsultaAtores([FromQuery] int skip, int take)
         {
             if (skip < 0 || take < 0) return BadRequest();
-            var atores = _atorService.ConsultaTodos(skip,  take);
+            var atores = await _atorService.ConsultaTodos(skip,  take);
             if (atores == null) return BadRequest();
             return Ok(atores);
         }
 
         [HttpGet("ConsultaAtorPorId/{id}")]
-        public IActionResult ConsultaAtorPorId(int id)
+        public async Task<IActionResult> ConsultaAtorPorId(int id)
         {
-            var atores = _atorService.ConsultaPorId(id);
-            if (id < 0 || id == null || atores==null)
+            var atores = await _atorService.ConsultaPorId(id);
+            if (id < 0 || atores==null)
             {
                 return BadRequest();
             }
@@ -41,9 +41,9 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
-        public IActionResult CadastraAtor([FromBody]CriarAtorDto atorDto)
+        public async Task<IActionResult> CadastraAtor([FromBody]CriarAtorDto atorDto)
         {
-           Result resultado =  _atorService.Cadastra(atorDto);
+           Result resultado =  await _atorService.Cadastra(atorDto);
             if (resultado.IsFailed)
             {
                 return BadRequest();
@@ -52,16 +52,16 @@ namespace Cinema.Api.Controllers
         }
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraNomeAtor/{id}")]
-        public IActionResult AlteraNomeAtor(int id, AlterarAtorDto obj)
+        public async Task<IActionResult> AlteraNomeAtor(int id, AlterarAtorDto obj)
         {
-            _atorService.Altera(id, obj);
+            await _atorService.Altera(id, obj);
             return Ok();
         }
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaAtor/{id}")]
-        public IActionResult DeletaAtor(int id)
+        public async Task<IActionResult> DeletaAtor(int id)
         {
-            _atorService.Excluir(id);
+            await _atorService.Excluir(id);
             return Ok();
         }
     }

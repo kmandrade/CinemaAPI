@@ -11,14 +11,14 @@ namespace Servicos.Services.Entities
 {
     public interface IUsuarioService
     {
-        IEnumerable<LerUsuarioDto> BuscaTodosOsUsuarioDto(int skip, int take);
-        void CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto);
-        void AlteraUsuario(int idUsuario,CriarUsuarioDto criarUsuarioDto);
-        void DeletaUsuario(int idUsuario);
-        LerUsuarioDto BuscaUsuarioPorId(int idUsuario);
-        Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest);
-        Result ArquivarUsuario(int id);
-        Result ReativarUsuario(int id);
-        IEnumerable<LerUsuarioDto> BuscaUsuariosArquivados(int skip, int take);
+        Task<IEnumerable<LerUsuarioDto>> BuscaTodosOsUsuarioDto(int skip, int take);
+        Task<Result> CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto);
+        Task<Result> AlteraUsuario(int idUsuario,CriarUsuarioDto criarUsuarioDto);
+        Task<Result> DeletaUsuario(int idUsuario);
+        Task<LerUsuarioDto> BuscaUsuarioPorId(int idUsuario);
+        Task<Usuario> BuscaUsuarioPorLogin(LoginRequest loginRequest);
+        Task<Result> ArquivarUsuario(int id);
+        Task<Result> ReativarUsuario(int id);
+        Task<IEnumerable<LerUsuarioDto>> BuscaUsuariosArquivados(int skip, int take);
     }
 }

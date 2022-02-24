@@ -3,6 +3,7 @@ using Data.Entities;
 using Domain.Dtos.DiretorDto;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
+using FluentResults;
 using Servicos.Services.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,56 +26,59 @@ namespace Servicos.Services.Handlers
 
         }
 
-        public IEnumerable<LerFilmeDto> lerFilmeDtosPorDiretor(int idDiretor)
+        public async Task<IEnumerable<LerFilmeDto>> lerFilmeDtosPorDiretor(int idDiretor)
         {
 
-            var filmes = _diretorDao.BuscaFilmesPorDiretor(idDiretor);
+            var filmes = await _diretorDao.BuscaFilmesPorDiretor(idDiretor);
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
             return filmesDto;
-            //var filmes = _filmeDao.BuscarPorId(idDiretor);
-
-            //    var filmesDto = _mapper.Map<LerFilmeDto>(filmes);
-            //    yield return filmesDto;
+           
         }
 
-        public IEnumerable<LerDiretorDto> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerDiretorDto>> ConsultaTodos(int skip, int take)
         {
-            var diretoresPaginados = _diretorDao.BuscarTodos().Skip(skip).Take(take).ToList();
+            var diretores = await _diretorDao.BuscarTodos();
+            var diretoresPaginados = diretores.Skip(skip).Take(take).ToList();
             var diretoresMapeados = _mapper.Map<IEnumerable<LerDiretorDto>>(diretoresPaginados);
             return diretoresMapeados;
         }
 
-        public LerDiretorDto ConsultaPorId(int id)
+        public async Task<LerDiretorDto> ConsultaPorId(int id)
         {
-            var diretor = _diretorDao.BuscarPorId(id);//vai pegar so o numero do id e verifica no banco
+            var diretor = await _diretorDao.BuscarPorId(id);//vai pegar so o numero do id e verifica no banco
             var diretorDto = _mapper.Map<LerDiretorDto>(diretor);//converte pra dto e manda pra tela
             return diretorDto;
         }
 
-        public void Cadastra(CriarDiretorDto obj)
+        public async Task<Result> Cadastra(CriarDiretorDto obj)
         {
             var diretor = _mapper.Map<Diretor>(obj);
-            _diretorDao.Incluir(diretor);
+           await _diretorDao.Incluir(diretor);
+            return Result.Ok();
         }
 
-        public void Altera(int id, AlterarDiretorDto diretorDto)
+        public async Task<Result> Altera(int id, AlterarDiretorDto diretorDto)
         {
             var diretorSelecionado = _diretorDao.BuscarPorId(id);
             if(diretorSelecionado != null)
             {
                 var diretorMapeado = _mapper.Map<Diretor>(diretorDto);
-                _diretorDao.Alterar(diretorMapeado);
+               await _diretorDao.Alterar(diretorMapeado);
+                return Result.Ok();
             }
+            return Result.Fail("errror");
             
         }
 
-        public void Excluir(int id)
+        public async Task<Result> Excluir(int id)
         {
-            var diretorSelecionado = _diretorDao.BuscarPorId(id);
+            var diretorSelecionado = await _diretorDao.BuscarPorId(id);
             if (diretorSelecionado != null)
             {
                 _diretorDao.Excluir(diretorSelecionado);
+                return Result.Ok();
             }
+            return Result.Fail("fail");
         }
 
        

@@ -2,6 +2,7 @@
 using Data.Entities;
 using Domain.Dtos.VotosDto;
 using Domain.Models;
+using FluentResults;
 using Servicos.Services.Entities;
 using System;
 using System.Collections.Generic;
@@ -26,10 +27,10 @@ namespace Servicos.Services.Handlers
             
         }
 
-        public void AdicionaVotosEmFilme(AdicionaVotosDto votosDto, int idUsuario)
+        public async Task<Result> AdicionaVotosEmFilme(AdicionaVotosDto votosDto, int idUsuario)
         {
             //busca filme pelo Dto
-            var filme = _filmeDao.BuscarPorId(votosDto.IdFilmeDto);
+            var filme = await _filmeDao.BuscarPorId(votosDto.IdFilmeDto);
             
             //verifica se existe ja existe um voto desse usuario nesse filme
             var votoSelecionado = _votosDao.BuscaVotoPorFilmeEUsuario(votosDto.IdFilmeDto, idUsuario);
@@ -38,36 +39,45 @@ namespace Servicos.Services.Handlers
             {
                 var voto = _mapper.Map<Votos>(votosDto);
                 voto.IdUsuario = idUsuario;
-                _votosDao.Incluir(voto);
+                await _votosDao.Incluir(voto);
+                return Result.Ok();
             }
+            return Result.Fail("eror");
             
         }
 
-        public IEnumerable<LerVotoDto> BuscaFilmesMaisVotados(int skip, int take)
+        public async Task<IEnumerable<LerVotoDto>> BuscaFilmesMaisVotados(int skip, int take)
         {
-            var filmes=_votosDao.BuscaFilmesMaisVotados().Skip(skip).Take(take).ToList();
+            var filmes = await _votosDao.BuscaFilmesMaisVotados();
+                var votosFilmesPaginados=filmes
+                .Skip(skip).Take(take).ToList();
             var votosDto = _mapper.Map<IEnumerable<LerVotoDto>>(filmes);
             return votosDto;
         }
 
-        public void AlteraValorDoVotoEmFilme(int idVoto, int valorDoVoto, int idUsuario)
+        public async Task<Result> AlteraValorDoVotoEmFilme(int idVoto, int valorDoVoto, int idUsuario)
         {
-            var votoSelecionado = _votosDao.BuscarPorId(idVoto);
+            var votoSelecionado = await _votosDao.BuscarPorId(idVoto);
 
             if (votoSelecionado != null && votoSelecionado.IdUsuario==idUsuario)
             {
                 votoSelecionado.ValorDoVoto = valorDoVoto;
-                _votosDao.Save();
+                await _votosDao.Save();
+                return Result.Ok();
 
             }
+            return Result.Fail("error");
         }
-        public void RemoverVoto(int idVoto, int idUsuario)
+        public async Task<Result> RemoverVoto(int idVoto, int idUsuario)
         {
-            var votoSelecionado = _votosDao.BuscarPorId(idVoto);
+            var votoSelecionado = await _votosDao.BuscarPorId(idVoto);
             if(votoSelecionado!=null && votoSelecionado.IdUsuario == idUsuario)
             {
                 _votosDao.Excluir(votoSelecionado);
+                return Result.Ok();
+
             }
+            return Result.Fail("error");
             
         }
 

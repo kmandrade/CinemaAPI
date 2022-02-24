@@ -28,24 +28,24 @@ namespace Servicos.Services.Handlers
 
        
 
-        public LerGeneroDto ConsultaPorId(int id)
+        public async Task<LerGeneroDto> ConsultaPorId(int id)
         {
-            var generoId = _generoDao.BuscarPorId(id);
+            var generoId = await _generoDao.BuscarPorId(id);
             var generoDto = _mapper.Map<LerGeneroDto>(generoId);
             return generoDto;
             
         }
 
-        public IEnumerable<LerGeneroDto> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerGeneroDto>> ConsultaTodos(int skip, int take)
         {
-            var listaGeneros = _generoDao.BuscarTodos().Skip(skip).Take(take).ToList();
-            var listaGenerosDto = _mapper.Map<IEnumerable<LerGeneroDto>>(listaGeneros);
+            var listaGeneros = await _generoDao.BuscarTodos();
+            var generosPaginados = listaGeneros.Skip(skip).Take(take).ToList();
+            var listaGenerosDto = _mapper.Map<IEnumerable<LerGeneroDto>>(generosPaginados);
             return listaGenerosDto;
         }
 
-       
 
-        public Result Cadastra(CriarGeneroDto obj)
+        public async Task<Result> Cadastra(CriarGeneroDto obj)
         {
             //var genero = _generoDao.BuscarPorNome(obj.NomeGenero);
             //if (genero != null)
@@ -53,29 +53,31 @@ namespace Servicos.Services.Handlers
             //    return Result.Fail("Ator ja existe ");
             //}
             var generoMapeado = _mapper.Map<Genero>(obj);
-            _generoDao.Incluir(generoMapeado);
+            await _generoDao.Incluir(generoMapeado);
             return Result.Ok();
         }
 
-        public Result Altera(int id, AlterarGeneroDto obj)
+        public async Task<Result> Altera(int id, AlterarGeneroDto obj)
         {
-            var generoSelecionado = _generoDao.BuscarPorId(id);
+            var generoSelecionado = await _generoDao.BuscarPorId(id);
             if (generoSelecionado == null)
             {
                 return Result.Fail("Genero nao Existe");
             }
             _mapper.Map(obj,generoSelecionado);
-            _generoDao.Save();
+             await _generoDao.Save();
             return Result.Ok();
         }
 
-        public void Excluir(int id)
+        public async Task<Result> Excluir(int id)
         {
-            var generoSelecionado = _generoDao.BuscarPorId(id);
+            var generoSelecionado = await _generoDao.BuscarPorId(id);
             if (generoSelecionado != null)
             {
                 _generoDao.Excluir(generoSelecionado);
+                return Result.Ok();
             }
+            return Result.Fail("error");
         }
     }
 }

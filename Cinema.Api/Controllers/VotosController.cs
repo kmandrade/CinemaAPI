@@ -17,33 +17,33 @@ namespace Cinema.Api.Controllers
         }
        
         [HttpGet("BuscaFilmesMaisVotados")]
-        public IActionResult BuscaFilmesMaisVotados([FromQuery] int skip, int take)
+        public async Task<IActionResult> BuscaFilmesMaisVotados([FromQuery] int skip, int take)
         {
-            var filmes = _votosService.BuscaFilmesMaisVotados(skip,take);
+            var filmes = await _votosService.BuscaFilmesMaisVotados(skip,take);
             return Ok(filmes);
         }
 
         [HttpPost("AdicionaVotoEmFilme")]
-        public IActionResult AdicionaVotoEmFilme([FromBody]AdicionaVotosDto votosDto)
+        public async Task<IActionResult> AdicionaVotoEmFilme([FromBody]AdicionaVotosDto votosDto)
         {
-            _votosService.AdicionaVotosEmFilme(votosDto, BuscaIdUsuarioPorJWT());
+            await _votosService.AdicionaVotosEmFilme(votosDto, BuscaIdUsuarioPorJWT());
             return Ok();
         }
 
 
         [HttpPut("AlteraValorDoVotoEmFilme")]
-        public IActionResult AlteraVotoEmFilme ([FromQuery] int idVoto,int valorDoVoto)
+        public async Task<IActionResult> AlteraVotoEmFilme ([FromQuery] int idVoto,int valorDoVoto)
         {
             
-            _votosService.AlteraValorDoVotoEmFilme(idVoto, valorDoVoto, BuscaIdUsuarioPorJWT()); 
+            await _votosService.AlteraValorDoVotoEmFilme(idVoto, valorDoVoto, BuscaIdUsuarioPorJWT()); 
             return Ok();
         }
 
         [HttpDelete("DeletaVotoEmFilme")]
-        public IActionResult DeletaVotoEmFilme([FromQuery]int idVoto)
+        public async Task<IActionResult> DeletaVotoEmFilme([FromQuery]int idVoto)
         {
             
-            _votosService.RemoverVoto(idVoto, BuscaIdUsuarioPorJWT());
+           await _votosService.RemoverVoto(idVoto, BuscaIdUsuarioPorJWT());
             return Ok();
         }
 

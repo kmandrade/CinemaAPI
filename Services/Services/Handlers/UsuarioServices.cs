@@ -23,82 +23,87 @@ namespace Servicos.Services.Handlers
             _mapper = mapper;
         }
 
-        
 
-        public IEnumerable<LerUsuarioDto> BuscaTodosOsUsuarioDto(int skip, int take)
+
+        public async Task<IEnumerable<LerUsuarioDto>> BuscaTodosOsUsuarioDto(int skip, int take)
         {
-            var listaUsuarios = _usuarioDao.BuscarTodos().Skip(skip).Take(take).ToList();
+            var listaUsuarios = await _usuarioDao.BuscarTodos();
+            var usuariosPaginados = listaUsuarios.Skip(skip).Take(take).ToList();
             var usuariosDto = _mapper.Map<IEnumerable<LerUsuarioDto>>(listaUsuarios);
             return usuariosDto;
         }
 
-        public LerUsuarioDto BuscaUsuarioPorId(int idUsuario)
+        public async Task<LerUsuarioDto> BuscaUsuarioPorId(int idUsuario)
         {
-            var usuarioSelecionado = _usuarioDao.BuscarPorId(idUsuario);
+            var usuarioSelecionado = await _usuarioDao.BuscarPorId(idUsuario);
             var usuarioDto = _mapper.Map<LerUsuarioDto>(usuarioSelecionado);
             return usuarioDto;
         }
 
 
-        public void CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto)
+        public async Task<Result> CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto)
         {
             var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
             usuario.Situacao = SituacaoEntities.Ativado;
-            _usuarioDao.Incluir(usuario);
+            await _usuarioDao.Incluir(usuario);
+            return Result.Ok();
         }
 
-        public void DeletaUsuario(int idUsuario)
+        public async Task<Result> DeletaUsuario(int idUsuario)
         {
-            var usuarioSelecionado = _usuarioDao.BuscarPorId(idUsuario);
+            var usuarioSelecionado = await _usuarioDao.BuscarPorId(idUsuario);
             _usuarioDao.Excluir(usuarioSelecionado);
+            return Result.Ok();
         }
 
-        public void AlteraUsuario(int idUsuario, CriarUsuarioDto criarUsuarioDto)
+        public async Task<Result> AlteraUsuario(int idUsuario, CriarUsuarioDto criarUsuarioDto)
         {
-            var usuarioSelecionado = _usuarioDao.BuscarPorId(idUsuario);
+            var usuarioSelecionado = await _usuarioDao.BuscarPorId(idUsuario);
             _mapper.Map(usuarioSelecionado, criarUsuarioDto);
-            _usuarioDao.Save();
+            await _usuarioDao.Save();
+            return Result.Ok();
         }
 
-        public Result ArquivarUsuario(int id)
+        public async Task<Result> ArquivarUsuario(int id)
         {
-            var usuarioSelecionado = _usuarioDao.BuscarPorId(id);
-            if(usuarioSelecionado==null || usuarioSelecionado.Situacao == SituacaoEntities.Arquivado)
+            var usuarioSelecionado = await _usuarioDao.BuscarPorId(id);
+            if (usuarioSelecionado == null || usuarioSelecionado.Situacao == SituacaoEntities.Arquivado)
             {
                 return Result.Fail("Usuario nao existe ou ja arquivado");
             }
             usuarioSelecionado.Situacao = SituacaoEntities.Arquivado;
-            _usuarioDao.Alterar(usuarioSelecionado);
+            await _usuarioDao.Alterar(usuarioSelecionado);
             return Result.Ok();
         }
-        public Result ReativarUsuario(int id)
+        public async Task<Result> ReativarUsuario(int id)
         {
-            var usuarioSelecionado = _usuarioDao.BuscarPorId(id);
+            var usuarioSelecionado = await _usuarioDao.BuscarPorId(id);
             if (usuarioSelecionado == null || usuarioSelecionado.Situacao == SituacaoEntities.Ativado)
             {
                 return Result.Fail("Usuario nao existe ou ja ativado");
             }
             usuarioSelecionado.Situacao = SituacaoEntities.Ativado;
-            _usuarioDao.Alterar(usuarioSelecionado);
+            await _usuarioDao.Alterar(usuarioSelecionado);
             return Result.Ok();
         }
 
-        public IEnumerable<LerUsuarioDto> BuscaUsuariosArquivados(int skip, int take)
+        public async Task<IEnumerable<LerUsuarioDto>> BuscaUsuariosArquivados(int skip, int take)
         {
-            var ususarios = _usuarioDao.BuscarTodos()
+            var ususarios = await _usuarioDao.BuscarTodos();
+            var usuariosPaginados=ususarios
                 .Where(u => u.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take)
                 .ToList();
             var ususariosMapeados = _mapper.Map<IEnumerable<LerUsuarioDto>>(ususarios);
             return ususariosMapeados;
         }
 
-       public Usuario BuscaUsuarioPorLogin(LoginRequest loginRequest)
-       {
-           var usuarioSelecionado =
-               _usuarioDao.BuscaUsuarioPorNomeESenha(loginRequest.UserName, loginRequest.Password);
-           return usuarioSelecionado;
-       }
-       
+        public async Task<Usuario> BuscaUsuarioPorLogin(LoginRequest loginRequest)
+        {
+            var usuarioSelecionado = await
+                _usuarioDao.BuscaUsuarioPorNomeESenha(loginRequest.UserName, loginRequest.Password);
+            return usuarioSelecionado;
+        }
+
 
 
     }

@@ -27,9 +27,9 @@ namespace Servicos.Services.Handlers
         }
 
 
-        public LerAtorDto ConsultaPorId(int id)
+        public async Task<LerAtorDto> ConsultaPorId(int id)
         {
-            var atores = _atorDao.BuscarPorId(id);
+            var atores = await _atorDao.BuscarPorId(id);
             if (atores == null)
             {
                 return null;
@@ -39,44 +39,45 @@ namespace Servicos.Services.Handlers
 
         }
 
-        public IEnumerable<LerAtorDto> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerAtorDto>> ConsultaTodos(int skip, int take)
         {
-            var atores = _atorDao.BuscarTodos().Skip(skip).Take(take).ToList();
+
+            var atores = await _atorDao.BuscarTodos();
             if (atores == null)
             {
                 return null;
             }
-            var atoresDto = _mapper.Map<IEnumerable<LerAtorDto>>(atores);
-            return atoresDto;
+            var atoresPaginados = atores.Skip(skip).Take(take).ToList();
+            
+            
+            var atoresDto = _mapper.Map<IEnumerable<LerAtorDto>>(atoresPaginados);
+            return  atoresDto;
         }
 
-        public Result Cadastra(CriarAtorDto obj)
+        public async Task<Result> Cadastra(CriarAtorDto obj)
         {
-            var buscaAtor = _atorDao.BuscarTodos().Where(a => a.NomeAtor == obj.NomeAtor);
-            if (buscaAtor!=null){
-                return Result.Fail("Ator ja existe");
-            }
+            
             var atorMapeado = _mapper.Map<Ator>(obj);
-            _atorDao.Incluir(atorMapeado);
+            await _atorDao.Incluir(atorMapeado);
             return Result.Ok();
         }
 
-        public Result Altera(int id, AlterarAtorDto obj)
+        public async Task<Result> Altera(int id, AlterarAtorDto obj)
         {
-            var atorSelecionado = _atorDao.BuscarPorId(id);
+            var atorSelecionado = await _atorDao.BuscarPorId(id);
             if (atorSelecionado == null)
             {
                 return Result.Fail("Filme nao existe");
             }
             _mapper.Map(obj, atorSelecionado);
-            _atorDao.Save();
+            await _atorDao.Save();
             return Result.Ok();
 
         }
 
-        public Result Excluir(int id)
+        public async Task<Result> Excluir(int id)
         {
-            var atorSelecionado = _atorDao.BuscarPorId(id);
+            var atorSelecionado = await _atorDao.BuscarPorId(id);
             if (atorSelecionado != null)
             {
                 _atorDao.Excluir(atorSelecionado);

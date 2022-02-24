@@ -13,10 +13,10 @@ namespace Servicos.Services.Entities
     public interface IAtorFilmeService
     {
         
-        IEnumerable<LerAtorFilmeDto> BuscaFilmesPorAtor(int  idAtorFilme);
-        Result AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto);
-        Result DeletaAtorDoFilme(int idAtor,int idFilme);
-        Result AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo);
+        Task<IEnumerable<LerAtorFilmeDto>> BuscaFilmesPorAtor(int  idAtorFilme);
+        Task<Result> AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto);
+        Task<Result> DeletaAtorDoFilme(int idAtor,int idFilme);
+        Task<Result> AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo);
 
     }
 }

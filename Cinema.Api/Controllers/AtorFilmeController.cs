@@ -20,9 +20,9 @@ namespace Cinema.Api.Controllers
             _atorFilmeService = atorFilmeService;
         }
         [HttpGet("BuscaFilmesPorAtor")]
-        public  IActionResult BuscaFilmesPorAtor([FromQuery] int idAtor)
+        public  async Task<IActionResult> BuscaFilmesPorAtor([FromQuery] int idAtor)
         {
-            var filmes = _atorFilmeService.BuscaFilmesPorAtor(idAtor);
+            var filmes = await _atorFilmeService.BuscaFilmesPorAtor(idAtor);
             if (filmes != null)
             {
                 return Ok(filmes);
@@ -33,10 +33,10 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPost("AdicionaAtorEmFilme")]
-        public IActionResult AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
+        public async Task<IActionResult> AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
             
-            Result resultado = _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
+            Result resultado = await _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
             if(resultado.IsFailed)
             {
                 return BadRequest();
@@ -47,9 +47,9 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraAtorDofilme")]
-        public IActionResult AlteraAtorDofilme([FromQuery] int idAtorAtual, int idFilme, int idAtorNovo)
+        public async Task<IActionResult> AlteraAtorDofilme([FromQuery] int idAtorAtual, int idFilme, int idAtorNovo)
         {
-            Result resultado =  _atorFilmeService.AlteraAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
+            Result resultado = await  _atorFilmeService.AlteraAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
             if (resultado.IsFailed)
             {
                 return BadRequest();
@@ -60,9 +60,9 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaAtorDoFilme")]
-        public IActionResult DeletaAtorDoFilme([FromQuery] int idAtor,int idFilme)
+        public async Task<IActionResult> DeletaAtorDoFilme([FromQuery] int idAtor,int idFilme)
         {
-            Result resultado = _atorFilmeService.DeletaAtorDoFilme(idAtor,idFilme);
+            Result resultado = await _atorFilmeService.DeletaAtorDoFilme(idAtor,idFilme);
             if (resultado != null)
             {
                 return Ok();

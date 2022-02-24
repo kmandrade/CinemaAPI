@@ -19,25 +19,25 @@ namespace Cinema.Api.Controllers
 
 
         [HttpGet("BuscaFilmesPorGenero")]
-        public IActionResult BuscarFilmesPorGenero([FromQuery] int iDGenero)
+        public async Task<IActionResult> BuscarFilmesPorGenero([FromQuery] int iDGenero)
         {
-            var gf = _generoFilmeService.BuscarFilmesPorGenero(iDGenero);
+            var gf = await _generoFilmeService.BuscarFilmesPorGenero(iDGenero);
             return Ok(gf);
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPost("AdicionaGeneroEmFilme")]
-        public IActionResult AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
+        public async Task<IActionResult> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
-            _generoFilmeService.AdicionaGeneroFilme(criarGeneroFilmeDto);
+            await _generoFilmeService.AdicionaGeneroFilme(criarGeneroFilmeDto);
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraGeneroDoFilme")]
-        IActionResult AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
+        public async Task<IActionResult> AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
         {
-            _generoFilmeService.AlteraGeneroDoFilme(idGeneroAntigo, idFilme, iDGeneroNovo);
+            await _generoFilmeService.AlteraGeneroDoFilme(idGeneroAntigo, idFilme, iDGeneroNovo);
             return Ok ();
         }
 
@@ -45,9 +45,9 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaGeneroDoFilme")]
-        public IActionResult DeletaGeneroDoFilme([FromQuery] int idGenero,int idFilme)
+        public async Task<IActionResult> DeletaGeneroDoFilme([FromQuery] int idGenero,int idFilme)
         {
-            _generoFilmeService.DeletaGeneroDoFilme(idGenero,idFilme);
+             await _generoFilmeService.DeletaGeneroDoFilme(idGenero,idFilme);
             return Ok();
         }
         

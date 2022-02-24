@@ -3,6 +3,7 @@ using Data.Entities;
 using Domain.Dtos.FilmeDto;
 using Domain.Dtos.FilmeGenero;
 using Domain.Models;
+using FluentResults;
 using Servicos.Services.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,31 +26,34 @@ namespace Servicos.Services.Handlers
             _generofilme = generofilme;
         }
 
-        public void AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
+        public async Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
             var generoFilme = _mapper.Map<GeneroFilme>(criarGeneroFilmeDto);
-            _generofilme.Incluir(generoFilme);
+            await _generofilme.Incluir(generoFilme);
+            return Result.Ok();
         }
 
-        public IEnumerable<LerGeneroFilmeDto> BuscarFilmesPorGenero(int IdGeneroFilme)
+        public async Task<IEnumerable<LerGeneroFilmeDto>> BuscarFilmesPorGenero(int IdGeneroFilme)
         {
-           var gf=_generofilme.BuscaFilmesPorGenero(IdGeneroFilme);
+           var gf= await _generofilme.BuscaFilmesPorGenero(IdGeneroFilme);
             var gfDto = _mapper.Map<IEnumerable<LerGeneroFilmeDto>>(gf);
             return gfDto;
 
         }
 
-        public void DeletaGeneroDoFilme(int idGenero, int idFilme)
+        public async Task<Result> DeletaGeneroDoFilme(int idGenero, int idFilme)
         {
-            var selecionarGeneroDoFilme = _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
+            var selecionarGeneroDoFilme = await _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
             _generofilme.Excluir(selecionarGeneroDoFilme);
+            return Result.Ok();
         }
 
-        public void AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
+        public async Task<Result> AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
         {
-            var GeneroFilmeSelecionado = _generofilme.BuscaGeneroDoFilme(idGeneroAntigo, idFilme);
+            var GeneroFilmeSelecionado = await _generofilme.BuscaGeneroDoFilme(idGeneroAntigo, idFilme);
             GeneroFilmeSelecionado.IdGenero = iDGeneroNovo;
-            _generofilme.Save();
+            await _generofilme.Save();
+            return Result.Ok();
         }
     }
 }

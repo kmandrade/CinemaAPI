@@ -23,19 +23,20 @@ namespace Data.Repository
  
         }
 
-        public IEnumerable<Votos> BuscaFilmesMaisVotados()
+        public async Task<IQueryable<Votos>> BuscaFilmesMaisVotados()
         {
             var query = _context.Votos
                 .Include(f => f.Filme);
+               
             return query.OrderByDescending(f => f.ValorDoVoto);
         }
 
-        public Votos BuscaVotoPorFilmeEUsuario(int idFilme, int idUsuario)
+        public async Task<Votos> BuscaVotoPorFilmeEUsuario(int idFilme, int idUsuario)
         {
-            var query = _context.Votos
+            var query = await _context.Votos
                 .Include(f => f.Filme)
                 .Include(u=>u.Usuario)
-                .FirstOrDefault(v=>v.IdFilme == idFilme && v.IdUsuario==idUsuario);
+                .FirstOrDefaultAsync(v=>v.IdFilme == idFilme && v.IdUsuario==idUsuario);
             return query;
                 
         }

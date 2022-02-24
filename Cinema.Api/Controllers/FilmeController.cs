@@ -24,9 +24,9 @@ namespace Cinema.Api.Controllers
         }
         
         [HttpGet("BuscaTodosFilmes")]
-        public IActionResult BuscaFilmes([FromQuery] int skip, int take)
+        public async Task<IActionResult> BuscaFilmes([FromQuery] int skip, int take)
         {
-            var filmes = _filmeService.ConsultaTodos(skip,take);
+            var filmes = await _filmeService.ConsultaTodos(skip,take);
 
             if (filmes != null)
             {
@@ -36,21 +36,21 @@ namespace Cinema.Api.Controllers
         }
         [Authorize(Roles = "Administrador")]
         [HttpGet("BuscaFilmesArquivados")]
-        public IActionResult BuscaFilmesArquivados([FromQuery] int skip, int take)
+        public async Task<IActionResult> BuscaFilmesArquivados([FromQuery] int skip, int take)
         {
-           var filmesArq= _filmeService.BuscaFilmesArquivados(skip,take);
+           var filmesArq= await _filmeService.BuscaFilmesArquivados(skip,take);
             return Ok(filmesArq);
         }
         [HttpGet("BuscaCompleta/{id}")]
-        public IActionResult BuscaCompleta(int id)
+        public async Task<IActionResult> BuscaCompleta(int id)
         {
-            var filme = _filmeService.BuscarFilmeCompleto(id);
+            var filme = await _filmeService.BuscarFilmeCompleto(id);
             return Ok(filme);
         }
         [HttpGet("BucaUmFilme/{id}")]
-        public IActionResult BuscaUmFilme(int id)
+        public async Task<IActionResult> BuscaUmFilme(int id)
         {
-            var filme = _filmeService.ConsultaPorId(id);
+            var filme = await _filmeService.ConsultaPorId(id);
 
             if (filme != null)
             {
@@ -60,7 +60,7 @@ namespace Cinema.Api.Controllers
         }
         [Authorize(Roles ="Administrador")]
         [HttpPost("CadastraUmFilme")]
-        public IActionResult CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
+        public async Task<IActionResult> CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
         {
             /*
             if (!ModelState.IsValid)
@@ -68,15 +68,15 @@ namespace Cinema.Api.Controllers
                 return BadRequest(ModelState);
             }
             */
-            _filmeService.Cadastra(criarFilmeDto);
+            await _filmeService.Cadastra(criarFilmeDto);
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("AlteraUmFilme")]
-        public IActionResult AlterarFilme(int id, [FromBody] AlterarFilmeDto filmeDto)
+        public async Task<IActionResult> AlterarFilme(int id, [FromBody] AlterarFilmeDto filmeDto)
         {
-            Result resultado = _filmeService.Altera(id, filmeDto);
+            Result resultado = await _filmeService.Altera(id, filmeDto);
             if (resultado.IsFailed)
             {
                 return NotFound();
@@ -86,26 +86,54 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("ArquivaUmFilme{id}")]
-        public IActionResult ArquivarFilme(int id)
+        public async Task<IActionResult> ArquivarFilme(int id)
         {
-            _filmeService.ArquivarFilme(id);
-            return NoContent();
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "Filme nao existe" });
+            }
+
+           Result resultado= await _filmeService.ArquivarFilme(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = "Filme nao existe" });
+            }
+            await _filmeService.ArquivarFilme(id);
+            return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("ReativarFilme{id}")]
-        public IActionResult ReativarFilme(int id)
+        public async Task<IActionResult> ReativarFilme(int id)
         {
-            _filmeService.ReativarFilme(id);
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "Filme nao existe" });
+            }
+
+            Result resultado = await _filmeService.ReativarFilme(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = "Filme nao existe" });
+            }
+            await _filmeService.ReativarFilme(id);
             return Ok();
         }
 
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaUmFilme/{id}")]
-        public IActionResult DeletaUmFilme(int id)
+        public async Task<IActionResult> DeletaUmFilme(int id)
         {
-            _filmeService.Excluir(id);
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "Filme nao existe" });
+            }
+            Result resultado = await _filmeService.Excluir(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = "Filme nao existe" });
+            }
             return Ok();
         }
         

@@ -21,23 +21,25 @@ namespace Data.Repository
             
         }
 
-        public IEnumerable<GeneroFilme> BuscaFilmesPorGenero(int IdGeneroFilme)
+        public async Task<IEnumerable<GeneroFilme>> BuscaFilmesPorGenero(int IdGeneroFilme)
         {
-            var queryFilmes = _context.GenerosFilmes
+            var queryFilmes = await _context.GenerosFilmes
             .Include(g => g.Genero)
             .Include(f => f.Filme)
             .ThenInclude(d => d.Diretor)
-            .Where(gf => gf.IdGenero == IdGeneroFilme).ToList();
+            .Where(gf => gf.IdGenero == IdGeneroFilme)
+            .ToListAsync();
+
             return queryFilmes;
         }
 
-        public GeneroFilme BuscaGeneroDoFilme(int idGenero,int idFilme)
+        public async Task<GeneroFilme> BuscaGeneroDoFilme(int idGenero,int idFilme)
         {
-            var query = _context.GenerosFilmes
+            var query = await _context.GenerosFilmes
                 .Include(g => g.Genero)
                 .Include(f => f.Filme)
                 .Where(gf => gf.IdGenero == idGenero && gf.IdFilme == idFilme)
-                .First();
+                .FirstAsync();
             return query;
         }
     }

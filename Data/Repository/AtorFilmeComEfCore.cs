@@ -22,28 +22,30 @@ namespace Data.Repository
             
         }
 
-        public  IEnumerable<AtoresFilme> BuscarFilmesPorAtor(int IdAtorFilme)
+        public  async Task<IEnumerable<AtoresFilme>> BuscarFilmesPorAtor(int IdAtorFilme)
         {
             //sem conseguir acessar genero
             var queryFilmes = _context.AtoresFilmes
                 .Include(a => a.Ator)
                 .Include(f => f.Filme)
                 .ThenInclude(d=>d.Diretor)
+                .AsNoTracking()
                 .Where(atf => atf.IdAtor == IdAtorFilme)
-                .ToList();
-            return queryFilmes;
+                .ToListAsync();
+            return await queryFilmes;
          
         }
-        public AtoresFilme BuscaAtorDoFilme(int idAtor, int idFilme)
+        public async Task<AtoresFilme> BuscaAtorDoFilme(int idAtor, int idFilme)
         {
             
                 var selecionaAtorFilme = _context.AtoresFilmes
                 .Include(a => a.Ator)
                 .Include(f => f.Filme)
+                .AsNoTracking()
                 .Where(at => at.IdAtor == idAtor && at.IdFilme == idFilme)
-                .First();
-            
-                return selecionaAtorFilme;
+                .FirstAsync();
+                
+                return await selecionaAtorFilme;
             
                 
         }

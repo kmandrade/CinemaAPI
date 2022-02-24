@@ -28,43 +28,43 @@ namespace Servicos.Services.Handlers
 
         
 
-        public IEnumerable<LerAtorFilmeDto> BuscaFilmesPorAtor(int idAtorFilme)
+        public async Task<IEnumerable<LerAtorFilmeDto>> BuscaFilmesPorAtor(int idAtorFilme)
         {
-            var atf = _atorfilme.BuscarFilmesPorAtor(idAtorFilme);
+            var atf = await _atorfilme.BuscarFilmesPorAtor(idAtorFilme);
             if (atf != null)
             {
                 var atfDto = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atf);
                 return atfDto;
             }
+            
             return null;
         }
-
-        public Result AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
+        public async Task<Result> AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
-            var atorFilme = _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
+            var atorFilme =  _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
             if(atorFilme != null)
             {
-                _atorfilme.Incluir(atorFilme);
+                 await _atorfilme.Incluir(atorFilme);
                 return Result.Ok();   
             }
             return Result.Fail(errorMessage: "Ator ou Filme nao existem");
             
         }
-        public Result AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
+        public async Task<Result> AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
         {
-            var AtorFilmeSelecionado = _atorfilme.BuscaAtorDoFilme(idAtorAtual, idFilme);
+            var AtorFilmeSelecionado = await _atorfilme.BuscaAtorDoFilme(idAtorAtual, idFilme);
             if(AtorFilmeSelecionado != null)
             {
                 AtorFilmeSelecionado.IdAtor = idAtorNovo;
-                _atorfilme.Save();
+                await _atorfilme.Save();
                 return Result.Ok();
             }
             return Result.Fail(errorMessage: "Dados nao Conferem");
         }
 
-        public Result DeletaAtorDoFilme(int idAtor,int idFilme)
+        public async Task<Result> DeletaAtorDoFilme(int idAtor,int idFilme)
         {
-            var selecionarAtorDoFilme = _atorfilme.BuscaAtorDoFilme(idAtor,idFilme);
+            var selecionarAtorDoFilme = await _atorfilme.BuscaAtorDoFilme(idAtor,idFilme);
             if (selecionarAtorDoFilme != null)
             {
                 _atorfilme.Excluir(selecionarAtorDoFilme);

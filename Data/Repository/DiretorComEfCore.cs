@@ -20,18 +20,19 @@ namespace Data.Repository
 
         }
 
-        public IEnumerable<Filme> BuscaFilmesPorDiretor(int idDiretor)
+        public async Task<IEnumerable<Filme>> BuscaFilmesPorDiretor(int idDiretor)
         {
             var filmes = _context.Filmes
+                .AsNoTracking()
                 .Include(atf => atf.AtoresFilme)
                 .ThenInclude(at => at.Ator)
                 .Include(gf => gf.GenerosFilme)
                 .ThenInclude(g => g.Genero)
                 .Include(d => d.Diretor)
                 .Where(f => f.DiretorId == idDiretor)
-                .ToList();
+                .ToListAsync();
                 
-            return filmes;
+            return await filmes;
 
 
         }

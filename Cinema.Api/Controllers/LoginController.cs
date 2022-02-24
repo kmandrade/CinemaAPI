@@ -25,7 +25,7 @@ namespace Cinema.Api.Controllers
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginRequest request)
         {
             //recupera o usuario
-            var usuario = _usuarioService.BuscaUsuarioPorLogin(request);
+            var usuario = await _usuarioService.BuscaUsuarioPorLogin(request);
             
            //verifica se usuario existe
             if (usuario == null || usuario.Situacao==SituacaoEntities.Arquivado)
