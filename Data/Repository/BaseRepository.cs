@@ -33,7 +33,7 @@ namespace Data.Repository
         public virtual void Excluir(T obj)
         {
             _dbSet.Remove(obj);
-            Save();
+             Save();
 
         }
         public virtual async Task Alterar(T obj)
