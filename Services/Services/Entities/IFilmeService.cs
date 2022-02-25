@@ -12,10 +12,10 @@ namespace Domain.Services.Entities
 {
     public interface IFilmeService
     {
-        Task<IEnumerable<LerFilmeDto>> ConsultaTodos(int skip, int take);
+        Task<IEnumerable<LerFilmeDto>> BuscaTodos(int skip, int take);
         Task<LerFilmeDto> ConsultaPorId(int id);
 
-        Task<LerFilmeDto> BuscarFilmeCompleto(int id);
+        Task<LerFilmeDto> BuscaFilmeCompleto(int id);
         Task<Result> Cadastra(CriarFilmeDto obj);
         Task<Result> Altera(int id, AlterarFilmeDto obj);
         Task<Result> Excluir(int id);

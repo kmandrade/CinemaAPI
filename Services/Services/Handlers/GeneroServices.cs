@@ -38,10 +38,18 @@ namespace Servicos.Services.Handlers
 
         public async Task<IEnumerable<LerGeneroDto>> ConsultaTodos(int skip, int take)
         {
-            var listaGeneros = await _generoDao.BuscarTodos();
-            var generosPaginados = listaGeneros.Skip(skip).Take(take).ToList();
-            var listaGenerosDto = _mapper.Map<IEnumerable<LerGeneroDto>>(generosPaginados);
-            return listaGenerosDto;
+            var listaGeneros = await _generoDao.BuscaTodos();
+            if(skip <= 0 ||take <= 0)
+            {
+                return null;
+            }
+            if (take > 0)
+            {
+                var generosPaginados = listaGeneros.Skip(skip).Take(take).ToList();
+                var listaGenerosDto = _mapper.Map<IEnumerable<LerGeneroDto>>(generosPaginados);
+                return listaGenerosDto;
+            }
+            return null;
         }
 
 

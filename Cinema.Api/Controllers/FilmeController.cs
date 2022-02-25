@@ -26,7 +26,7 @@ namespace Cinema.Api.Controllers
         [HttpGet("BuscaTodosFilmes")]
         public async Task<IActionResult> BuscaFilmes([FromQuery] int skip, int take)
         {
-            var filmes = await _filmeService.ConsultaTodos(skip,take);
+            var filmes = await _filmeService.BuscaTodos(skip,take);
 
             if (filmes != null)
             {
@@ -44,7 +44,7 @@ namespace Cinema.Api.Controllers
         [HttpGet("BuscaCompleta/{id}")]
         public async Task<IActionResult> BuscaCompleta(int id)
         {
-            var filme = await _filmeService.BuscarFilmeCompleto(id);
+            var filme = await _filmeService.BuscaFilmeCompleto(id);
             return Ok(filme);
         }
         [HttpGet("BucaUmFilme/{id}")]

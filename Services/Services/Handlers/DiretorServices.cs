@@ -37,7 +37,7 @@ namespace Servicos.Services.Handlers
 
         public async Task<IEnumerable<LerDiretorDto>> ConsultaTodos(int skip, int take)
         {
-            var diretores = await _diretorDao.BuscarTodos();
+            var diretores = await _diretorDao.BuscaTodos();
             var diretoresPaginados = diretores.Skip(skip).Take(take).ToList();
             var diretoresMapeados = _mapper.Map<IEnumerable<LerDiretorDto>>(diretoresPaginados);
             return diretoresMapeados;

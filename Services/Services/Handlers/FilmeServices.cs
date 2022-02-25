@@ -29,11 +29,19 @@ namespace Data.Services.Handlers
             
         }
 
-        public async Task<IEnumerable<LerFilmeDto>> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerFilmeDto>> BuscaTodos(int skip, int take)
         {
-            var listadeFilmes = await _filmeDao.BuscarTodos();
-            var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoEntities.Ativado)
-                .Skip(skip).Take(take).ToList();
+            if(skip<=0 || take <= 0)
+            {
+                return null;
+            }
+            var listadeFilmes = await _filmeDao.BuscaTodos();
+            var filmesAtivos = listadeFilmes.Where(f => f.Situacao == SituacaoEntities.Ativado).ToList();
+            if(filmesAtivos == null)
+            {
+                return null;
+            }
+            var filmesPaginados = filmesAtivos.Skip(skip).Take(take);                
             var filmesDtos = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesAtivos);
             return (filmesDtos.OrderBy(nome => nome.Titulo));
         }
@@ -41,6 +49,7 @@ namespace Data.Services.Handlers
         public async Task<LerFilmeDto> ConsultaPorId(int id)
         {
                 var filme = await _filmeDao.BuscarPorId(id);
+                
                 if (filme==null || filme.Situacao == SituacaoEntities.Arquivado)
                 {
                     return null;
@@ -48,7 +57,7 @@ namespace Data.Services.Handlers
                 var filmeDto = _mapper.Map<LerFilmeDto>(filme);
                 return filmeDto;
         }
-        public async Task<LerFilmeDto> BuscarFilmeCompleto(int id)
+        public async Task<LerFilmeDto> BuscaFilmeCompleto(int id)
         {
             var filme = await _filmeDao.BuscarPorFilmesCompletoID(id);
             if (filme == null || filme.Situacao == SituacaoEntities.Arquivado)
@@ -115,7 +124,7 @@ namespace Data.Services.Handlers
 
         public async Task<IEnumerable<LerFilmeDto>> BuscaFilmesArquivados(int skip, int take)
         {
-            var filmes = await _filmeDao.BuscarTodos();
+            var filmes = await _filmeDao.BuscaTodos();
             var filmesPaginados = filmes
                 .Where(f => f.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take).ToList();
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesPaginados);

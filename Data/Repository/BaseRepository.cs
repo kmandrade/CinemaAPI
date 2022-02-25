@@ -25,7 +25,7 @@ namespace Data.Repository
             return  await _dbSet.FindAsync(id);
         }
         
-        public async Task<IEnumerable<T>> BuscarTodos()
+        public async Task<IEnumerable<T>> BuscaTodos()
         {
             return await _dbSet.ToListAsync();
         }

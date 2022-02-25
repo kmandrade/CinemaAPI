@@ -42,7 +42,7 @@ namespace Servicos.Services.Handlers
         public async Task<IEnumerable<LerAtorDto>> ConsultaTodos(int skip, int take)
         {
 
-            var atores = await _atorDao.BuscarTodos();
+            var atores = await _atorDao.BuscaTodos();
             if (atores == null)
             {
                 return null;

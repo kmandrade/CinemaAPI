@@ -27,7 +27,7 @@ namespace Servicos.Services.Handlers
 
         public async Task<IEnumerable<LerUsuarioDto>> BuscaTodosOsUsuarioDto(int skip, int take)
         {
-            var listaUsuarios = await _usuarioDao.BuscarTodos();
+            var listaUsuarios = await _usuarioDao.BuscaTodos();
             var usuariosPaginados = listaUsuarios.Skip(skip).Take(take).ToList();
             var usuariosDto = _mapper.Map<IEnumerable<LerUsuarioDto>>(listaUsuarios);
             return usuariosDto;
@@ -89,7 +89,7 @@ namespace Servicos.Services.Handlers
 
         public async Task<IEnumerable<LerUsuarioDto>> BuscaUsuariosArquivados(int skip, int take)
         {
-            var ususarios = await _usuarioDao.BuscarTodos();
+            var ususarios = await _usuarioDao.BuscaTodos();
             var usuariosPaginados=ususarios
                 .Where(u => u.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take)
                 .ToList();
