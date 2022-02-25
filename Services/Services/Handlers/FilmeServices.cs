@@ -94,8 +94,6 @@ namespace Data.Services.Handlers
 
         }
 
-
-
         public async Task<Result> ArquivarFilme(int id)
         {
             var filmeSelecionado = await _filmeDao.BuscarPorId(id);
