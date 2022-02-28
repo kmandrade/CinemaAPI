@@ -17,16 +17,17 @@ namespace Data.Services.Handlers
     {
 
         IFilmeDao _filmeDao;
+        IDiretorDao _diretorDao;
        
         private readonly IMapper _mapper;
 
         //preciso dizer pra minha aplicação que ela deve fazer o mapeamento
         //implementar o mapeamento, interfaces e utilizar o filmedao para ter acesso ao banco pela interface
-        public FilmeServices(IFilmeDao filmeDao, IMapper mapper)
+        public FilmeServices(IMapper mapper, IFilmeDao filmeDao,  IDiretorDao diretorDao)
         {
             _filmeDao = filmeDao;
             _mapper = mapper;
-            
+            _diretorDao = diretorDao;
         }
 
         public async Task<IEnumerable<LerFilmeDto>> BuscaTodos(int skip, int take)
@@ -71,11 +72,13 @@ namespace Data.Services.Handlers
         
         public async Task<Result> Cadastra(CriarFilmeDto obj)
         {
-            var filme = _filmeDao.BuscarPorNome(obj.Titulo);
-            if (filme != null)
+            var diretorSelecionado = _diretorDao.BuscarPorId(obj.DiretorId);
+            var filmeSelecionado = await _filmeDao.BuscarPorNome(obj.Titulo);
+            if (diretorSelecionado == null || filmeSelecionado != null)
             {
-                return Result.Fail("Filme ja existe");
+                return null;
             }
+            
             var filmeMapeado = _mapper.Map<Filme>(obj);
             await _filmeDao.Incluir(filmeMapeado);
             return Result.Ok();
@@ -88,6 +91,7 @@ namespace Data.Services.Handlers
             {
                 return Result.Fail("Filme não existe");
             }
+
             _mapper.Map(obj, filmeSelecionado);
             await _filmeDao.Save();
             return Result.Ok();

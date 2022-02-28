@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Cinema.Api.Profiles;
 using Data.Entities;
 using Data.Services.Handlers;
 using Domain.Dtos.FilmeDto;
@@ -7,6 +8,7 @@ using Domain.Profiles;
 using Domain.Services.Entities;
 using FluentResults;
 using Moq;
+using Servicos.Services.Handlers;
 using System.Collections.Generic;
 using Xunit;
 
@@ -16,19 +18,23 @@ namespace Testes.Services
     {
         private readonly IMapper _mapper;
         private readonly FilmeServices _filmeService;
+        private readonly DiretorServices _diretorService;
         private readonly Mock<IFilmeDao> _filmeDao;
+        private readonly Mock<IDiretorDao> _diretorDao;
 
         public TesteFilmeService()
         {
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new FilmeProfile());
+                mc.AddProfile(new DiretorProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
 
             _filmeDao = new Mock<IFilmeDao>();
-            _filmeService = new FilmeServices(_filmeDao.Object, _mapper);
+            _diretorDao = new Mock<IDiretorDao>();
+            _filmeService = new FilmeServices(_mapper , _filmeDao.Object, _diretorDao.Object);
         }
 
         [Fact]
@@ -135,11 +141,63 @@ namespace Testes.Services
             }
             //assert
             Assert.True(FilmesAtivosDto());            
-          rafael
+          
         }
 
-        
-        
+        [Fact]
+        public async void BuscaFilmeDetalhado_RetornaNull_IdErrado()
+        {
+            //arrange
+            int id = -1;
+            _filmeDao.Setup(f => f.BuscarPorFilmesCompletoID(id)).ReturnsAsync(null as Filme);
 
+            //act
+            var filmeEncontrado= await _filmeService.BuscaFilmeCompleto(id);
+            //assert
+            Assert.Null(filmeEncontrado);
+        }
+        
+        [Fact]
+        public async void BuscaFilmeDetalhado_RetornaNUll_FilmeArquivado()
+        {
+
+            //arrange
+            var filme = new Filme()
+            {
+                Titulo = "filme",
+                IdFilme = 1,
+                Situacao = SituacaoEntities.Arquivado
+            };
+            _filmeDao.Setup(f => f.BuscarPorFilmesCompletoID(filme.IdFilme)).ReturnsAsync(null as Filme);
+            //act
+            var filmeEncontrado = await _filmeService.BuscaFilmeCompleto(filme.IdFilme);
+            //assert
+            Assert.Null(filmeEncontrado);
+
+        }
+
+        [Fact]
+        public async void CadastraFilme_RetornaNull_FilmeJaExistente()
+        {
+            //arrange
+            var filmeDto = new List<CriarFilmeDto>()
+            {
+                new CriarFilmeDto(){ Titulo="filme", Duracao=100, DiretorId=2},
+                new CriarFilmeDto(){Titulo="filme", Duracao=100, DiretorId=3}
+            };
+           
+            var filme = _mapper.Map<IEnumerable<Filme>>(filmeDto);
+            var filmesSelecionados=   _filmeDao.Setup(f=>f.BuscaTodos()).ReturnsAsync(filme).;
+
+                _filmeDao.Setup(f => f.BuscarPorNome(filmesSelecionados.)).ReturnsAsync(null as Filme);
+            
+            
+            
+            //act
+            var filmeService = await _filmeService.Cadastra(filmeDto[0]);
+
+            //assert
+            Assert.Null(filmeService);
+        }
     }
 }
