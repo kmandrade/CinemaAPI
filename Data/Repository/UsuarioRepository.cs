@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class UsuarioComEfCore: BaseRepository<Usuario>,IUsuarioRepository
+    public class UsuarioRepository: BaseRepository<Usuario>,IUsuarioRepository
     {
         private readonly DbSet<Usuario> _dbSetUsuario;
 
-        public UsuarioComEfCore(MyContext _context):base(_context)
+        public UsuarioRepository(MyContext _context):base(_context)
         {
             _dbSetUsuario=_context.Set<Usuario>();
         }

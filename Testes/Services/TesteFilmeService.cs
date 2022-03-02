@@ -21,8 +21,8 @@ namespace Testes.Services
         private readonly IMapper _mapper;
         private readonly FilmeServices _filmeService;
         private readonly DiretorServices _diretorService;
-        private readonly Mock<IFilmeRepository> _filmeDao;
-        private readonly Mock<IDiretorRepository> _diretorDao;
+        private readonly Mock<IFilmeRepository> _filmeRepository;
+        private readonly Mock<IDiretorRepository> _diretorRepository;
 
         public TesteFilmeService()
         {
@@ -34,9 +34,9 @@ namespace Testes.Services
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
 
-            _filmeDao = new Mock<IFilmeRepository>();
-            _diretorDao = new Mock<IDiretorRepository>();
-            _filmeService = new FilmeServices(_mapper , _filmeDao.Object, _diretorDao.Object);
+            _filmeRepository = new Mock<IFilmeRepository>();
+            _diretorRepository = new Mock<IDiretorRepository>();
+            _filmeService = new FilmeServices(_mapper , _filmeRepository.Object, _diretorRepository.Object);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace Testes.Services
 
             //Arrange
             int id = 2;
-               _filmeDao.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
+               _filmeRepository.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
             //Act
             var resultadoService=  _filmeService.BuscaPorId(id);            
             // Assert
@@ -66,7 +66,7 @@ namespace Testes.Services
                
             };
             var filme = _mapper.Map<Filme>(filmeDto);
-            _filmeDao.Setup(f=>f.BuscarPorId(id)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f=>f.BuscarPorId(id)).ReturnsAsync(filme);
             //Act
             var act = await _filmeService.BuscaPorId(id);
             //Assert
@@ -79,7 +79,7 @@ namespace Testes.Services
         public async void BuscaFilmePorId_Retorna_Null_IdErrado(int id)
         {
             //arrage
-            _filmeDao.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
             //act
             var act = await _filmeService.BuscaPorId(id);
             //assert
@@ -91,7 +91,7 @@ namespace Testes.Services
         public async void BuscaFilmePorIdCompleto_Retorna_Null_IdErrado(int id)
         {
             //arrage
-            _filmeDao.Setup(f => f.BuscarPorFilmesCompletoID(id)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorFilmesCompletoID(id)).ReturnsAsync(null as Filme);
             //act
             var act = await _filmeService.BuscaFilmeCompleto(id);
             //assert
@@ -107,7 +107,7 @@ namespace Testes.Services
         public async void BuscaTodosFilmes_RetornaNull_PaginaçãoErrada(int skip, int take)
         {
             //Arrange
-              _filmeDao.Setup(f => f.BuscaTodos()).ReturnsAsync(null as IEnumerable<Filme>);
+              _filmeRepository.Setup(f => f.BuscaTodos()).ReturnsAsync(null as IEnumerable<Filme>);
             //act
             var act = await _filmeService.BuscaTodos(skip, take);
             //assert
@@ -124,7 +124,7 @@ namespace Testes.Services
                 new LerFilmeDto(){ IdFilme=2, Titulo="filme2", Situacao=SituacaoEntities.Arquivado}
             };
             var filmes = _mapper.Map<IEnumerable<Filme>>(filmesDto);
-            var filmesEncontrados =  _filmeDao.Setup(f=>f.BuscaTodos()).ReturnsAsync(filmes);
+            var filmesEncontrados =  _filmeRepository.Setup(f=>f.BuscaTodos()).ReturnsAsync(filmes);
             //act
             int skip = 1, take = 2;
             var filmesEncontradosAtivosDto = await _filmeService.BuscaTodos(skip, take);
@@ -150,7 +150,7 @@ namespace Testes.Services
         {
             //arrange
             int id = -1;
-            _filmeDao.Setup(f => f.BuscarPorFilmesCompletoID(id)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorFilmesCompletoID(id)).ReturnsAsync(null as Filme);
 
             //act
             var filmeEncontrado= await _filmeService.BuscaFilmeCompleto(id);
@@ -169,7 +169,7 @@ namespace Testes.Services
                 IdFilme = 1,
                 Situacao = SituacaoEntities.Arquivado
             };
-            _filmeDao.Setup(f => f.BuscarPorFilmesCompletoID(filme.IdFilme)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorFilmesCompletoID(filme.IdFilme)).ReturnsAsync(null as Filme);
             //act
             var filmeEncontrado = await _filmeService.BuscaFilmeCompleto(filme.IdFilme);
             //assert
@@ -185,7 +185,7 @@ namespace Testes.Services
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo="filme", DiretorId=1 };
 
-             _filmeDao.Setup(f => f.BuscarPorNome(filme.Titulo)).ReturnsAsync(filme);
+             _filmeRepository.Setup(f => f.BuscarPorNome(filme.Titulo)).ReturnsAsync(filme);
             var filmeDto = _mapper.Map<CriarFilmeDto>(filme);
            
             //act
@@ -200,7 +200,7 @@ namespace Testes.Services
             //arrange
             
             var filme = new CriarFilmeDto() { Titulo="filme", Duracao = 100 , DiretorId=1 };
-            _diretorDao.Setup(d => d.BuscarPorId(1)).ReturnsAsync(null as Diretor);
+            _diretorRepository.Setup(d => d.BuscarPorId(1)).ReturnsAsync(null as Diretor);
             //act
             var filmeService= await _filmeService.Cadastra(filme);
             //assert
@@ -213,9 +213,9 @@ namespace Testes.Services
             var filme = new Filme() { Titulo = "filme", DiretorId = 1, Duracao = 100,IdFilme=1 };
             var filmeDto = _mapper.Map<CriarFilmeDto>(filme);
             var diretor = new Diretor() { Id = 1 };
-            _diretorDao.Setup(d=>d.BuscarPorId(1)).ReturnsAsync(diretor);
-            _filmeDao.Setup(f => f.Cadastra(filme)).Returns(Task.FromResult(filme));
-            _filmeDao.Setup(f => f.BuscarPorNome("filme")).Returns(Task.FromResult(null as Filme));
+            _diretorRepository.Setup(d=>d.BuscarPorId(1)).ReturnsAsync(diretor);
+            _filmeRepository.Setup(f => f.Cadastra(filme)).Returns(Task.FromResult(filme));
+            _filmeRepository.Setup(f => f.BuscarPorNome("filme")).Returns(Task.FromResult(null as Filme));
             
             //act
             var filmeService = await _filmeService.Cadastra(filmeDto);
@@ -232,7 +232,7 @@ namespace Testes.Services
             //arrange
             
             var filme = new AlterarFilmeDto() {  Titulo = "filme", Duracao=100 };
-            _filmeDao.Setup(f => f.BuscarPorId(2)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(2)).ReturnsAsync(null as Filme);
             var filmeDto = _mapper.Map<AlterarFilmeDto>(filme);
 
             
@@ -248,7 +248,7 @@ namespace Testes.Services
             //arrange
             
             var filmeDto= new AlterarFilmeDto() { Titulo="Filme", DiretorId=1 };
-            _diretorDao.Setup(d => d.BuscarPorId(0)).ReturnsAsync(null as Diretor);
+            _diretorRepository.Setup(d => d.BuscarPorId(0)).ReturnsAsync(null as Diretor);
             //act
             var filmeService= await _filmeService.Altera(1, filmeDto);
 
@@ -262,9 +262,9 @@ namespace Testes.Services
             var filme = new Filme() { Titulo = "filme", DiretorId = 1, Duracao = 100, IdFilme = 1 };
             var filmeDto = _mapper.Map<AlterarFilmeDto>(filme);
             var diretor = new Diretor() { Id = 1 };
-            _diretorDao.Setup(d => d.BuscarPorId(filme.DiretorId)).ReturnsAsync(diretor);
-            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
-            _filmeDao.Setup(f => f.Alterar(filme)).Returns(Task.FromResult(filme));
+            _diretorRepository.Setup(d => d.BuscarPorId(filme.DiretorId)).ReturnsAsync(diretor);
+            _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.Alterar(filme)).Returns(Task.FromResult(filme));
             
 
             //act
@@ -281,7 +281,7 @@ namespace Testes.Services
         {
             //arrange
             
-            _filmeDao.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
 
             //act
 
@@ -296,7 +296,7 @@ namespace Testes.Services
         {
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo = "filme",Situacao=SituacaoEntities.Arquivado};
-            _filmeDao.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
             
             //act
             var filmeService= await _filmeService.ArquivarFilme(filme.IdFilme);
@@ -310,7 +310,7 @@ namespace Testes.Services
         {
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Ativado };
-            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             //act
             var filmeService = await _filmeService.ArquivarFilme(filme.IdFilme);
             var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
@@ -324,7 +324,7 @@ namespace Testes.Services
         {
             //arrange
 
-            _filmeDao.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
 
             //act
 
@@ -339,7 +339,7 @@ namespace Testes.Services
         {
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Ativado };
-            _filmeDao.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
 
             //act
             var filmeService = await _filmeService.ReativarFilme(filme.IdFilme);
@@ -352,7 +352,7 @@ namespace Testes.Services
         {
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Arquivado };
-            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             //act
             var filmeService = await _filmeService.ReativarFilme(filme.IdFilme);
             var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
@@ -366,7 +366,7 @@ namespace Testes.Services
         {
             //arrange
 
-            _filmeDao.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
 
             //act
 
@@ -381,7 +381,7 @@ namespace Testes.Services
         {
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Ativado };
-            _filmeDao.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
 
             //act
             var filmeService = await _filmeService.Excluir(filme.IdFilme);
@@ -394,7 +394,7 @@ namespace Testes.Services
         {
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Arquivado };
-            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             //act
             var filmeService = await _filmeService.Excluir(filme.IdFilme);
             var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);

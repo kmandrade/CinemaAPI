@@ -22,10 +22,7 @@ namespace Data.Repository
 
         public async Task<T> BuscarPorId(int id)
         {
-            if (id <= 0)
-            {
-                return null;
-            }
+            
             return  await _dbSet.FindAsync();
         }
         

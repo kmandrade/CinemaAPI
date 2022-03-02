@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class VotosComEfCore : BaseRepository<Votos>,IVotosRepository
+    public class VotosRepository : BaseRepository<Votos>,IVotosRepository
 
     {
         private readonly DbSet<Votos> _dbSetVotos;
       
 
 
-        public VotosComEfCore(MyContext _context) : base(_context)
+        public VotosRepository(MyContext _context) : base(_context)
         {
             _dbSetVotos = _context.Set<Votos>();
  

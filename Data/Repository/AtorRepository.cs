@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class AtorComEfCore : BaseRepository<Ator>, IAtorRepository
+    public class AtorRepository : BaseRepository<Ator>, IAtorRepository
     {
         
         private readonly DbSet<Ator> _dbSetAtor;
         private readonly DbSet<AtoresFilme> _dbSetAtoresFilme;
-        public AtorComEfCore(MyContext _context) : base(_context)
+        public AtorRepository(MyContext _context) : base(_context)
         {
             _dbSetAtor = _context.Set<Ator>();
             _dbSetAtoresFilme = _context.Set<AtoresFilme>();

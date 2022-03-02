@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class DiretorComEfCore : BaseRepository<Diretor>,IDiretorRepository
+    public class DiretorRepository : BaseRepository<Diretor>,IDiretorRepository
     {
         private readonly DbSet<Diretor> _dbset;
 
-        public DiretorComEfCore(MyContext _context):base(_context)
+        public DiretorRepository(MyContext _context):base(_context)
         {
             _dbset = _context.Set<Diretor>();
 

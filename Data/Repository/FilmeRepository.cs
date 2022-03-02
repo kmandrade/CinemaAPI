@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class FilmeComEfCore : BaseRepository<Filme>, IFilmeRepository 
+    public class FilmeRepository : BaseRepository<Filme>, IFilmeRepository 
     {
 
         private readonly DbSet<Filme> _dbset;
 
-        public FilmeComEfCore(MyContext _context) : base(_context)
+        public FilmeRepository(MyContext _context) : base(_context)
         {
             _dbset = _context.Set<Filme>();
         }

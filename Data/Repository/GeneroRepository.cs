@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class GeneroComEfCore : BaseRepository<Genero>,IGeneroRepository
+    public class GeneroRepository : BaseRepository<Genero>,IGeneroRepository
     {
        private readonly DbSet<Genero> _dbset;
 
-        public GeneroComEfCore(MyContext _context):base(_context)
+        public GeneroRepository(MyContext _context):base(_context)
         {
             _dbset = _context.Set<Genero>();
         }
