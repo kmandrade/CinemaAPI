@@ -15,11 +15,11 @@ namespace Servicos.Services.Handlers
 {
     public class GeneroServices : IGeneroService
     {
-        IGeneroDao _generoDao;
+        IGeneroRepository _generoDao;
         
         private readonly IMapper _mapper;
 
-        public GeneroServices(IMapper mapper, IGeneroDao generoDao)
+        public GeneroServices(IMapper mapper, IGeneroRepository generoDao)
         {
             _mapper = mapper;
             
@@ -61,7 +61,7 @@ namespace Servicos.Services.Handlers
             //    return Result.Fail("Ator ja existe ");
             //}
             var generoMapeado = _mapper.Map<Genero>(obj);
-            await _generoDao.Incluir(generoMapeado);
+            await _generoDao.Cadastra(generoMapeado);
             return Result.Ok();
         }
 

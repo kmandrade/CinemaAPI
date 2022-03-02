@@ -13,14 +13,14 @@ namespace Cinema.Api.Helper
         public static IServiceCollection AddDependenceInjection (this IServiceCollection services)
         {
             //INTERFACES DATA
-            services.AddScoped<IFilmeDao, FilmeComEfCore>();
-            services.AddScoped<IDiretorDao, DiretorComEfCore>();
-            services.AddScoped<IAtorDao, AtorComEfCore>();
-            services.AddScoped<IGeneroDao, GeneroComEfCore>();
-            services.AddScoped<IGeneroFilme, GeneroFilmeComEfCore>();
-            services.AddScoped<IAtorFilme, AtorFilmeComEfCore>();
-            services.AddScoped<IVotosDao, VotosComEfCore>();
-            services.AddScoped<IUsuarioDao, UsuarioComEfCore>();
+            services.AddScoped<IFilmeRepository, FilmeComEfCore>();
+            services.AddScoped<IDiretorRepository, DiretorComEfCore>();
+            services.AddScoped<IAtorRepository, AtorComEfCore>();
+            services.AddScoped<IGeneroRepository, GeneroComEfCore>();
+            services.AddScoped<IGeneroFilmeRepository, GeneroFilmeComEfCore>();
+            services.AddScoped<IAtorFilmeRepository, AtorFilmeComEfCore>();
+            services.AddScoped<IVotosRepository, VotosComEfCore>();
+            services.AddScoped<IUsuarioRepository, UsuarioComEfCore>();
             
             //INTERFACES SERVICES
             services.AddScoped<IFilmeService, FilmeServices>();

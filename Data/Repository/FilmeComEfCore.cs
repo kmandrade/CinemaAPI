@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class FilmeComEfCore : BaseRepository<Filme>, IFilmeDao 
+    public class FilmeComEfCore : BaseRepository<Filme>, IFilmeRepository 
     {
 
         private readonly DbSet<Filme> _dbset;

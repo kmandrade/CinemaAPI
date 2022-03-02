@@ -15,11 +15,11 @@ namespace Servicos.Services.Handlers
 {
     public class AtorFilmeServices:IAtorFilmeService
     {
-        IAtorFilme _atorfilme;
+        IAtorFilmeRepository _atorfilme;
         
         private readonly IMapper _mapper;
 
-        public AtorFilmeServices(IMapper mapper, IAtorFilme atorfilme)
+        public AtorFilmeServices(IMapper mapper, IAtorFilmeRepository atorfilme)
         {
             _mapper = mapper;
             
@@ -44,7 +44,7 @@ namespace Servicos.Services.Handlers
             var atorFilme =  _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
             if(atorFilme != null)
             {
-                 await _atorfilme.Incluir(atorFilme);
+                 await _atorfilme.Cadastra(atorFilme);
                 return Result.Ok();   
             }
             return Result.Fail(errorMessage: "Ator ou Filme nao existem");

@@ -15,11 +15,11 @@ namespace Servicos.Services.Handlers
 {
     public class GeneroFilmeServices:IGeneroFilmeService
     {
-        IGeneroFilme _generofilme;
+        IGeneroFilmeRepository _generofilme;
         
         private readonly IMapper _mapper;
 
-        public GeneroFilmeServices(IMapper mapper, IGeneroFilme generofilme)
+        public GeneroFilmeServices(IMapper mapper, IGeneroFilmeRepository generofilme)
         {
             _mapper = mapper;
             
@@ -29,7 +29,7 @@ namespace Servicos.Services.Handlers
         public async Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
             var generoFilme = _mapper.Map<GeneroFilme>(criarGeneroFilmeDto);
-            await _generofilme.Incluir(generoFilme);
+            await _generofilme.Cadastra(generoFilme);
             return Result.Ok();
         }
 

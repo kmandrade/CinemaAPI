@@ -13,7 +13,7 @@ namespace Domain.Services.Entities
     public interface IFilmeService
     {
         Task<IEnumerable<LerFilmeDto>> BuscaTodos(int skip, int take);
-        Task<LerFilmeDto> ConsultaPorId(int id);
+        Task<LerFilmeDto> BuscaPorId(int id);
 
         Task<LerFilmeDto> BuscaFilmeCompleto(int id);
         Task<Result> Cadastra(CriarFilmeDto obj);

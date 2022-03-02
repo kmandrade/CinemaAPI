@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class GeneroComEfCore : BaseRepository<Genero>,IGeneroDao
+    public class GeneroComEfCore : BaseRepository<Genero>,IGeneroRepository
     {
        private readonly DbSet<Genero> _dbset;
 

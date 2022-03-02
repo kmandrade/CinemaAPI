@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class GeneroFilmeComEfCore : BaseRepository<GeneroFilme>, IGeneroFilme
+    public class GeneroFilmeComEfCore : BaseRepository<GeneroFilme>, IGeneroFilmeRepository
     {
         private readonly DbSet<GeneroFilme> _dbset;
         

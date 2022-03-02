@@ -15,11 +15,11 @@ namespace Servicos.Services.Handlers
     public class VotosServices : IVotosService
     {
         
-        IVotosDao _votosDao;
-        IFilmeDao _filmeDao;
+        IVotosRepository _votosDao;
+        IFilmeRepository _filmeDao;
        
         private readonly IMapper _mapper;
-        public VotosServices(IVotosDao votosDao, IMapper mapper, IFilmeDao filmeDao )
+        public VotosServices(IVotosRepository votosDao, IMapper mapper, IFilmeRepository filmeDao )
         {
             _votosDao = votosDao;
             _mapper = mapper;
@@ -39,7 +39,7 @@ namespace Servicos.Services.Handlers
             {
                 var voto = _mapper.Map<Votos>(votosDto);
                 voto.IdUsuario = idUsuario;
-                await _votosDao.Incluir(voto);
+                await _votosDao.Cadastra(voto);
                 return Result.Ok();
             }
             return Result.Fail("eror");

@@ -15,9 +15,9 @@ namespace Servicos.Services.Handlers
     public class UsuarioServices : IUsuarioService
     {
 
-        IUsuarioDao _usuarioDao;
+        IUsuarioRepository _usuarioDao;
         IMapper _mapper;
-        public UsuarioServices(IUsuarioDao usuarioDao, IMapper mapper)
+        public UsuarioServices(IUsuarioRepository usuarioDao, IMapper mapper)
         {
             _usuarioDao = usuarioDao;
             _mapper = mapper;
@@ -45,7 +45,7 @@ namespace Servicos.Services.Handlers
         {
             var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
             usuario.Situacao = SituacaoEntities.Ativado;
-            await _usuarioDao.Incluir(usuario);
+            await _usuarioDao.Cadastra(usuario);
             return Result.Ok();
         }
 

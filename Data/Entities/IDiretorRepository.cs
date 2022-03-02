@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IDiretorDao :IRepository<Diretor>
+    public interface IDiretorRepository :IRepository<Diretor>
     {
         Task<IEnumerable<Filme>> BuscaFilmesPorDiretor(int idDiretor);
     }

@@ -16,14 +16,14 @@ namespace Data.Services.Handlers
     public class FilmeServices : IFilmeService
     {
 
-        IFilmeDao _filmeDao;
-        IDiretorDao _diretorDao;
+        IFilmeRepository _filmeDao;
+        IDiretorRepository _diretorDao;
        
         private readonly IMapper _mapper;
 
         //preciso dizer pra minha aplicação que ela deve fazer o mapeamento
         //implementar o mapeamento, interfaces e utilizar o filmedao para ter acesso ao banco pela interface
-        public FilmeServices(IMapper mapper, IFilmeDao filmeDao,  IDiretorDao diretorDao)
+        public FilmeServices(IMapper mapper, IFilmeRepository filmeDao,  IDiretorRepository diretorDao)
         {
             _filmeDao = filmeDao;
             _mapper = mapper;
@@ -47,7 +47,7 @@ namespace Data.Services.Handlers
             return (filmesDtos.OrderBy(nome => nome.Titulo));
         }
         
-        public async Task<LerFilmeDto> ConsultaPorId(int id)
+        public async Task<LerFilmeDto> BuscaPorId(int id)
         {
                 var filme = await _filmeDao.BuscarPorId(id);
                 
@@ -72,8 +72,9 @@ namespace Data.Services.Handlers
         
         public async Task<Result> Cadastra(CriarFilmeDto obj)
         {
-            var diretorSelecionado =  _diretorDao.BuscarPorId(obj.DiretorId);
-            if(diretorSelecionado == null || diretorSelecionado.Id<=0)
+            
+            var diretorSelecionado = await _diretorDao.BuscarPorId(obj.DiretorId);
+            if(diretorSelecionado == null )
             {
                 return null;
             }
@@ -82,20 +83,21 @@ namespace Data.Services.Handlers
             {
                 return null;
             }
-            
             var filmeMapeado = _mapper.Map<Filme>(obj);
-            await _filmeDao.Incluir(filmeMapeado);
+            await _filmeDao.Cadastra(filmeMapeado);
             return Result.Ok();
+
         }
 
         public async Task<Result> Altera(int id, AlterarFilmeDto obj)
         {
             var filmeSelecionado = await _filmeDao.BuscarPorId(id);
-            if (filmeSelecionado == null)
+            var diretorSelecionado = await _diretorDao.BuscarPorId(obj.DiretorId);
+            if (diretorSelecionado == null || filmeSelecionado==null)
             {
                 return null;
             }
-
+            
             _mapper.Map(obj, filmeSelecionado);
             await _filmeDao.Save();
             return Result.Ok();
@@ -135,7 +137,6 @@ namespace Data.Services.Handlers
                 .Where(f => f.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take).ToList();
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesPaginados);
             return filmesDto;
-
 
         }
         public async Task<Result> Excluir(int id)

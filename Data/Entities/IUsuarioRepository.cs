@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IUsuarioDao : IRepository<Usuario>
+    public interface IUsuarioRepository : IRepository<Usuario>
     {
         Task<Usuario> BuscaUsuarioPorNomeESenha(string nome,string password);
     }

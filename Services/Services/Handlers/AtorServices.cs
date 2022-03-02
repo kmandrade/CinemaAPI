@@ -16,10 +16,10 @@ namespace Servicos.Services.Handlers
     public class AtorServices : IAtorService
     {
         
-        IAtorDao _atorDao;
+        IAtorRepository _atorDao;
 
         private readonly IMapper _mapper;
-        public AtorServices(IAtorDao atorDao, IMapper mapper)
+        public AtorServices(IAtorRepository atorDao, IMapper mapper)
         {
             _atorDao = atorDao;
             _mapper = mapper;
@@ -58,7 +58,7 @@ namespace Servicos.Services.Handlers
         {
             
             var atorMapeado = _mapper.Map<Ator>(obj);
-            await _atorDao.Incluir(atorMapeado);
+            await _atorDao.Cadastra(atorMapeado);
             return Result.Ok();
         }
 

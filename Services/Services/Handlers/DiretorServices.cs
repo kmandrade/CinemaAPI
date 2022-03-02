@@ -15,10 +15,10 @@ namespace Servicos.Services.Handlers
 {
     public class DiretorServices : IDiretorService
     {
-        IDiretorDao _diretorDao;
-        IFilmeDao _filmeDao;
+        IDiretorRepository _diretorDao;
+        IFilmeRepository _filmeDao;
         private readonly IMapper _mapper;
-        public DiretorServices(IDiretorDao diretorDao, IMapper mapper , IFilmeDao filmeDao)
+        public DiretorServices(IDiretorRepository diretorDao, IMapper mapper , IFilmeRepository filmeDao)
         {
             _mapper=mapper;
             _diretorDao=diretorDao;
@@ -53,7 +53,7 @@ namespace Servicos.Services.Handlers
         public async Task<Result> Cadastra(CriarDiretorDto obj)
         {
             var diretor = _mapper.Map<Diretor>(obj);
-           await _diretorDao.Incluir(diretor);
+           await _diretorDao.Cadastra(diretor);
             return Result.Ok();
         }
 

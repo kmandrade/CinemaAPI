@@ -50,7 +50,7 @@ namespace Cinema.Api.Controllers
         [HttpGet("BucaUmFilme/{id}")]
         public async Task<IActionResult> BuscaUmFilme(int id)
         {
-            var filme = await _filmeService.ConsultaPorId(id);
+            var filme = await _filmeService.BuscaPorId(id);
 
             if (filme != null)
             {

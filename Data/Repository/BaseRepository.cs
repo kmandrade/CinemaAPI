@@ -26,7 +26,7 @@ namespace Data.Repository
             {
                 return null;
             }
-            return  await _dbSet.FindAsync(id);
+            return  await _dbSet.FindAsync();
         }
         
         public async Task<IEnumerable<T>> BuscaTodos()
@@ -45,7 +45,7 @@ namespace Data.Repository
             _dbSet.Update(obj);
             await Save();
         }
-        public virtual async Task Incluir(T obj)
+        public virtual async Task Cadastra(T obj)
         {
             _dbSet.Add(obj);
             await Save();

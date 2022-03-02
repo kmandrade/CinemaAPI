@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class AtorComEfCore : BaseRepository<Ator>, IAtorDao
+    public class AtorComEfCore : BaseRepository<Ator>, IAtorRepository
     {
         
         private readonly DbSet<Ator> _dbSetAtor;

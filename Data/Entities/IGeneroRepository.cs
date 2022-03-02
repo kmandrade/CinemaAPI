@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IGeneroDao :IRepository<Genero>
+    public interface IGeneroRepository :IRepository<Genero>
     {
         
     }

@@ -21,8 +21,8 @@ namespace Testes.Services
         private readonly IMapper _mapper;
         private readonly FilmeServices _filmeService;
         private readonly DiretorServices _diretorService;
-        private readonly Mock<IFilmeDao> _filmeDao;
-        private readonly Mock<IDiretorDao> _diretorDao;
+        private readonly Mock<IFilmeRepository> _filmeDao;
+        private readonly Mock<IDiretorRepository> _diretorDao;
 
         public TesteFilmeService()
         {
@@ -34,8 +34,8 @@ namespace Testes.Services
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
 
-            _filmeDao = new Mock<IFilmeDao>();
-            _diretorDao = new Mock<IDiretorDao>();
+            _filmeDao = new Mock<IFilmeRepository>();
+            _diretorDao = new Mock<IDiretorRepository>();
             _filmeService = new FilmeServices(_mapper , _filmeDao.Object, _diretorDao.Object);
         }
 
@@ -47,7 +47,7 @@ namespace Testes.Services
             int id = 2;
                _filmeDao.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
             //Act
-            var resultadoService=  _filmeService.ConsultaPorId(id);            
+            var resultadoService=  _filmeService.BuscaPorId(id);            
             // Assert
             Assert.Null(resultadoService.Result);
         }
@@ -68,7 +68,7 @@ namespace Testes.Services
             var filme = _mapper.Map<Filme>(filmeDto);
             _filmeDao.Setup(f=>f.BuscarPorId(id)).ReturnsAsync(filme);
             //Act
-            var act = await _filmeService.ConsultaPorId(id);
+            var act = await _filmeService.BuscaPorId(id);
             //Assert
             Assert.Null(act);//ou tira o await e bota act.Result
         }
@@ -81,7 +81,7 @@ namespace Testes.Services
             //arrage
             _filmeDao.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
             //act
-            var act = await _filmeService.ConsultaPorId(id);
+            var act = await _filmeService.BuscaPorId(id);
             //assert
             Assert.Null(act);
         }
@@ -194,20 +194,35 @@ namespace Testes.Services
             //assert
             Assert.Null(filmeService);
         }
-
-        /*
         [Fact]
         public async void CadastraFilme_RetornaNull_DiretorNaoexiste()
         {
             //arrange
-            _diretorDao.Setup(d => d.BuscarPorId(0)).ReturnsAsync(null as Diretor);
-            var filme = new CriarFilmeDto() { Duracao = 100 };
+            
+            var filme = new CriarFilmeDto() { Titulo="filme", Duracao = 100 , DiretorId=1 };
+            _diretorDao.Setup(d => d.BuscarPorId(1)).ReturnsAsync(null as Diretor);
             //act
             var filmeService= await _filmeService.Cadastra(filme);
             //assert
             Assert.Null(filmeService);
         }
-        */
+        [Fact]
+        public async void CadastraFilme_RetornaOk_Sucess()
+        {
+            //arrange
+            var filme = new Filme() { Titulo = "filme", DiretorId = 1, Duracao = 100,IdFilme=1 };
+            var filmeDto = _mapper.Map<CriarFilmeDto>(filme);
+            var diretor = new Diretor() { Id = 1 };
+            _diretorDao.Setup(d=>d.BuscarPorId(1)).ReturnsAsync(diretor);
+            _filmeDao.Setup(f => f.Cadastra(filme)).Returns(Task.FromResult(filme));
+            _filmeDao.Setup(f => f.BuscarPorNome("filme")).Returns(Task.FromResult(null as Filme));
+            
+            //act
+            var filmeService = await _filmeService.Cadastra(filmeDto);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.True(resultado);
+        }
 
 
         //AlteraFilme
@@ -226,6 +241,37 @@ namespace Testes.Services
             
             //assert
             Assert.Null(filmeService);
+        }
+        [Fact]
+        public async void AlteraFilme_RetornaNull_DiretorNaoExiste()
+        {
+            //arrange
+            
+            var filmeDto= new AlterarFilmeDto() { Titulo="Filme", DiretorId=1 };
+            _diretorDao.Setup(d => d.BuscarPorId(0)).ReturnsAsync(null as Diretor);
+            //act
+            var filmeService= await _filmeService.Altera(1, filmeDto);
+
+            //assert
+            Assert.Null(filmeService);
+        }
+        [Fact]
+        public async void AlteraFilme_RetornaOk_Sucess()
+        {
+            //arrange
+            var filme = new Filme() { Titulo = "filme", DiretorId = 1, Duracao = 100, IdFilme = 1 };
+            var filmeDto = _mapper.Map<AlterarFilmeDto>(filme);
+            var diretor = new Diretor() { Id = 1 };
+            _diretorDao.Setup(d => d.BuscarPorId(filme.DiretorId)).ReturnsAsync(diretor);
+            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            _filmeDao.Setup(f => f.Alterar(filme)).Returns(Task.FromResult(filme));
+            
+
+            //act
+            var filmeService = await _filmeService.Altera(1,filmeDto);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.True(resultado);
         }
 
 

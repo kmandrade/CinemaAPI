@@ -15,7 +15,7 @@ namespace Domain.Dtos.FilmeDto
         [Required(ErrorMessage = "O campo Duracao é obrigatorio")]
         public int Duracao { get; set; }
         [Required(ErrorMessage = "O campo IdDiretor é obrigatorio")]
-        public int idDiretor { get; set; }
+        public int DiretorId { get; set; }
 
 
         

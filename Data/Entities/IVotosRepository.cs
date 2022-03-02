@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IVotosDao: IRepository<Votos>
+    public interface IVotosRepository: IRepository<Votos>
     {
         Task<IQueryable<Votos>> BuscaFilmesMaisVotados();
         Task<Votos> BuscaVotoPorFilmeEUsuario(int idFilme, int idUsuario);

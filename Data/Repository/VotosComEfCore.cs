@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class VotosComEfCore : BaseRepository<Votos>,IVotosDao
+    public class VotosComEfCore : BaseRepository<Votos>,IVotosRepository
 
     {
         private readonly DbSet<Votos> _dbSetVotos;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IAtorFilme : IRepository<AtoresFilme>
+    public interface IAtorFilmeRepository : IRepository<AtoresFilme>
     {
        Task<IEnumerable<AtoresFilme>> BuscarFilmesPorAtor(int IdAtorFilme);
        Task<AtoresFilme> BuscaAtorDoFilme(int idAtor, int idFilme);

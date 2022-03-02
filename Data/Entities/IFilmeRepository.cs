@@ -3,7 +3,7 @@
 
 namespace Data.Entities
 {
-    public interface IFilmeDao : IRepository<Filme>
+    public interface IFilmeRepository : IRepository<Filme>
     {
         //IEnumerable<Filme> BuscaFilmesMaisVotados(Votos votos);
        

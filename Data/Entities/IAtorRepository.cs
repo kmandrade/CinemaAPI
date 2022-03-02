@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public interface IAtorDao : IRepository<Ator>
+    public interface IAtorRepository : IRepository<Ator>
     {
         
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class UsuarioComEfCore: BaseRepository<Usuario>,IUsuarioDao
+    public class UsuarioComEfCore: BaseRepository<Usuario>,IUsuarioRepository
     {
         private readonly DbSet<Usuario> _dbSetUsuario;
 
