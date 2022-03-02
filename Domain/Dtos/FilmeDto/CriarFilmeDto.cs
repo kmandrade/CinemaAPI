@@ -15,13 +15,13 @@ namespace Domain.Dtos.FilmeDto
     {
         [Required(ErrorMessage = "O campo Titulo é obrigatorio")]
         public string Titulo { get; set; }
-
+        [Required(ErrorMessage ="O campo Duracao é obrigatorio")]
         public int Duracao { get; set; }
-        [Required]
+        [Required(ErrorMessage = "O campo IdDiretor é obrigatorio")]
         public int DiretorId { get; set; }
 
         
-        public SituacaoEntities Situacao { get; set; }
+       
 
     }
     

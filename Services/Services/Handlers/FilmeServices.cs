@@ -72,9 +72,13 @@ namespace Data.Services.Handlers
         
         public async Task<Result> Cadastra(CriarFilmeDto obj)
         {
-            var diretorSelecionado = _diretorDao.BuscarPorId(obj.DiretorId);
+            var diretorSelecionado =  _diretorDao.BuscarPorId(obj.DiretorId);
+            if(diretorSelecionado == null || diretorSelecionado.Id<=0)
+            {
+                return null;
+            }
             var filmeSelecionado = await _filmeDao.BuscarPorNome(obj.Titulo);
-            if (diretorSelecionado == null || filmeSelecionado != null)
+            if (filmeSelecionado != null)
             {
                 return null;
             }
@@ -89,7 +93,7 @@ namespace Data.Services.Handlers
             var filmeSelecionado = await _filmeDao.BuscarPorId(id);
             if (filmeSelecionado == null)
             {
-                return Result.Fail("Filme não existe");
+                return null;
             }
 
             _mapper.Map(obj, filmeSelecionado);
@@ -138,9 +142,9 @@ namespace Data.Services.Handlers
         {
 
             var filmeSelecionado = await _filmeDao.BuscarPorId(id);
-            if (filmeSelecionado == null)
+            if (filmeSelecionado == null  || filmeSelecionado.Situacao==SituacaoEntities.Ativado)
             {
-                return Result.Fail("Filme nao existe");
+                return Result.Fail("Filme nao existe ou Ativo");
             }
 
             _filmeDao.Excluir(filmeSelecionado);

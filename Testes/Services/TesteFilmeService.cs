@@ -10,6 +10,8 @@ using FluentResults;
 using Moq;
 using Servicos.Services.Handlers;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Testes.BaseEntities;
 using Xunit;
 
 namespace Testes.Services
@@ -102,7 +104,7 @@ namespace Testes.Services
         [InlineData(0, -1)]
         [InlineData(-1, 0)]
         [InlineData(-1, -1)]
-        public async void ConsultaTodosFilmes_RetornaNull_PaginaçãoErrada(int skip, int take)
+        public async void BuscaTodosFilmes_RetornaNull_PaginaçãoErrada(int skip, int take)
         {
             //Arrange
               _filmeDao.Setup(f => f.BuscaTodos()).ReturnsAsync(null as IEnumerable<Filme>);
@@ -112,9 +114,8 @@ namespace Testes.Services
             Assert.Null(act);
         }
 
-
         [Fact]
-        public async void ConsultaTodosFilmes_RetornaSomente_FilmesAtivosDto()
+        public async void BuscaTodosFilmes_RetornaSomente_FilmesAtivosDto()
         {
             //arrange
             var filmesDto = new List<LerFilmeDto>()
@@ -176,28 +177,185 @@ namespace Testes.Services
 
         }
 
+
+        //CadastraFilme
         [Fact]
         public async void CadastraFilme_RetornaNull_FilmeJaExistente()
         {
             //arrange
-            var filmeDto = new List<CriarFilmeDto>()
-            {
-                new CriarFilmeDto(){ Titulo="filme", Duracao=100, DiretorId=2},
-                new CriarFilmeDto(){Titulo="filme", Duracao=100, DiretorId=3}
-            };
-           
-            var filme = _mapper.Map<IEnumerable<Filme>>(filmeDto);
-            var filmesSelecionados=   _filmeDao.Setup(f=>f.BuscaTodos()).ReturnsAsync(filme).;
+            var filme = new Filme() { IdFilme = 1, Titulo="filme", DiretorId=1 };
 
-                _filmeDao.Setup(f => f.BuscarPorNome(filmesSelecionados.)).ReturnsAsync(null as Filme);
-            
-            
-            
+             _filmeDao.Setup(f => f.BuscarPorNome(filme.Titulo)).ReturnsAsync(filme);
+            var filmeDto = _mapper.Map<CriarFilmeDto>(filme);
+           
             //act
-            var filmeService = await _filmeService.Cadastra(filmeDto[0]);
+            var filmeService = await _filmeService.Cadastra(filmeDto);
 
             //assert
             Assert.Null(filmeService);
         }
+
+        /*
+        [Fact]
+        public async void CadastraFilme_RetornaNull_DiretorNaoexiste()
+        {
+            //arrange
+            _diretorDao.Setup(d => d.BuscarPorId(0)).ReturnsAsync(null as Diretor);
+            var filme = new CriarFilmeDto() { Duracao = 100 };
+            //act
+            var filmeService= await _filmeService.Cadastra(filme);
+            //assert
+            Assert.Null(filmeService);
+        }
+        */
+
+
+        //AlteraFilme
+        [Fact]
+        public async void AlteraFilme_RetornaNull_FilmeNaoExiste()
+        {
+            //arrange
+            
+            var filme = new AlterarFilmeDto() {  Titulo = "filme", Duracao=100 };
+            _filmeDao.Setup(f => f.BuscarPorId(2)).ReturnsAsync(null as Filme);
+            var filmeDto = _mapper.Map<AlterarFilmeDto>(filme);
+
+            
+            //act
+            var filmeService= await _filmeService.Altera(2,filmeDto);
+            
+            //assert
+            Assert.Null(filmeService);
+        }
+
+
+        //Arquivar Filme
+        [Fact]
+        public async void ArquivaFilme_RetornaFail_FilmeNaoExiste()
+        {
+            //arrange
+            
+            _filmeDao.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
+
+            //act
+
+            var filmeService = await _filmeService.ArquivarFilme(0);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+
+            //assert
+            Assert.False(resultado);
+        }
+        [Fact]
+        public async void ArquivaFilme_RetornaFail_FilmeJaArquivado()
+        {
+            //arrange
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme",Situacao=SituacaoEntities.Arquivado};
+            _filmeDao.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
+            
+            //act
+            var filmeService= await _filmeService.ArquivarFilme(filme.IdFilme);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.False(resultado);
+
+        }
+        [Fact]
+        public async void ArquivaFilme_RetornaTrue_Sucesso()
+        {
+            //arrange
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Ativado };
+            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            //act
+            var filmeService = await _filmeService.ArquivarFilme(filme.IdFilme);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.True(resultado);
+        }
+        
+        //Reativar Filme
+        [Fact]
+        public async void ReativarFilme_RetornaFail_FilmeNaoExiste()
+        {
+            //arrange
+
+            _filmeDao.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
+
+            //act
+
+            var filmeService = await _filmeService.ReativarFilme(0);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+
+            //assert
+            Assert.False(resultado);
+        }
+        [Fact]
+        public async void ReativarFilme_RetornaFail_FilmeJaAtivado()
+        {
+            //arrange
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Ativado };
+            _filmeDao.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
+
+            //act
+            var filmeService = await _filmeService.ReativarFilme(filme.IdFilme);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.False(resultado);
+        }
+        [Fact]
+        public async void ReativarFilme_RetornaOk_Sucess()
+        {
+            //arrange
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Arquivado };
+            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            //act
+            var filmeService = await _filmeService.ReativarFilme(filme.IdFilme);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.True(resultado);
+        }
+
+        //Excluir Filme
+        [Fact]
+        public async void ExcluirFilme_RetornaFail_FilmeNaoExiste()
+        {
+            //arrange
+
+            _filmeDao.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
+
+            //act
+
+            var filmeService = await _filmeService.Excluir(0);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+
+            //assert
+            Assert.False(resultado);
+        }
+        [Fact]
+        public async void ExcluirFilme_RetornaFail_FilmeAtivo()
+        {
+            //arrange
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Ativado };
+            _filmeDao.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
+
+            //act
+            var filmeService = await _filmeService.Excluir(filme.IdFilme);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.False(resultado);
+        }
+        [Fact]
+        public async void ExcluirFilme_RetornaOk_Sucess()
+        {
+            //arrange
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Arquivado };
+            _filmeDao.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
+            //act
+            var filmeService = await _filmeService.Excluir(filme.IdFilme);
+            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            //assert
+            Assert.True(resultado);
+        }
+
+
     }
 }
