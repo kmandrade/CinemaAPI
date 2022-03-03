@@ -16,17 +16,18 @@ namespace Servicos.Services.Handlers
     public class AtorFilmeServices:IAtorFilmeService
     {
         IAtorFilmeRepository _atorfilme;
-        
+        IAtorRepository _atorRepository;
         private readonly IMapper _mapper;
 
-        public AtorFilmeServices(IMapper mapper, IAtorFilmeRepository atorfilme)
+        public AtorFilmeServices(IMapper mapper, IAtorFilmeRepository atorfilme, IAtorRepository atorRepository)
         {
             _mapper = mapper;
-            
+
             _atorfilme = atorfilme;
+            _atorRepository = atorRepository;
         }
 
-        
+
 
         public async Task<IEnumerable<LerAtorFilmeDto>> BuscaFilmesPorAtor(int idAtorFilme)
         {
@@ -52,6 +53,11 @@ namespace Servicos.Services.Handlers
         }
         public async Task<Result> AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
         {
+            var verificaSeAtorExiste = _atorRepository.BuscarPorId(idAtorAtual);
+            if (verificaSeAtorExiste == null)
+            {
+                return Result.Fail("Novo Ator Nao Cadastrado");
+            }
             var AtorFilmeSelecionado = await _atorfilme.BuscaAtorDoFilme(idAtorAtual, idFilme);
             if(AtorFilmeSelecionado != null)
             {
