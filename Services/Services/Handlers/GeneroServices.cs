@@ -28,7 +28,7 @@ namespace Servicos.Services.Handlers
 
        
 
-        public async Task<LerGeneroDto> ConsultaPorId(int id)
+        public async Task<LerGeneroDto> BuscaPorId(int id)
         {
             var generoId = await _generoDao.BuscarPorId(id);
             var generoDto = _mapper.Map<LerGeneroDto>(generoId);
@@ -36,30 +36,32 @@ namespace Servicos.Services.Handlers
             
         }
 
-        public async Task<IEnumerable<LerGeneroDto>> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerGeneroDto>> BuscaTodos(int skip, int take)
         {
             var listaGeneros = await _generoDao.BuscaTodos();
             if(skip <= 0 ||take <= 0)
             {
                 return null;
             }
-            if (take > 0)
+            if (listaGeneros == null)
             {
+                return null;
+            }
                 var generosPaginados = listaGeneros.Skip(skip).Take(take).ToList();
                 var listaGenerosDto = _mapper.Map<IEnumerable<LerGeneroDto>>(generosPaginados);
                 return listaGenerosDto;
-            }
-            return null;
+            
+            
         }
 
 
         public async Task<Result> Cadastra(CriarGeneroDto obj)
         {
-            //var genero = _generoDao.BuscarPorNome(obj.NomeGenero);
-            //if (genero != null)
-            //{
-            //    return Result.Fail("Ator ja existe ");
-            //}
+            var genero = await _generoDao.BuscaPorNome(obj.NomeGenero);
+            if (genero != null)
+            {
+                return Result.Fail("Genero ja existe ");
+            }
             var generoMapeado = _mapper.Map<Genero>(obj);
             await _generoDao.Cadastra(generoMapeado);
             return Result.Ok();

@@ -9,8 +9,8 @@ namespace Cinema.Api.Profiles
         public GeneroProfile()
         {
             CreateMap<Genero, LerGeneroDto>().ReverseMap();
-            CreateMap<CriarGeneroDto, Genero>();
-            CreateMap<AlterarGeneroDto, Genero>();
+            CreateMap<CriarGeneroDto, Genero>().ReverseMap();
+            CreateMap<AlterarGeneroDto, Genero>().ReverseMap();
         }
     }
 }

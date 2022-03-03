@@ -19,7 +19,13 @@ namespace Data.Repository
             _dbset = _context.Set<Genero>();
         }
 
-
-   
+        public Task<Genero> BuscaPorNome(string nome)
+        {
+            var query = _context.Generos
+                .AsNoTracking()
+                .Where(g => g.NomeGenero == nome)
+                .FirstOrDefaultAsync();
+            return query;
+        }
     }
 }

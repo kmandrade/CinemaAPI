@@ -20,6 +20,15 @@ namespace Data.Repository
 
         }
 
+        public Task<Diretor> BuscaDiretorPorNome(string nome)
+        {
+            var query = _context.Diretores
+                .AsNoTracking()
+                .Where(d => d.NomeDiretor == nome)
+                .FirstOrDefaultAsync();
+            return query;
+        }
+
         public async Task<IEnumerable<Filme>> BuscaFilmesPorDiretor(int idDiretor)
         {
             var filmes = _context.Filmes

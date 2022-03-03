@@ -13,8 +13,8 @@ namespace Servicos.Services.Entities
     public interface IGeneroService
     {
         
-        Task<IEnumerable<LerGeneroDto>> ConsultaTodos(int skip, int take);
-        Task<LerGeneroDto> ConsultaPorId(int id);
+        Task<IEnumerable<LerGeneroDto>> BuscaTodos(int skip, int take);
+        Task<LerGeneroDto> BuscaPorId(int id);
 
 
         Task<Result> Cadastra(CriarGeneroDto obj);

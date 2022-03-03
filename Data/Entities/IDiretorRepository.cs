@@ -10,5 +10,6 @@ namespace Data.Entities
     public interface IDiretorRepository :IRepository<Diretor>
     {
         Task<IEnumerable<Filme>> BuscaFilmesPorDiretor(int idDiretor);
+        Task<Diretor> BuscaDiretorPorNome(string nome);
     }
 }

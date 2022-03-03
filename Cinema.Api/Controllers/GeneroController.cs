@@ -21,7 +21,7 @@ namespace Cinema.Api.Controllers
         [HttpGet("ConsultaTodosGeneros")]
         public async Task<IActionResult> ConsultaGeneros([FromQuery] int skip, int take)
         {
-            var generos = await _generoService.ConsultaTodos(skip,take);
+            var generos = await _generoService.BuscaTodos(skip,take);
             return Ok(generos);
         }
 

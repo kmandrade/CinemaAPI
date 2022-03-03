@@ -9,6 +9,6 @@ namespace Data.Entities
 {
     public interface IGeneroRepository :IRepository<Genero>
     {
-        
+        Task<Genero> BuscaPorNome(string nome);
     }
 }
