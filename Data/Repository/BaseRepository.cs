@@ -23,8 +23,9 @@ namespace Data.Repository
         public async Task<T> BuscarPorId(int id)
         {
             
-            return  await _dbSet.FindAsync();
+            return  await _dbSet.FindAsync(new object[] { id });
         }
+
         
         public async Task<IEnumerable<T>> BuscaTodos()
         {

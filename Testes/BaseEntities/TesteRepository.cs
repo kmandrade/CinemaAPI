@@ -26,7 +26,7 @@ namespace Testes.BaseEntities
             return null;
         }
 
-        public static bool Retorna_True_OU_False_Result(Result resultado)
+        public static bool Retorna_FalseInFalid_TrueInSucess_Result(Result resultado)
         {
             if (resultado.IsFailed)
             {
@@ -34,6 +34,7 @@ namespace Testes.BaseEntities
             }
             return true;
         }
+       
 
     }
 }

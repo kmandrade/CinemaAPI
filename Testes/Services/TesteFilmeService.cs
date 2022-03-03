@@ -36,37 +36,40 @@ namespace Testes.Services
 
             _filmeRepository = new Mock<IFilmeRepository>();
             _diretorRepository = new Mock<IDiretorRepository>();
-            _filmeService = new FilmeServices(_mapper , _filmeRepository.Object, _diretorRepository.Object);
+            _filmeService = new FilmeServices(_mapper, _filmeRepository.Object, _diretorRepository.Object);
         }
 
+
+        //Bsuca Filme
         [Fact]
-        public  async void BuscaFilmePorId_RetornaNullFilmeInexistente()
+        public async void BuscaFilmePorId_RetornaNullFilmeInexistente()
         {
 
             //Arrange
             int id = 2;
-               _filmeRepository.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(id)).ReturnsAsync(null as Filme);
             //Act
-            var resultadoService=  _filmeService.BuscaPorId(id);            
+            var resultadoService = await _filmeService.BuscaPorId(id);
             // Assert
-            Assert.Null(resultadoService.Result);
+            Assert.Null(resultadoService);
         }
+
         [Theory]
         [InlineData(1)]
         public async void BuscaFilmePorId_Retorna_NUll_SeFilmeArquivado(int id)
         {
             //Arrange
-             
+
             var filmeDto = new LerFilmeDto()
             {
                 IdFilme = id,
-                Titulo="aaa",
-                Duracao=100,
-                Situacao=SituacaoEntities.Arquivado
-               
+                Titulo = "aaa",
+                Duracao = 100,
+                Situacao = SituacaoEntities.Arquivado
+
             };
             var filme = _mapper.Map<Filme>(filmeDto);
-            _filmeRepository.Setup(f=>f.BuscarPorId(id)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorId(id)).ReturnsAsync(filme);
             //Act
             var act = await _filmeService.BuscaPorId(id);
             //Assert
@@ -85,6 +88,39 @@ namespace Testes.Services
             //assert
             Assert.Null(act);
         }
+
+        [Fact]
+        public async void BuscaFilmesArquivados_RetornaNUll_NenhumFilmeEncontrado()
+        {
+            //arrange
+            var filmes = new List<Filme>()
+            {
+                new Filme(){ IdFilme=1, Titulo="filme1"},
+                new Filme(){ IdFilme=2, Titulo="filme2"},
+            };
+            _filmeRepository.Setup(f => f.BuscaTodos()).ReturnsAsync(null as List<Filme>);
+            //act
+            var filmeService = await _filmeService.BuscaFilmesArquivados(1,2);
+            //assert
+            Assert.Null(filmeService);
+        }
+
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(0, -1)]
+        [InlineData(-1, 0)]
+        [InlineData(-1, -1)]
+        public async void BuscaFilmesArquivados_RetornaNull_PaginaçãoErrada(int skip, int take)
+        {
+            //Arrange
+            _filmeRepository.Setup(f => f.BuscaTodos()).ReturnsAsync(null as IEnumerable<Filme>);
+            //act
+            var act = await _filmeService.BuscaFilmesArquivados(skip, take);
+            //assert
+            Assert.Null(act);
+        }
+
+
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
@@ -98,21 +134,21 @@ namespace Testes.Services
             Assert.Null(act);
         }
 
-
         [Theory]
-        [InlineData(0,0)]
+        [InlineData(0, 0)]
         [InlineData(0, -1)]
         [InlineData(-1, 0)]
         [InlineData(-1, -1)]
         public async void BuscaTodosFilmes_RetornaNull_PaginaçãoErrada(int skip, int take)
         {
             //Arrange
-              _filmeRepository.Setup(f => f.BuscaTodos()).ReturnsAsync(null as IEnumerable<Filme>);
+            _filmeRepository.Setup(f => f.BuscaTodos()).ReturnsAsync(null as IEnumerable<Filme>);
             //act
             var act = await _filmeService.BuscaTodos(skip, take);
             //assert
             Assert.Null(act);
         }
+
 
         [Fact]
         public async void BuscaTodosFilmes_RetornaSomente_FilmesAtivosDto()
@@ -124,13 +160,13 @@ namespace Testes.Services
                 new LerFilmeDto(){ IdFilme=2, Titulo="filme2", Situacao=SituacaoEntities.Arquivado}
             };
             var filmes = _mapper.Map<IEnumerable<Filme>>(filmesDto);
-            var filmesEncontrados =  _filmeRepository.Setup(f=>f.BuscaTodos()).ReturnsAsync(filmes);
+            var filmesEncontrados = _filmeRepository.Setup(f => f.BuscaTodos()).ReturnsAsync(filmes);
             //act
             int skip = 1, take = 2;
             var filmesEncontradosAtivosDto = await _filmeService.BuscaTodos(skip, take);
-             bool FilmesAtivosDto()
+            bool FilmesAtivosDto()
             {
-                foreach(var filme in filmesEncontradosAtivosDto)
+                foreach (var filme in filmesEncontradosAtivosDto)
                 {
                     if (filme.Situacao == SituacaoEntities.Ativado)
                     {
@@ -141,10 +177,9 @@ namespace Testes.Services
                 return false;
             }
             //assert
-            Assert.True(FilmesAtivosDto());            
-          
-        }
+            Assert.True(FilmesAtivosDto());
 
+        }
         [Fact]
         public async void BuscaFilmeDetalhado_RetornaNull_IdErrado()
         {
@@ -153,11 +188,10 @@ namespace Testes.Services
             _filmeRepository.Setup(f => f.BuscarPorFilmesCompletoID(id)).ReturnsAsync(null as Filme);
 
             //act
-            var filmeEncontrado= await _filmeService.BuscaFilmeCompleto(id);
+            var filmeEncontrado = await _filmeService.BuscaFilmeCompleto(id);
             //assert
             Assert.Null(filmeEncontrado);
         }
-        
         [Fact]
         public async void BuscaFilmeDetalhado_RetornaNUll_FilmeArquivado()
         {
@@ -183,11 +217,11 @@ namespace Testes.Services
         public async void CadastraFilme_RetornaNull_FilmeJaExistente()
         {
             //arrange
-            var filme = new Filme() { IdFilme = 1, Titulo="filme", DiretorId=1 };
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme", DiretorId = 1 };
 
-             _filmeRepository.Setup(f => f.BuscarPorNome(filme.Titulo)).ReturnsAsync(filme);
+            _filmeRepository.Setup(f => f.BuscarPorNome(filme.Titulo)).ReturnsAsync(filme);
             var filmeDto = _mapper.Map<CriarFilmeDto>(filme);
-           
+
             //act
             var filmeService = await _filmeService.Cadastra(filmeDto);
 
@@ -198,11 +232,11 @@ namespace Testes.Services
         public async void CadastraFilme_RetornaNull_DiretorNaoexiste()
         {
             //arrange
-            
-            var filme = new CriarFilmeDto() { Titulo="filme", Duracao = 100 , DiretorId=1 };
+
+            var filme = new CriarFilmeDto() { Titulo = "filme", Duracao = 100, DiretorId = 1 };
             _diretorRepository.Setup(d => d.BuscarPorId(1)).ReturnsAsync(null as Diretor);
             //act
-            var filmeService= await _filmeService.Cadastra(filme);
+            var filmeService = await _filmeService.Cadastra(filme);
             //assert
             Assert.Null(filmeService);
         }
@@ -210,16 +244,16 @@ namespace Testes.Services
         public async void CadastraFilme_RetornaOk_Sucess()
         {
             //arrange
-            var filme = new Filme() { Titulo = "filme", DiretorId = 1, Duracao = 100,IdFilme=1 };
+            var filme = new Filme() { Titulo = "filme", DiretorId = 1, Duracao = 100, IdFilme = 1 };
             var filmeDto = _mapper.Map<CriarFilmeDto>(filme);
             var diretor = new Diretor() { Id = 1 };
-            _diretorRepository.Setup(d=>d.BuscarPorId(1)).ReturnsAsync(diretor);
+            _diretorRepository.Setup(d => d.BuscarPorId(1)).ReturnsAsync(diretor);
             _filmeRepository.Setup(f => f.Cadastra(filme)).Returns(Task.FromResult(filme));
             _filmeRepository.Setup(f => f.BuscarPorNome("filme")).Returns(Task.FromResult(null as Filme));
-            
+
             //act
             var filmeService = await _filmeService.Cadastra(filmeDto);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.True(resultado);
         }
@@ -230,15 +264,15 @@ namespace Testes.Services
         public async void AlteraFilme_RetornaNull_FilmeNaoExiste()
         {
             //arrange
-            
-            var filme = new AlterarFilmeDto() {  Titulo = "filme", Duracao=100 };
+
+            var filme = new AlterarFilmeDto() { Titulo = "filme", Duracao = 100 };
             _filmeRepository.Setup(f => f.BuscarPorId(2)).ReturnsAsync(null as Filme);
             var filmeDto = _mapper.Map<AlterarFilmeDto>(filme);
 
-            
+
             //act
-            var filmeService= await _filmeService.Altera(2,filmeDto);
-            
+            var filmeService = await _filmeService.Altera(2, filmeDto);
+
             //assert
             Assert.Null(filmeService);
         }
@@ -246,11 +280,11 @@ namespace Testes.Services
         public async void AlteraFilme_RetornaNull_DiretorNaoExiste()
         {
             //arrange
-            
-            var filmeDto= new AlterarFilmeDto() { Titulo="Filme", DiretorId=1 };
+
+            var filmeDto = new AlterarFilmeDto() { Titulo = "Filme", DiretorId = 1 };
             _diretorRepository.Setup(d => d.BuscarPorId(0)).ReturnsAsync(null as Diretor);
             //act
-            var filmeService= await _filmeService.Altera(1, filmeDto);
+            var filmeService = await _filmeService.Altera(1, filmeDto);
 
             //assert
             Assert.Null(filmeService);
@@ -265,11 +299,11 @@ namespace Testes.Services
             _diretorRepository.Setup(d => d.BuscarPorId(filme.DiretorId)).ReturnsAsync(diretor);
             _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             _filmeRepository.Setup(f => f.Alterar(filme)).Returns(Task.FromResult(filme));
-            
+
 
             //act
-            var filmeService = await _filmeService.Altera(1,filmeDto);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var filmeService = await _filmeService.Altera(1, filmeDto);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.True(resultado);
         }
@@ -280,13 +314,13 @@ namespace Testes.Services
         public async void ArquivaFilme_RetornaFail_FilmeNaoExiste()
         {
             //arrange
-            
+
             _filmeRepository.Setup(f => f.BuscarPorId(0)).ReturnsAsync(null as Filme);
 
             //act
 
             var filmeService = await _filmeService.ArquivarFilme(0);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
 
             //assert
             Assert.False(resultado);
@@ -295,12 +329,12 @@ namespace Testes.Services
         public async void ArquivaFilme_RetornaFail_FilmeJaArquivado()
         {
             //arrange
-            var filme = new Filme() { IdFilme = 1, Titulo = "filme",Situacao=SituacaoEntities.Arquivado};
+            var filme = new Filme() { IdFilme = 1, Titulo = "filme", Situacao = SituacaoEntities.Arquivado };
             _filmeRepository.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
-            
+
             //act
-            var filmeService= await _filmeService.ArquivarFilme(filme.IdFilme);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var filmeService = await _filmeService.ArquivarFilme(filme.IdFilme);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.False(resultado);
 
@@ -313,11 +347,11 @@ namespace Testes.Services
             _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             //act
             var filmeService = await _filmeService.ArquivarFilme(filme.IdFilme);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.True(resultado);
         }
-        
+
         //Reativar Filme
         [Fact]
         public async void ReativarFilme_RetornaFail_FilmeNaoExiste()
@@ -329,7 +363,7 @@ namespace Testes.Services
             //act
 
             var filmeService = await _filmeService.ReativarFilme(0);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
 
             //assert
             Assert.False(resultado);
@@ -343,7 +377,7 @@ namespace Testes.Services
 
             //act
             var filmeService = await _filmeService.ReativarFilme(filme.IdFilme);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.False(resultado);
         }
@@ -355,7 +389,7 @@ namespace Testes.Services
             _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             //act
             var filmeService = await _filmeService.ReativarFilme(filme.IdFilme);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.True(resultado);
         }
@@ -371,7 +405,7 @@ namespace Testes.Services
             //act
 
             var filmeService = await _filmeService.Excluir(0);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
 
             //assert
             Assert.False(resultado);
@@ -385,7 +419,7 @@ namespace Testes.Services
 
             //act
             var filmeService = await _filmeService.Excluir(filme.IdFilme);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.False(resultado);
         }
@@ -397,7 +431,7 @@ namespace Testes.Services
             _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             //act
             var filmeService = await _filmeService.Excluir(filme.IdFilme);
-            var resultado = TesteRepository.Retorna_True_OU_False_Result(filmeService);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(filmeService);
             //assert
             Assert.True(resultado);
         }

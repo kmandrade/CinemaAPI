@@ -19,19 +19,19 @@ namespace Cinema.Api.Controllers
         }
         
         [HttpGet("ConsultaAtores")]
-        public async Task<IActionResult> ConsultaAtores([FromQuery] int skip, int take)
+        public async Task<IActionResult> BuscaAtores([FromQuery] int skip, int take)
         {
             if (skip < 0 || take < 0) return BadRequest();
-            var atores = await _atorService.ConsultaTodos(skip,  take);
+            var atores = await _atorService.BuscaTodos(skip,  take);
             if (atores == null) return BadRequest();
             return Ok(atores);
         }
 
         [HttpGet("ConsultaAtorPorId/{id}")]
-        public async Task<IActionResult> ConsultaAtorPorId(int id)
+        public async Task<IActionResult> BuscaAtorPorId(int id)
         {
-            var atores = await _atorService.ConsultaPorId(id);
-            if (id < 0 || atores==null)
+            var atores = await _atorService.BuscaPorId(id);
+            if (id <= 0 || atores==null)
             {
                 return BadRequest();
             }
@@ -46,7 +46,7 @@ namespace Cinema.Api.Controllers
            Result resultado =  await _atorService.Cadastra(atorDto);
             if (resultado.IsFailed)
             {
-                return BadRequest();
+                return BadRequest(new { message = "Ator ja existe" });
             }
             return Ok();
         }

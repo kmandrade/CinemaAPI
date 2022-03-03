@@ -22,5 +22,13 @@ namespace Data.Repository
            
         }
 
+        public async Task<Ator> BuscarPorNome(string nome)
+        {
+            var ator = await _context.Atores
+                .AsNoTracking()
+                .Where(a => a.NomeAtor == nome)
+                .FirstOrDefaultAsync();
+            return ator;
+        }
     }
 }

@@ -9,8 +9,8 @@ namespace Cinema.Api.Profiles
         public AtorProfile()
         {
             CreateMap<Ator, LerAtorDto>().ReverseMap();
-            CreateMap<CriarAtorDto, Ator>();
-            CreateMap<AlterarAtorDto, Ator>()
+            CreateMap<CriarAtorDto, Ator>().ReverseMap();
+            CreateMap<AlterarAtorDto, Ator>().ReverseMap()
             .ForMember(dto=>dto.NomeAtor , opt=>opt.MapFrom(a=>a.NomeAtor));
         }
     }

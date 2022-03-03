@@ -19,7 +19,7 @@ namespace Servicos.Services.Handlers
         IAtorRepository _atorDao;
 
         private readonly IMapper _mapper;
-        public AtorServices(IAtorRepository atorDao, IMapper mapper)
+        public AtorServices(IMapper mapper , IAtorRepository atorDao)
         {
             _atorDao = atorDao;
             _mapper = mapper;
@@ -27,7 +27,7 @@ namespace Servicos.Services.Handlers
         }
 
 
-        public async Task<LerAtorDto> ConsultaPorId(int id)
+        public async Task<LerAtorDto> BuscaPorId(int id)
         {
             var atores = await _atorDao.BuscarPorId(id);
             if (atores == null)
@@ -39,9 +39,12 @@ namespace Servicos.Services.Handlers
 
         }
 
-        public async Task<IEnumerable<LerAtorDto>> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerAtorDto>> BuscaTodos(int skip, int take)
         {
-
+            if(skip<=0 || take <= 0)
+            {
+                return null;
+            }
             var atores = await _atorDao.BuscaTodos();
             if (atores == null)
             {
@@ -56,7 +59,11 @@ namespace Servicos.Services.Handlers
 
         public async Task<Result> Cadastra(CriarAtorDto obj)
         {
-            
+            var buscaAtorExistente = await _atorDao.BuscarPorNome(obj.NomeAtor);
+            if(buscaAtorExistente != null)
+            {
+                return Result.Fail("ator ja existe");
+            }
             var atorMapeado = _mapper.Map<Ator>(obj);
             await _atorDao.Cadastra(atorMapeado);
             return Result.Ok();
@@ -67,7 +74,7 @@ namespace Servicos.Services.Handlers
             var atorSelecionado = await _atorDao.BuscarPorId(id);
             if (atorSelecionado == null)
             {
-                return Result.Fail("Filme nao existe");
+                return Result.Fail("Ator nao existe");
             }
             _mapper.Map(obj, atorSelecionado);
             await _atorDao.Save();

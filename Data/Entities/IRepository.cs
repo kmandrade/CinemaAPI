@@ -12,6 +12,8 @@ namespace Data.Entities
         Task<IEnumerable<T>> BuscaTodos();
         
         Task<T> BuscarPorId(int id); 
+        
+
 
         Task Cadastra(T obj);
         Task Alterar(T obj);

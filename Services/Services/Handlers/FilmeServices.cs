@@ -132,7 +132,15 @@ namespace Data.Services.Handlers
 
         public async Task<IEnumerable<LerFilmeDto>> BuscaFilmesArquivados(int skip, int take)
         {
+            if (skip <= 0 || take <= 0)
+            {
+                return null;
+            }
             var filmes = await _filmeDao.BuscaTodos();
+            if (filmes == null)
+            {
+                return null;
+            }
             var filmesPaginados = filmes
                 .Where(f => f.Situacao == SituacaoEntities.Arquivado).Skip(skip).Take(take).ToList();
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmesPaginados);

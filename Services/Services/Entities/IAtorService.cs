@@ -14,8 +14,8 @@ namespace Servicos.Services.Entities
     {
         
 
-        Task<IEnumerable<LerAtorDto>> ConsultaTodos(int skip, int take);
-        Task<LerAtorDto> ConsultaPorId(int id);
+        Task<IEnumerable<LerAtorDto>> BuscaTodos(int skip, int take);
+        Task<LerAtorDto> BuscaPorId(int id);
 
         Task<Result> Cadastra(CriarAtorDto obj);
         Task<Result> Altera(int id,AlterarAtorDto obj);

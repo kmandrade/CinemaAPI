@@ -32,19 +32,24 @@ namespace Cinema.Api.Controllers
             {
                 return Ok(filmes);
             }
-            return NotFound();
+            return NotFound(new { message = "Paginacao Errada" });
         }
         [Authorize(Roles = "Administrador")]
         [HttpGet("BuscaFilmesArquivados")]
         public async Task<IActionResult> BuscaFilmesArquivados([FromQuery] int skip, int take)
         {
            var filmesArq= await _filmeService.BuscaFilmesArquivados(skip,take);
+            
             return Ok(filmesArq);
         }
         [HttpGet("BuscaCompleta/{id}")]
         public async Task<IActionResult> BuscaCompleta(int id)
         {
             var filme = await _filmeService.BuscaFilmeCompleto(id);
+            if (filme == null)
+            {
+                return BadRequest(new { message = "Filme nao encontrado" });
+            }
             return Ok(filme);
         }
         [HttpGet("BucaUmFilme/{id}")]
@@ -56,7 +61,7 @@ namespace Cinema.Api.Controllers
             {
                 return Ok(filme);
             }
-            return NotFound();
+            return BadRequest(new { message = "Filme nao encontrado" });
         }
         [Authorize(Roles ="Administrador")]
         [HttpPost("CadastraUmFilme")]
