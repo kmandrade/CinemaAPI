@@ -166,7 +166,7 @@ namespace Testes.Services
         {
             //arrange
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };
-            _atorRepository.Setup(a => a.BuscarPorId(ator.IdAtor)).ReturnsAsync(null as Ator);
+            _atorRepository.Setup(a => a.BuscarPorId(ator.IdAtor)).ReturnsAsync(ator);
             _atorRepository.Setup(a => a.Excluir(ator));
             //act
             var atorService = await _atorServices.Excluir(ator.IdAtor);
