@@ -21,7 +21,7 @@ namespace Cinema.Api.Controllers
         [HttpGet("BuscaFilmesPorGenero")]
         public async Task<IActionResult> BuscarFilmesPorGenero([FromQuery] int iDGenero)
         {
-            var gf = await _generoFilmeService.BuscarFilmesPorGenero(iDGenero);
+            var gf = await _generoFilmeService.BuscaFilmesPorGenero(iDGenero);
             return Ok(gf);
         }
 

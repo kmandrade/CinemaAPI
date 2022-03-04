@@ -39,7 +39,7 @@ namespace Servicos.Services.Handlers
                 var atfDto = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atf);
                 return atfDto;
             }
-
+            //esse ator nao possui nenhum filme
             return null;
         }
         public async Task<Result> AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)

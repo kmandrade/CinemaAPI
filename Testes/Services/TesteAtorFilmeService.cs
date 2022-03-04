@@ -81,10 +81,10 @@ namespace Testes.Services
             var atoresFilmesDto = _mapper.Map<IEnumerable<AtoresFilme>>(atoresFilmes);
             //act
             var atfService= await _atorFilmeServices.BuscaFilmesPorAtor(atorDto.IdAtor);
-            var primeioFilme = atfService.FirstOrDefault(f => f.Filme.Titulo == filmeDto.Titulo);
+            var primeioFilmeDoAtor = atfService.FirstOrDefault(f => f.Filme.Titulo == filmeDto.Titulo);
 
             //assert
-            Assert.Equal(filme.Titulo, primeioFilme.Filme.Titulo);
+            Assert.Equal(filme.Titulo, primeioFilmeDoAtor.Filme.Titulo);
 
         }
 

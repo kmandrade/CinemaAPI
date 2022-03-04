@@ -12,7 +12,7 @@ namespace Servicos.Services.Entities
     public interface IGeneroFilmeService
     {
         Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto);
-        Task<IEnumerable<LerGeneroFilmeDto>> BuscarFilmesPorGenero(int IdGeneroFilme);
+        Task<IEnumerable<LerGeneroFilmeDto>> BuscaFilmesPorGenero(int IdGeneroFilme);
         Task<Result> DeletaGeneroDoFilme(int idGenero, int idFilme);
         Task<Result> AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo);
 

@@ -22,7 +22,7 @@ namespace Data.Repository
             
         }
 
-        public  async Task<IEnumerable<AtoresFilme>> BuscaFilmesPorAtor(int IdAtorFilme)
+        public  async Task<IEnumerable<AtoresFilme>> BuscaFilmesPorAtor(int IdAtor)
         {
             //sem conseguir acessar genero
             var queryFilmes = _context.AtoresFilmes
@@ -30,7 +30,7 @@ namespace Data.Repository
                 .Include(f => f.Filme)
                 .ThenInclude(d=>d.Diretor)
                 .AsNoTracking()
-                .Where(atf => atf.IdAtor == IdAtorFilme)
+                .Where(atf => atf.IdAtor == IdAtor)
                 .ToListAsync();
             return await queryFilmes;
          

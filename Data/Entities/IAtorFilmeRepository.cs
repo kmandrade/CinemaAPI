@@ -10,7 +10,7 @@ namespace Data.Entities
 {
     public interface IAtorFilmeRepository : IRepository<AtoresFilme>
     {
-       Task<IEnumerable<AtoresFilme>> BuscaFilmesPorAtor(int IdAtorFilme);
+       Task<IEnumerable<AtoresFilme>> BuscaFilmesPorAtor(int IdAtor);
        Task<AtoresFilme> BuscaAtorEFilme(int idAtor, int idFilme);
 
         

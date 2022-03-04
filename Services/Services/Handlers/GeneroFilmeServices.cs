@@ -16,35 +16,34 @@ namespace Servicos.Services.Handlers
     public class GeneroFilmeServices:IGeneroFilmeService
     {
         IGeneroFilmeRepository _generofilme;
-        
+        IGeneroRepository _generoRepository;
+        IFilmeRepository _filmeRepository;
         private readonly IMapper _mapper;
 
-        public GeneroFilmeServices(IMapper mapper, IGeneroFilmeRepository generofilme)
+        public GeneroFilmeServices(IMapper mapper, IGeneroFilmeRepository generofilme, IGeneroRepository generoRepository, IFilmeRepository filmeRepository)
         {
             _mapper = mapper;
-            
+
             _generofilme = generofilme;
+            _generoRepository = generoRepository;
+            _filmeRepository = filmeRepository;
         }
-
-        public async Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
+        public async Task<IEnumerable<LerGeneroFilmeDto>> BuscaFilmesPorGenero(int IdGeneroFilme)
         {
-            var generoFilme = _mapper.Map<GeneroFilme>(criarGeneroFilmeDto);
-            await _generofilme.Cadastra(generoFilme);
-            return Result.Ok();
-        }
-
-        public async Task<IEnumerable<LerGeneroFilmeDto>> BuscarFilmesPorGenero(int IdGeneroFilme)
-        {
-           var gf= await _generofilme.BuscaFilmesPorGenero(IdGeneroFilme);
+            
+            var gf = await _generofilme.BuscaFilmesPorGenero(IdGeneroFilme);
+            if (gf == null)
+            {
+                return null;
+            }
             var gfDto = _mapper.Map<IEnumerable<LerGeneroFilmeDto>>(gf);
             return gfDto;
 
         }
-
-        public async Task<Result> DeletaGeneroDoFilme(int idGenero, int idFilme)
+        public async Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
-            var selecionarGeneroDoFilme = await _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
-            _generofilme.Excluir(selecionarGeneroDoFilme);
+            var generoFilme = _mapper.Map<GeneroFilme>(criarGeneroFilmeDto);
+            await _generofilme.Cadastra(generoFilme);
             return Result.Ok();
         }
 
@@ -55,5 +54,14 @@ namespace Servicos.Services.Handlers
             await _generofilme.Save();
             return Result.Ok();
         }
+
+        public async Task<Result> DeletaGeneroDoFilme(int idGenero, int idFilme)
+        {
+            var selecionarGeneroDoFilme = await _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
+            _generofilme.Excluir(selecionarGeneroDoFilme);
+            return Result.Ok();
+        }
+
+       
     }
 }
