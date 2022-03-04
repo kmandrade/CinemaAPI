@@ -11,7 +11,7 @@ namespace Cinema.Api.Profiles
         {
             CreateMap<AtoresFilme, LerAtorFilmeDto>()
                 .ReverseMap();
-            CreateMap<CriarAtorFilmeDto, AtoresFilme>();
+            CreateMap<CriarAtorFilmeDto, AtoresFilme>().ReverseMap();
             CreateMap<AtoresFilme, LerAtorDto>()
                 .ForMember(dto => dto.NomeAtor, opt => opt.MapFrom(n => n.Ator.NomeAtor))
                 .ReverseMap();

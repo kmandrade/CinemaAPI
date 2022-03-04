@@ -22,7 +22,7 @@ namespace Data.Repository
             
         }
 
-        public  async Task<IEnumerable<AtoresFilme>> BuscarFilmesPorAtor(int IdAtorFilme)
+        public  async Task<IEnumerable<AtoresFilme>> BuscaFilmesPorAtor(int IdAtorFilme)
         {
             //sem conseguir acessar genero
             var queryFilmes = _context.AtoresFilmes
@@ -35,7 +35,7 @@ namespace Data.Repository
             return await queryFilmes;
          
         }
-        public async Task<AtoresFilme> BuscaAtorDoFilme(int idAtor, int idFilme)
+        public async Task<AtoresFilme> BuscaAtorEFilme(int idAtor, int idFilme)
         {
             
                 var selecionaAtorFilme = _context.AtoresFilmes

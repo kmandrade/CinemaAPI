@@ -13,64 +13,74 @@ using System.Threading.Tasks;
 
 namespace Servicos.Services.Handlers
 {
-    public class AtorFilmeServices:IAtorFilmeService
+    public class AtorFilmeServices : IAtorFilmeService
     {
         IAtorFilmeRepository _atorfilme;
         IAtorRepository _atorRepository;
+        IFilmeRepository _filmeRepository;
         private readonly IMapper _mapper;
 
-        public AtorFilmeServices(IMapper mapper, IAtorFilmeRepository atorfilme, IAtorRepository atorRepository)
+        public AtorFilmeServices(IMapper mapper, IAtorFilmeRepository atorfilme, IAtorRepository atorRepository, IFilmeRepository filmeRepository)
         {
             _mapper = mapper;
 
             _atorfilme = atorfilme;
             _atorRepository = atorRepository;
+            _filmeRepository = filmeRepository;
         }
 
 
 
         public async Task<IEnumerable<LerAtorFilmeDto>> BuscaFilmesPorAtor(int idAtorFilme)
         {
-            var atf = await _atorfilme.BuscarFilmesPorAtor(idAtorFilme);
+            var atf = await _atorfilme.BuscaFilmesPorAtor(idAtorFilme);
             if (atf != null)
             {
                 var atfDto = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atf);
                 return atfDto;
             }
-            
+
             return null;
         }
         public async Task<Result> AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
-            var atorFilme =  _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
-            if(atorFilme != null)
+            var buscaAtor = await _atorRepository.BuscarPorId(criarAtorFilmeDto.IdAtor);
+            var buscaFilme = await _filmeRepository.BuscarPorId(criarAtorFilmeDto.IdFilme);
+            if (buscaAtor == null || buscaFilme==null)
             {
-                 await _atorfilme.Cadastra(atorFilme);
-                return Result.Ok();   
+                return Result.Fail("Ator nao existe");
             }
-            return Result.Fail(errorMessage: "Ator ou Filme nao existem");
-            
+
+            var atorFilme = _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
+
+
+            await _atorfilme.Cadastra(atorFilme);
+            return Result.Ok();
+
+
+
         }
         public async Task<Result> AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
         {
-            var verificaSeAtorExiste = _atorRepository.BuscarPorId(idAtorAtual);
-            if (verificaSeAtorExiste == null)
+            var verificaSeAtorNovoExiste = await _atorRepository.BuscarPorId(idAtorNovo);
+            if (verificaSeAtorNovoExiste == null )
             {
                 return Result.Fail("Novo Ator Nao Cadastrado");
             }
-            var AtorFilmeSelecionado = await _atorfilme.BuscaAtorDoFilme(idAtorAtual, idFilme);
-            if(AtorFilmeSelecionado != null)
+            //verifica se o atorAtual ou Filme existem
+            var AtorFilmeSelecionado = await _atorfilme.BuscaAtorEFilme(idAtorAtual, idFilme);
+            if (AtorFilmeSelecionado != null)
             {
                 AtorFilmeSelecionado.IdAtor = idAtorNovo;
                 await _atorfilme.Save();
                 return Result.Ok();
             }
-            return Result.Fail(errorMessage: "Dados nao Conferem");
+            return Result.Fail("Dados nao Conferem");
         }
 
-        public async Task<Result> DeletaAtorDoFilme(int idAtor,int idFilme)
+        public async Task<Result> DeletaAtorDoFilme(int idAtor, int idFilme)
         {
-            var selecionarAtorDoFilme = await _atorfilme.BuscaAtorDoFilme(idAtor,idFilme);
+            var selecionarAtorDoFilme = await _atorfilme.BuscaAtorEFilme(idAtor, idFilme);
             if (selecionarAtorDoFilme != null)
             {
                 _atorfilme.Excluir(selecionarAtorDoFilme);
@@ -80,6 +90,6 @@ namespace Servicos.Services.Handlers
 
         }
 
-       
+
     }
 }
