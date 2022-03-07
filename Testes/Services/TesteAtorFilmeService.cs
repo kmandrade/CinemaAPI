@@ -91,13 +91,27 @@ namespace Testes.Services
 
         //ADICIONA
         [Fact]
-        public async void AdicionaAtorFilme_RetornaFalse_AtorOuFilmeNaoExiste()
+        public async void AdicionaAtorFilme_RetornaFalse_AtorNaoExiste()
         {
             //arrange 
 
             _atorRepository.Setup(a => a.BuscarPorId(1)).ReturnsAsync(null as Ator);
             var atorDto = new CriarAtorFilmeDto() { IdAtor=1, IdFilme=1 };
-            _filmeRepository.Setup(f=>f.BuscarPorId(1)).ReturnsAsync(null as Filme);
+           
+            //act
+            var act = await _atorFilmeServices.AdicionaAtorFilme(atorDto);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
+            //assert
+            Assert.False(resultado);
+        }
+        [Fact]
+        public async void AdicionaAtorFilme_RetornaFalse_FilmeNaoExiste()
+        {
+            //arrange 
+
+            
+            var atorDto = new CriarAtorFilmeDto() { IdAtor = 1, IdFilme = 1 };
+            _filmeRepository.Setup(f => f.BuscarPorId(1)).ReturnsAsync(null as Filme);
             //act
             var act = await _atorFilmeServices.AdicionaAtorFilme(atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
@@ -119,6 +133,7 @@ namespace Testes.Services
             //assert
             Assert.True(resultado);
         }
+
 
         //ALTERA
         [Fact]

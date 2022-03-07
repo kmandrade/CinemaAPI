@@ -42,6 +42,12 @@ namespace Servicos.Services.Handlers
         }
         public async Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
+            var buscaGenero = await _generoRepository.BuscarPorId(criarGeneroFilmeDto.IdGenero);
+            var buscaFilme = await _filmeRepository.BuscarPorId(criarGeneroFilmeDto.IdFilme);
+            if(buscaGenero ==null || buscaFilme == null)
+            {
+                return Result.Fail("Genero Ou Filme Nao existem");
+            }
             var generoFilme = _mapper.Map<GeneroFilme>(criarGeneroFilmeDto);
             await _generofilme.Cadastra(generoFilme);
             return Result.Ok();
@@ -49,15 +55,29 @@ namespace Servicos.Services.Handlers
 
         public async Task<Result> AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
         {
-            var GeneroFilmeSelecionado = await _generofilme.BuscaGeneroDoFilme(idGeneroAntigo, idFilme);
-            GeneroFilmeSelecionado.IdGenero = iDGeneroNovo;
+            var buscaGeneroAtual = await _generoRepository.BuscarPorId(iDGeneroNovo);
+            if (buscaGeneroAtual == null)
+            {
+                return Result.Fail("Genero Novo Nao existe");
+            }
+            var generoFilmeSelecionado = await _generofilme.BuscaGeneroDoFilme(idGeneroAntigo, idFilme);
+            if (generoFilmeSelecionado == null)
+            {
+                return Result.Fail("Genero Novo Ou Filme Nao existem");
+            }
+            generoFilmeSelecionado.IdGenero = iDGeneroNovo;
             await _generofilme.Save();
             return Result.Ok();
         }
 
         public async Task<Result> DeletaGeneroDoFilme(int idGenero, int idFilme)
         {
+            
             var selecionarGeneroDoFilme = await _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
+            if (selecionarGeneroDoFilme == null)
+            {
+                return Result.Fail("Genero Ou Filme Nao Existem");
+            }
             _generofilme.Excluir(selecionarGeneroDoFilme);
             return Result.Ok();
         }
