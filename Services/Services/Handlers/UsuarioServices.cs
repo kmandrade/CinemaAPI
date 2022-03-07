@@ -27,15 +27,27 @@ namespace Servicos.Services.Handlers
 
         public async Task<IEnumerable<LerUsuarioDto>> BuscaTodosOsUsuarioDto(int skip, int take)
         {
+            
             var listaUsuarios = await _usuarioDao.BuscaTodos();
-            var usuariosPaginados = listaUsuarios.Skip(skip).Take(take).ToList();
+
+            var usuariosPaginados = listaUsuarios.Where(u => u.Situacao == SituacaoEntities.Ativado).ToList();
+            
+            foreach(var usuarios in usuariosPaginados)
+            {
+                if(usuarios.Situacao == SituacaoEntities.Arquivado)
+                {
+                    return null;
+                }
+            }
             var usuariosDto = _mapper.Map<IEnumerable<LerUsuarioDto>>(listaUsuarios);
-            return usuariosDto;
+
+            return usuariosDto.Skip(skip).Take(take).OrderBy(u=>u.UserName);
         }
 
         public async Task<LerUsuarioDto> BuscaUsuarioPorId(int idUsuario)
         {
             var usuarioSelecionado = await _usuarioDao.BuscarPorId(idUsuario);
+            if (usuarioSelecionado == null || usuarioSelecionado.Situacao==SituacaoEntities.Arquivado) { return null; }
             var usuarioDto = _mapper.Map<LerUsuarioDto>(usuarioSelecionado);
             return usuarioDto;
         }
@@ -49,16 +61,16 @@ namespace Servicos.Services.Handlers
             return Result.Ok();
         }
 
-        public async Task<Result> DeletaUsuario(int idUsuario)
-        {
-            var usuarioSelecionado = await _usuarioDao.BuscarPorId(idUsuario);
-            _usuarioDao.Excluir(usuarioSelecionado);
-            return Result.Ok();
-        }
+     
 
         public async Task<Result> AlteraUsuario(int idUsuario, CriarUsuarioDto criarUsuarioDto)
         {
+            
             var usuarioSelecionado = await _usuarioDao.BuscarPorId(idUsuario);
+            if (usuarioSelecionado == null)
+            {
+                return null;
+            }
             _mapper.Map(usuarioSelecionado, criarUsuarioDto);
             await _usuarioDao.Save();
             return Result.Ok();
@@ -104,7 +116,12 @@ namespace Servicos.Services.Handlers
             return usuarioSelecionado;
         }
 
-
+        public async Task<Result> DeletaUsuario(int idUsuario)
+        {
+            var usuarioSelecionado = await _usuarioDao.BuscarPorId(idUsuario);
+            _usuarioDao.Excluir(usuarioSelecionado);
+            return Result.Ok();
+        }
 
     }
 }

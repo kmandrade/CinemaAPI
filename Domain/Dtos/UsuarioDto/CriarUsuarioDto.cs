@@ -9,7 +9,7 @@ namespace Domain.Dtos.UsuarioDto
 {
     public class CriarUsuarioDto
     {
-        [Required]
+        [Required(ErrorMessage ="Necessario o nome")]
         public string NomeUsuarioDto { get; set; }
 
         [Required]
