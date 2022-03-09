@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,7 +19,7 @@ namespace Data.Repository
             _dbset = _context.Set<Genero>();
         }
 
-        public Task<Genero> BuscaPorNome(string nome)
+        public Task<Genero> BuscarPorNome(string nome)
         {
             var query = _context.Generos
                 .AsNoTracking()

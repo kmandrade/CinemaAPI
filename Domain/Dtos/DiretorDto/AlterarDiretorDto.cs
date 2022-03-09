@@ -10,7 +10,7 @@ namespace Domain.Dtos.DiretorDto
     public class AlterarDiretorDto
     {
 
-        [Required]
+        [Required(ErrorMessage = "O nome do diretor é obrigatório")]
         public string NomeDiretor { get; set; }
 
     }

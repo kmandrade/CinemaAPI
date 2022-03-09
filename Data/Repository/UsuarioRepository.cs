@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,7 +19,7 @@ namespace Data.Repository
             _dbSetUsuario=_context.Set<Usuario>();
         }
 
-        public async Task<Usuario> BuscaUsuarioPorNomeESenha(string nome, string password)
+        public async Task<Usuario> BuscarUsuarioPorNomeESenha(string nome, string password)
         {
             var usuario=_context.Usuarios
                 .FirstOrDefaultAsync(u=>u.NomeUsuario==nome && u.Password==password);

@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,26 +22,52 @@ namespace Data.Repository
         }
         public async Task<Filme> BuscarPorNome(string nome)
         {
-            var _filme = await _context.Filmes
+            var _filme = await _context.Filmes.AsNoTracking()
                 .Where(f => f.Titulo == nome)
                 .FirstOrDefaultAsync();
 
             return _filme;
         }
+        
         public async Task<Filme> BuscarPorFilmesCompletoID(int id)
         {
             var filme = await _context.Filmes
                 .Include(d => d.Diretor)
-                .Include(atf=>atf.AtoresFilme)
+                .Include(atoresFilme=>atoresFilme.AtoresFilme)
                 .ThenInclude(a=>a.Ator)
-                .Include(gf=>gf.GenerosFilme)
+                .Include(generoFilme=>generoFilme.GenerosFilme)
                 .ThenInclude(g=>g.Genero)
                 .FirstOrDefaultAsync(f => f.IdFilme == id);
             
             return filme;
                
         }
+        public override async Task<IEnumerable<Filme>> BuscarTodos()
+        {
+            var query = await _context.Filmes.AsNoTracking()
+                .Where(f => f.Situacao == SituacaoEntities.Ativado)
+                .OrderByDescending(f => f.Titulo).ToListAsync();
 
+            return query;
+        }
+        public async Task<IEnumerable<Filme>> BuscarFilmesMaisVotados()
+        {
+            var query = await _context.Filmes.AsNoTracking()
+                .Include(f => f.Votos)
+                .Where(f=>f.Situacao==SituacaoEntities.Ativado)
+                .OrderByDescending(f => f.TotalDeVotos).ToListAsync();
 
+            return query;
+
+        }
+
+        public async Task<IEnumerable<Filme>> BuscarFilmesArquivados()
+        {
+            var query = await  _context.Filmes.AsNoTracking()
+                .Where(f => f.Situacao==SituacaoEntities.Arquivado)
+                .OrderByDescending(f => f.TotalDeVotos).ToListAsync();
+
+            return query;
+        }
     }
 }

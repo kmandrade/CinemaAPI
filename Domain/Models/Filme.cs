@@ -23,7 +23,7 @@ namespace Domain.Models
         public virtual Diretor Diretor { get; set; }
         public int DiretorId { get; set; }
 
-
+        public int TotalDeVotos { get; set; }
         public virtual List<AtoresFilme> AtoresFilme { get; set; }
 
         public virtual List<GeneroFilme> GenerosFilme { get; set; }

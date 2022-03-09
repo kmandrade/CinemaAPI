@@ -1,7 +1,8 @@
 ﻿using Domain.Dtos.DiretorDto;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 
 namespace Cinema.Api.Controllers
 {
@@ -10,67 +11,111 @@ namespace Cinema.Api.Controllers
     [Route("[controller]")]
     public class DiretorController : ControllerBase
     {
-        IDiretorService _diretorService;
+        private readonly IDiretorService _diretorService;
 
         public DiretorController(IDiretorService diretorService)
         {
             _diretorService = diretorService;
         }
         [HttpGet("BuscaFilmesPorDiretor")]
-        public async Task<IActionResult> BuscaFilmesPorDiretor([FromQuery] int iDdiretor)
+        public async Task<IActionResult> BuscarFilmesPorDiretor([FromQuery] int iDdiretor)
         {
+            if (iDdiretor <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
             var filmes = await _diretorService.lerFilmeDtosPorDiretor(iDdiretor);
             if (filmes != null)
             {
                 return Ok(filmes);
             }
-            return NotFound();
+            return NotFound(new { message = "Filmes nao encontrado" });
         }
-        [HttpGet("BuscaTodosDiretores")]
-        public async Task<IActionResult> BuscaDiretores([FromQuery]int skip, int take)
+        [HttpGet("BuscarTodosDiretores")]
+        public async Task<IActionResult> BuscarDiretores([FromQuery]int skip, int take)
         {
-            var diretores = await _diretorService.ConsultaTodos(skip, take);
+            if(skip <= 0 || take <= 0)
+            {
+                return BadRequest(new { message = "Paginacao Errada" });
+            }
+            var diretores = await _diretorService.ConsultarTodos(skip, take);
+            if (diretores == null)
+            {
+                return BadRequest(new { message = "Diretores nao encontrados" });
+            }
             return Ok(diretores);
             
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> BuscaDiretoresPorId(int idDiretor)
+        public async Task<IActionResult> BuscarDiretoresPorId(int idDiretor)
         {
-            var diretor = await _diretorService.ConsultaPorId(idDiretor);
+            if (idDiretor <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var diretor = await _diretorService.ConsultarPorId(idDiretor);
 
             if (diretor != null)
             {
                 return Ok(diretor);
             }
-            return NotFound();
+            return NotFound(new { message = "Diretor nao encontrado" });
         }
 
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
-        public async Task<IActionResult> CadastraDiretor([FromBody]CriarDiretorDto criarDiretorDto)
+        public async Task<IActionResult> CadastrarDiretor([FromBody]CriarDiretorDto criarDiretorDto)
         {
-            await _diretorService.Cadastra(criarDiretorDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var resultado =  await _diretorService.Cadastrar(criarDiretorDto);
+            if(resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
 
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> ModificaDiretor(int id, [FromBody] AlterarDiretorDto diretor)
+        public async Task<IActionResult> AlterarDiretor(int id, [FromBody] AlterarDiretorDto diretor)
         {
-            await _diretorService.Altera(id, diretor);
-            return NoContent();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var resultado= await _diretorService.Alterar(id, diretor);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
+            return Ok();
 
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveDiretor(int id)
+        public async Task<IActionResult> ExcluirDiretor(int id)
         {
-            await _diretorService.Excluir(id);
-            return NoContent(); 
-            
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var resultado = await _diretorService.Excluir(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
+            return Ok();
+
         }
        
 

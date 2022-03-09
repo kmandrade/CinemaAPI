@@ -30,29 +30,29 @@ namespace Data.Context
         public DbSet<Usuario> Usuarios { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
             
             //DIRETOR
-            builder.Entity<Filme>()
+            modelBuilder.Entity<Filme>()
                 .HasOne(filme => filme.Diretor)
                 .WithMany(diretor => diretor.Filmes)
                 .HasForeignKey(filme => filme.DiretorId);
 
             //VOTOS
-            builder.Entity<Votos>()
+            modelBuilder.Entity<Votos>()
                 .HasOne(v => v.Filme)
                 .WithMany(f => f.Votos)
                 .HasForeignKey(v => v.IdFilme);
-            builder.Entity<Votos>()
+            modelBuilder.Entity<Votos>()
                 .HasOne(v => v.Usuario)
                 .WithMany(u => u.Votos)
                 .HasForeignKey(v => v.IdUsuario);
-            builder.Entity<Votos>()
+            modelBuilder.Entity<Votos>()
                 .HasKey(v => v.IdVotos);
 
-            builder.Entity<Usuario>()
+            modelBuilder.Entity<Usuario>()
                 .HasData(new Usuario
                 {
                     IdUsuario = 1,
@@ -65,28 +65,28 @@ namespace Data.Context
                 });
 
             //ATORFILME
-            builder.Entity<AtoresFilme>()
-                .HasOne(atf => atf.Filme)
+            modelBuilder.Entity<AtoresFilme>()
+                .HasOne(atoresFilme => atoresFilme.Filme)
                 .WithMany(filme=>filme.AtoresFilme)
-                .HasForeignKey(atf=>atf.IdFilme);
-            builder.Entity<AtoresFilme>()
-                .HasOne(atf => atf.Ator)
+                .HasForeignKey(atoresFilme=>atoresFilme.IdFilme);
+            modelBuilder.Entity<AtoresFilme>()
+                .HasOne(atoresFilme => atoresFilme.Ator)
                 .WithMany(at => at.AtoresFilme)
-                .HasForeignKey(atf => atf.IdAtor);
-            builder.Entity<AtoresFilme>()
-                .HasKey(atf=>atf.IdAtoresFilme);
+                .HasForeignKey(atoresFilme => atoresFilme.IdAtor);
+            modelBuilder.Entity<AtoresFilme>()
+                .HasKey(atoresFilme=>atoresFilme.IdAtoresFilme);
 
             //GENEROFILME
-            builder.Entity<GeneroFilme>()
-                .HasOne(gf => gf.Filme)
+            modelBuilder.Entity<GeneroFilme>()
+                .HasOne(generoFilme => generoFilme.Filme)
                 .WithMany(filme => filme.GenerosFilme)
-                .HasForeignKey(gf => gf.IdFilme);
-           builder.Entity<GeneroFilme>()
-                .HasOne(gf=>gf.Genero)
+                .HasForeignKey(generoFilme => generoFilme.IdFilme);
+           modelBuilder.Entity<GeneroFilme>()
+                .HasOne(generoFilme=>generoFilme.Genero)
                 .WithMany(gen=>gen.GeneroFilmes)
-                .HasForeignKey(gf=>gf.IdGenero);
-            builder.Entity<GeneroFilme>()
-                .HasKey(gf=>gf.IdGeneroFilme);
+                .HasForeignKey(generoFilme=>generoFilme.IdGenero);
+            modelBuilder.Entity<GeneroFilme>()
+                .HasKey(generoFilme=>generoFilme.IdGeneroFilme);
 
 
 

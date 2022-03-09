@@ -1,7 +1,7 @@
 ﻿using Domain.Dtos.FilmeGenero;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 
 namespace Cinema.Api.Controllers
 {
@@ -10,7 +10,7 @@ namespace Cinema.Api.Controllers
     [Route("[controller]")]
     public class GeneroFilmeController : ControllerBase
     {
-        private IGeneroFilmeService _generoFilmeService;
+        private readonly IGeneroFilmeService _generoFilmeService;
 
         public GeneroFilmeController(IGeneroFilmeService generoFilmeService)
         {
@@ -21,36 +21,68 @@ namespace Cinema.Api.Controllers
         [HttpGet("BuscaFilmesPorGenero")]
         public async Task<IActionResult> BuscarFilmesPorGenero([FromQuery] int iDGenero)
         {
-            var gf = await _generoFilmeService.BuscaFilmesPorGenero(iDGenero);
-            return Ok(gf);
+            if (iDGenero <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var generoFilme = await _generoFilmeService.BuscarFilmesPorGenero(iDGenero);
+            if (generoFilme == null)
+            {
+                return BadRequest(new { message = "Nao foi possivel encontrar o genero" });
+            }
+            return Ok(generoFilme);
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPost("AdicionaGeneroEmFilme")]
         public async Task<IActionResult> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
-            await _generoFilmeService.AdicionaGeneroFilme(criarGeneroFilmeDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var resultado = await _generoFilmeService.AdicionarGeneroFilme(criarGeneroFilmeDto);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpPut("AlteraGeneroDoFilme")]
-        public async Task<IActionResult> AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
+        [HttpPut("AlterarGeneroDoFilme")]
+        public async Task<IActionResult> AlterarGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
         {
-            await _generoFilmeService.AlteraGeneroDoFilme(idGeneroAntigo, idFilme, iDGeneroNovo);
-            return Ok ();
+            if (idGeneroAntigo <= 0 || idFilme <= 0 || iDGeneroNovo <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var resultado = await _generoFilmeService.AlterarGeneroDoFilme(idGeneroAntigo, idFilme, iDGeneroNovo);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
+            return Ok();
         }
 
-        
+
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaGeneroDoFilme")]
-        public async Task<IActionResult> DeletaGeneroDoFilme([FromQuery] int idGenero,int idFilme)
+        public async Task<IActionResult> DeletaGeneroDoFilme([FromQuery] int idGenero, int idFilme)
         {
-             await _generoFilmeService.DeletaGeneroDoFilme(idGenero,idFilme);
+            if (idGenero <= 0 || idFilme <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var resultado= await _generoFilmeService.DeletarGeneroDoFilme(idGenero, idFilme);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
-        
-        
+
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cinema.Api.Profiles;
-using Data.Entities;
+using Data.InterfacesData;
 using Data.Services.Handlers;
 using Domain.Dtos.AtorDto;
 using Domain.Dtos.AtorFilme;
@@ -9,10 +9,8 @@ using Domain.Models;
 using Domain.Profiles;
 using Moq;
 using Servicos.Services.Handlers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Testes.BaseEntities;
 using Xunit;
@@ -23,8 +21,6 @@ namespace Testes.Services
     {
         private readonly IMapper _mapper;
         private readonly AtorFilmeServices _atorFilmeServices;
-        private readonly AtorServices _atorServices;
-        private readonly FilmeServices _filmeServices;
         private readonly Mock<IAtorFilmeRepository> _atorFilmeRepository;
         private readonly Mock<IAtorRepository> _atorRepository;
         private readonly Mock<IFilmeRepository> _filmeRepository;
@@ -48,21 +44,21 @@ namespace Testes.Services
 
         //BUSCA
         [Fact]
-        public async void BuscaFilmesPorAtor_RetornaNull_AtorNaoExiste()
+        public async Task BuscarFilmesPorAtor_RetornaNull_AtorNaoExiste()
         {
             //arrange 
 
-            _atorFilmeRepository.Setup(atf => atf.BuscaFilmesPorAtor(1)).ReturnsAsync(null as IEnumerable<AtoresFilme>);
+            _atorFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarFilmesPorAtor(1)).ReturnsAsync(null as IEnumerable<AtoresFilme>);
 
 
             //act
-            var act = await _atorFilmeServices.BuscaFilmesPorAtor(1);
+            var act = await _atorFilmeServices.BuscarFilmesPorAtor(1);
             //assert
             Assert.Null(act);
 
         }
         [Fact]
-        public async void BuscaFilmesPorAtor_RetornaFilmes_Sucess()
+        public async Task BuscarFilmesPorAtor_RetornaFilmes_Sucess()
         {
 
             //arrange
@@ -75,13 +71,13 @@ namespace Testes.Services
                         IdFilme = filme.IdFilme, IdAtoresFilme = 1
                     }
                  };
-            _atorFilmeRepository.Setup(atf => atf.BuscaFilmesPorAtor(ator.IdAtor)).ReturnsAsync(atoresFilmes);
+            _atorFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarFilmesPorAtor(ator.IdAtor)).ReturnsAsync(atoresFilmes);
             var filmeDto = _mapper.Map<LerFilmeDto>(filme);
             var atorDto= _mapper.Map<LerAtorDto>(ator);
             var atoresFilmesDto = _mapper.Map<IEnumerable<AtoresFilme>>(atoresFilmes);
             //act
-            var atfService= await _atorFilmeServices.BuscaFilmesPorAtor(atorDto.IdAtor);
-            var primeioFilmeDoAtor = atfService.FirstOrDefault(f => f.Filme.Titulo == filmeDto.Titulo);
+            var atoresFilmeService= await _atorFilmeServices.BuscarFilmesPorAtor(atorDto.IdAtor);
+            var primeioFilmeDoAtor = atoresFilmeService.FirstOrDefault(f => f.Filme.Titulo == filmeDto.Titulo);
 
             //assert
             Assert.Equal(filme.Titulo, primeioFilmeDoAtor.Filme.Titulo);
@@ -91,7 +87,7 @@ namespace Testes.Services
 
         //ADICIONA
         [Fact]
-        public async void AdicionaAtorFilme_RetornaFalse_AtorNaoExiste()
+        public async Task AdicionarAtorFilme_RetornaFalse_AtorNaoExiste()
         {
             //arrange 
 
@@ -99,13 +95,13 @@ namespace Testes.Services
             var atorDto = new CriarAtorFilmeDto() { IdAtor=1, IdFilme=1 };
            
             //act
-            var act = await _atorFilmeServices.AdicionaAtorFilme(atorDto);
+            var act = await _atorFilmeServices.AdicionarAtorFilme(atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void AdicionaAtorFilme_RetornaFalse_FilmeNaoExiste()
+        public async Task AdicionarAtorFilme_RetornaFalse_FilmeNaoExiste()
         {
             //arrange 
 
@@ -113,13 +109,13 @@ namespace Testes.Services
             var atorDto = new CriarAtorFilmeDto() { IdAtor = 1, IdFilme = 1 };
             _filmeRepository.Setup(f => f.BuscarPorId(1)).ReturnsAsync(null as Filme);
             //act
-            var act = await _atorFilmeServices.AdicionaAtorFilme(atorDto);
+            var act = await _atorFilmeServices.AdicionarAtorFilme(atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void AdicionaAtorFilme_RetornaTrue_AtorEFilmeExistem()
+        public async Task AdicionarAtorFilme_RetornaTrue_AtorEFilmeExistem()
         {
             //arrange 
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };
@@ -128,41 +124,41 @@ namespace Testes.Services
             _filmeRepository.Setup(f => f.BuscarPorId(1)).ReturnsAsync(filme);
             var atorDto = new CriarAtorFilmeDto() { IdAtor = 1, IdFilme = 1 };
             //act
-            var act = await _atorFilmeServices.AdicionaAtorFilme(atorDto);
+            var act = await _atorFilmeServices.AdicionarAtorFilme(atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.True(resultado);
         }
 
 
-        //ALTERA
+        //Alterar
         [Fact]
-        public async void AlteraAtorDoFilme_RetornaFalse_AtorNovoNaoExiste()
+        public async Task AlterarAtorDoFilme_RetornaFalse_AtorNovoNaoExiste()
         {
             //arrange 
-            _atorRepository.Setup(atf => atf.BuscarPorId(1)).ReturnsAsync(null as Ator);
+            _atorRepository.Setup(atoresFilme => atoresFilme.BuscarPorId(1)).ReturnsAsync(null as Ator);
             
             //act
-            var act = await _atorFilmeServices.AlteraAtorDoFilme(1,1,1);
+            var act = await _atorFilmeServices.AlterarAtorDoFilme(1,1,1);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void AlteraAtorDoFilme_RetornaFalse_AtorAtualEFilmeNaoExistem()
+        public async Task AlterarAtorDoFilme_RetornaFalse_AtorAtualEFilmeNaoExistem()
         {
             //arrange 
             var atorNovo = new Ator() { IdAtor = 1, NomeAtor = "ator" };
-            _atorRepository.Setup(atf => atf.BuscarPorId(atorNovo.IdAtor)).ReturnsAsync(atorNovo);
-            _atorFilmeRepository.Setup(atf=>atf.BuscaAtorEFilme(1,1)).ReturnsAsync(null as AtoresFilme);
+            _atorRepository.Setup(atoresFilme => atoresFilme.BuscarPorId(atorNovo.IdAtor)).ReturnsAsync(atorNovo);
+            _atorFilmeRepository.Setup(atoresFilme=>atoresFilme.BuscarAtorEFilme(1,1)).ReturnsAsync(null as AtoresFilme);
             //act
-            var act = await _atorFilmeServices.AlteraAtorDoFilme(6,6,atorNovo.IdAtor);
+            var act = await _atorFilmeServices.AlterarAtorDoFilme(6,6,atorNovo.IdAtor);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void AlteraAtorDoFilme_RetornaTrue_AtornovoExisteEAtorAtualEFilmeExistem()
+        public async Task AlterarAtorDoFilme_RetornaTrue_AtornovoExisteEAtorAtualEFilmeExistem()
         {
             //arrange 
             var atorNovo = new Ator() { IdAtor = 2, NomeAtor = "ator" };
@@ -175,14 +171,14 @@ namespace Testes.Services
                   
             };
             //verifica ator novo
-            _atorRepository.Setup(atf => atf.BuscarPorId(2)).ReturnsAsync(atorNovo);
+            _atorRepository.Setup(atoresFilme => atoresFilme.BuscarPorId(2)).ReturnsAsync(atorNovo);
             //verificar se existe AtorEFilme
-            _atorFilmeRepository.Setup(atf => atf.BuscaAtorEFilme(ator.IdAtor, filme.IdFilme)).ReturnsAsync(atoresFilme);
+            _atorFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarAtorEFilme(ator.IdAtor, filme.IdFilme)).ReturnsAsync(atoresFilme);
             
 
 
             //act
-            var act = await _atorFilmeServices.AlteraAtorDoFilme(ator.IdAtor,filme.IdFilme,atorNovo.IdAtor);
+            var act = await _atorFilmeServices.AlterarAtorDoFilme(ator.IdAtor,filme.IdFilme,atorNovo.IdAtor);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.True(resultado);
@@ -190,19 +186,19 @@ namespace Testes.Services
 
         //EXCLUIR
         [Fact]
-        public async void ExcluiAtorDoFilme_RetornaFalse_AtorEFilmeNaoExistem()
+        public async Task ExcluirAtorDoFilme_RetornaFalse_AtorEFilmeNaoExistem()
         {
             //arrange
-            _atorFilmeRepository.Setup(atf => atf.BuscaAtorEFilme(1, 1)).ReturnsAsync(null as AtoresFilme);
+            _atorFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarAtorEFilme(1, 1)).ReturnsAsync(null as AtoresFilme);
 
             //act
-            var act = await _atorFilmeServices.DeletaAtorDoFilme(1, 1);
+            var act = await _atorFilmeServices.DeletarAtorDoFilme(1, 1);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void ExcluiAtorDoFilme_RetornaTrue_AtorEFilmeExistem()
+        public async Task ExcluirAtorDoFilme_RetornaTrue_AtorEFilmeExistem()
         {
 
             //arrange
@@ -214,10 +210,10 @@ namespace Testes.Services
                 IdFilme = filme.IdFilme,
 
             };
-            _atorFilmeRepository.Setup(atf => atf.BuscaAtorEFilme(1, 1)).ReturnsAsync(atoresFilme);
+            _atorFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarAtorEFilme(1, 1)).ReturnsAsync(atoresFilme);
 
             //act
-            var act = await _atorFilmeServices.DeletaAtorDoFilme(ator.IdAtor,filme.IdFilme);
+            var act = await _atorFilmeServices.DeletarAtorDoFilme(ator.IdAtor,filme.IdFilme);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.True(resultado);

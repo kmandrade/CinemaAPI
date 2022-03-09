@@ -14,7 +14,7 @@ namespace Cinema.Api.Profiles
                 .ReverseMap();
             CreateMap<AdicionaVotosDto, Votos>()
                 .ForMember(dto => dto.ValorDoVoto, opt => opt.MapFrom(v => v.ValorDoVotoDto))
-                .ForMember(dto => dto.IdFilme, opt => opt.MapFrom(f => f.IdFilmeDto));
+                .ForMember(dto => dto.IdFilme, opt => opt.MapFrom(f => f.IdFilmeDto)).ReverseMap();
             
         }
 

@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,7 +20,7 @@ namespace Data.Repository
 
         }
 
-        public Task<Diretor> BuscaDiretorPorNome(string nome)
+        public Task<Diretor> BuscarDiretorPorNome(string nome)
         {
             var query = _context.Diretores
                 .AsNoTracking()
@@ -29,13 +29,13 @@ namespace Data.Repository
             return query;
         }
 
-        public async Task<IEnumerable<Filme>> BuscaFilmesPorDiretor(int idDiretor)
+        public async Task<IEnumerable<Filme>> BuscarFilmesPorDiretor(int idDiretor)
         {
             var filmes = _context.Filmes
                 .AsNoTracking()
-                .Include(atf => atf.AtoresFilme)
+                .Include(atoresFilme => atoresFilme.AtoresFilme)
                 .ThenInclude(at => at.Ator)
-                .Include(gf => gf.GenerosFilme)
+                .Include(generoFilme => generoFilme.GenerosFilme)
                 .ThenInclude(g => g.Genero)
                 .Include(d => d.Diretor)
                 .Where(f => f.DiretorId == idDiretor)

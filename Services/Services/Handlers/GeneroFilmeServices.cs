@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.FilmeDto;
 using Domain.Dtos.FilmeGenero;
 using Domain.Models;
 using FluentResults;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +15,9 @@ namespace Servicos.Services.Handlers
 {
     public class GeneroFilmeServices:IGeneroFilmeService
     {
-        IGeneroFilmeRepository _generofilme;
-        IGeneroRepository _generoRepository;
-        IFilmeRepository _filmeRepository;
+        private readonly IGeneroFilmeRepository _generofilme;
+        private readonly IGeneroRepository _generoRepository;
+        private readonly IFilmeRepository _filmeRepository;
         private readonly IMapper _mapper;
 
         public GeneroFilmeServices(IMapper mapper, IGeneroFilmeRepository generofilme, IGeneroRepository generoRepository, IFilmeRepository filmeRepository)
@@ -28,19 +28,19 @@ namespace Servicos.Services.Handlers
             _generoRepository = generoRepository;
             _filmeRepository = filmeRepository;
         }
-        public async Task<IEnumerable<LerGeneroFilmeDto>> BuscaFilmesPorGenero(int IdGeneroFilme)
+        public async Task<IEnumerable<LerGeneroFilmeDto>> BuscarFilmesPorGenero(int IdGeneroFilme)
         {
             
-            var gf = await _generofilme.BuscaFilmesPorGenero(IdGeneroFilme);
-            if (gf == null)
+            var generoFilme = await _generofilme.BuscarFilmesPorGenero(IdGeneroFilme);
+            if (generoFilme == null)
             {
                 return null;
             }
-            var gfDto = _mapper.Map<IEnumerable<LerGeneroFilmeDto>>(gf);
-            return gfDto;
+            var generoFilmeDto = _mapper.Map<IEnumerable<LerGeneroFilmeDto>>(generoFilme);
+            return generoFilmeDto;
 
         }
-        public async Task<Result> AdicionaGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
+        public async Task<Result> AdicionarGeneroFilme(CriarGeneroFilmeDto criarGeneroFilmeDto)
         {
             var buscaGenero = await _generoRepository.BuscarPorId(criarGeneroFilmeDto.IdGenero);
             var buscaFilme = await _filmeRepository.BuscarPorId(criarGeneroFilmeDto.IdFilme);
@@ -49,18 +49,18 @@ namespace Servicos.Services.Handlers
                 return Result.Fail("Genero Ou Filme Nao existem");
             }
             var generoFilme = _mapper.Map<GeneroFilme>(criarGeneroFilmeDto);
-            await _generofilme.Cadastra(generoFilme);
+            await _generofilme.Cadastrar(generoFilme);
             return Result.Ok();
         }
 
-        public async Task<Result> AlteraGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
+        public async Task<Result> AlterarGeneroDoFilme(int idGeneroAntigo, int idFilme, int iDGeneroNovo)
         {
             var buscaGeneroAtual = await _generoRepository.BuscarPorId(iDGeneroNovo);
             if (buscaGeneroAtual == null)
             {
                 return Result.Fail("Genero Novo Nao existe");
             }
-            var generoFilmeSelecionado = await _generofilme.BuscaGeneroDoFilme(idGeneroAntigo, idFilme);
+            var generoFilmeSelecionado = await _generofilme.BuscarGeneroDoFilme(idGeneroAntigo, idFilme);
             if (generoFilmeSelecionado == null)
             {
                 return Result.Fail("Genero Novo Ou Filme Nao existem");
@@ -70,10 +70,10 @@ namespace Servicos.Services.Handlers
             return Result.Ok();
         }
 
-        public async Task<Result> DeletaGeneroDoFilme(int idGenero, int idFilme)
+        public async Task<Result> DeletarGeneroDoFilme(int idGenero, int idFilme)
         {
             
-            var selecionarGeneroDoFilme = await _generofilme.BuscaGeneroDoFilme(idGenero, idFilme);
+            var selecionarGeneroDoFilme = await _generofilme.BuscarGeneroDoFilme(idGenero, idFilme);
             if (selecionarGeneroDoFilme == null)
             {
                 return Result.Fail("Genero Ou Filme Nao Existem");

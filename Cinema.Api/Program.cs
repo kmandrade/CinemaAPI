@@ -1,7 +1,7 @@
 using Cinema.Api;
 using Cinema.Api.Helper;
 using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Data.Repository;
 using Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

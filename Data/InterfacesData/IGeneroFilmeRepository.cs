@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Entities
+namespace Data.InterfacesData
 {
     public interface IGeneroFilmeRepository : IRepository<GeneroFilme>
     {
-        Task<IEnumerable<GeneroFilme>> BuscaFilmesPorGenero(int IdGeneroFilme);
-        Task<GeneroFilme> BuscaGeneroDoFilme(int idGenero, int idFilme);
+        Task<IEnumerable<GeneroFilme>> BuscarFilmesPorGenero(int IdGeneroFilme);
+        Task<GeneroFilme> BuscarGeneroDoFilme(int idGenero, int idFilme);
     }
 }

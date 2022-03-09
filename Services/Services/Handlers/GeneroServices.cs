@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.FilmeDto;
 using Domain.Dtos.GeneroDto;
 using Domain.Models;
 using FluentResults;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,34 +15,35 @@ namespace Servicos.Services.Handlers
 {
     public class GeneroServices : IGeneroService
     {
-        IGeneroRepository _generoDao;
+        private readonly IGeneroRepository _generoRepository;
         
         private readonly IMapper _mapper;
 
-        public GeneroServices(IMapper mapper, IGeneroRepository generoDao)
+        public GeneroServices(IMapper mapper, IGeneroRepository generoRepository)
         {
             _mapper = mapper;
             
-            _generoDao = generoDao;
+            _generoRepository = generoRepository;
         }
 
        
 
-        public async Task<LerGeneroDto> BuscaPorId(int id)
+        public async Task<Result<LerGeneroDto>> BuscarPorId(int id)
         {
-            var generoId = await _generoDao.BuscarPorId(id);
+            var generoId = await _generoRepository.BuscarPorId(id);
+            if(generoId == null)
+            {
+                return Result.Fail("Genero nao encontrado");
+            }
             var generoDto = _mapper.Map<LerGeneroDto>(generoId);
-            return generoDto;
+            return  Result.Ok(generoDto);
             
         }
 
-        public async Task<IEnumerable<LerGeneroDto>> BuscaTodos(int skip, int take)
+        public async Task<IEnumerable<LerGeneroDto>> BuscarTodos(int skip, int take)
         {
-            var listaGeneros = await _generoDao.BuscaTodos();
-            if(skip <= 0 ||take <= 0)
-            {
-                return null;
-            }
+            var listaGeneros = await _generoRepository.BuscarTodos();
+            
             if (listaGeneros == null)
             {
                 return null;
@@ -55,36 +56,36 @@ namespace Servicos.Services.Handlers
         }
 
 
-        public async Task<Result> Cadastra(CriarGeneroDto obj)
+        public async Task<Result> Cadastrar(CriarGeneroDto obj)
         {
-            var genero = await _generoDao.BuscaPorNome(obj.NomeGenero);
+            var genero = await _generoRepository.BuscarPorNome(obj.NomeGenero);
             if (genero != null)
             {
                 return Result.Fail("Genero ja existe ");
             }
             var generoMapeado = _mapper.Map<Genero>(obj);
-            await _generoDao.Cadastra(generoMapeado);
+            await _generoRepository.Cadastrar(generoMapeado);
             return Result.Ok();
         }
 
-        public async Task<Result> Altera(int id, AlterarGeneroDto obj)
+        public async Task<Result> Alterar(int id, AlterarGeneroDto obj)
         {
-            var generoSelecionado = await _generoDao.BuscarPorId(id);
+            var generoSelecionado = await _generoRepository.BuscarPorId(id);
             if (generoSelecionado == null)
             {
                 return Result.Fail("Genero nao Existe");
             }
             _mapper.Map(obj,generoSelecionado);
-             await _generoDao.Save();
+             await _generoRepository.Save();
             return Result.Ok();
         }
 
         public async Task<Result> Excluir(int id)
         {
-            var generoSelecionado = await _generoDao.BuscarPorId(id);
+            var generoSelecionado = await _generoRepository.BuscarPorId(id);
             if (generoSelecionado != null)
             {
-                _generoDao.Excluir(generoSelecionado);
+                _generoRepository.Excluir(generoSelecionado);
                 return Result.Ok();
             }
             return Result.Fail("error");

@@ -2,7 +2,7 @@
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using Servicos.Services.Handlers;
 
 namespace Cinema.Api.Controllers
@@ -13,7 +13,7 @@ namespace Cinema.Api.Controllers
     public class AtorFilmeController : ControllerBase
 
     {
-        private IAtorFilmeService _atorFilmeService;
+        private readonly IAtorFilmeService _atorFilmeService;
 
         public AtorFilmeController(IAtorFilmeService atorFilmeService)
         {
@@ -22,12 +22,17 @@ namespace Cinema.Api.Controllers
         [HttpGet("BuscaFilmesPorAtor")]
         public  async Task<IActionResult> BuscaFilmesPorAtor([FromQuery] int idAtor)
         {
-            var filmes = await _atorFilmeService.BuscaFilmesPorAtor(idAtor);
+            if (idAtor <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var filmes = await _atorFilmeService.BuscarFilmesPorAtor(idAtor);
+
             if (filmes != null)
             {
                 return Ok(filmes);
             }
-            return NotFound();
+            return BadRequest(new { message = "Filmes nao encontrados" });
         }
 
 
@@ -35,24 +40,31 @@ namespace Cinema.Api.Controllers
         [HttpPost("AdicionaAtorEmFilme")]
         public async Task<IActionResult> AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
-            
-            Result resultado = await _atorFilmeService.AdicionaAtorFilme(criarAtorFilmeDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Result resultado = await _atorFilmeService.AdicionarAtorFilme(criarAtorFilmeDto);
             if(resultado.IsFailed)
             {
-                return BadRequest();
+                return BadRequest(new { message = resultado.ToString() });
             }
             return Ok();
             
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpPut("AlteraAtorDofilme")]
-        public async Task<IActionResult> AlteraAtorDofilme([FromQuery] int idAtorAtual, int idFilme, int idAtorNovo)
+        [HttpPut("AlterarAtorDofilme")]
+        public async Task<IActionResult> AlterarAtorDofilme([FromQuery] int idAtorAtual, int idFilme, int idAtorNovo)
         {
-            Result resultado = await  _atorFilmeService.AlteraAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Result resultado = await  _atorFilmeService.AlterarAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
             if (resultado.IsFailed)
             {
-                return BadRequest();
+                return BadRequest(new { message = resultado.ToString() });
             }
             return Ok();
 
@@ -62,12 +74,12 @@ namespace Cinema.Api.Controllers
         [HttpDelete("DeletaAtorDoFilme")]
         public async Task<IActionResult> DeletaAtorDoFilme([FromQuery] int idAtor,int idFilme)
         {
-            Result resultado = await _atorFilmeService.DeletaAtorDoFilme(idAtor,idFilme);
-            if (resultado != null)
+            Result resultado = await _atorFilmeService.DeletarAtorDoFilme(idAtor,idFilme);
+            if (resultado.IsFailed)
             {
-                return Ok();
+                return BadRequest(new { message = resultado.ToString() });
             }
-            return BadRequest();
+            return Ok();
         }
         
 

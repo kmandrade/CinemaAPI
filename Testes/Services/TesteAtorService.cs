@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cinema.Api.Profiles;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.AtorDto;
 using Domain.Models;
 using Moq;
@@ -38,101 +38,91 @@ namespace Testes.Services
 
         //BUSCA ATOR
         [Fact]
-        public async void BuscaAtorPorId_RetornaNUll_AtorNaoExiste()
+        public async Task BuscarAtorPorId_AtorNaoExiste_RetornaFalse()
         {
             //arrage
 
             _atorRepository.Setup(a => a.BuscarPorId(1)).ReturnsAsync(null as Ator);
             //act
-            var act = await _atorServices.BuscaPorId(1);
+            var act = await _atorServices.BuscarPorId(1);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Ator(act);
             //assert
-            Assert.Null(act);
+            Assert.False(resultado);
         }
+        
         [Fact]
-        public async void BuscaAtorPorId_RetornaAtorDto_Sucess()
+        public async Task BuscarAtorPorId_AtorEncontrado_RetornaTrue()
         {
             //arrange
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };
             _atorRepository.Setup(a => a.BuscarPorId(ator.IdAtor)).ReturnsAsync(ator);
             var atorDto = _mapper.Map<LerAtorDto>(ator);
             //act
-            var atorService= await _atorServices.BuscaPorId(atorDto.IdAtor);
+            var atorService= await _atorServices.BuscarPorId(atorDto.IdAtor);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Ator(atorService);
             //assert
-            Assert.Equal(atorService.NomeAtor,atorDto.NomeAtor);
+            Assert.True(resultado);
         }
 
         [Fact]
-        public async void BuscaTodosAtores_RetornaNull_NenhumAtorEncontrado()
+        public async Task BuscarTodosAtores_RetornaNull_NenhumAtorEncontrado()
         {
             //arrange
-            _atorRepository.Setup(a => a.BuscaTodos()).ReturnsAsync(null as IEnumerable<Ator>);
+            _atorRepository.Setup(a => a.BuscarTodos()).ReturnsAsync(null as IEnumerable<Ator>);
 
             //act
-            var atorService = await _atorServices.BuscaTodos(1,2);
+            var atorService = await _atorServices.BuscarTodos(1,2);
             //assert
             Assert.Null(atorService);
         }
-        [Theory]
-        [InlineData(0, 0)]
-        [InlineData(0, -1)]
-        [InlineData(-1, 0)]
-        [InlineData(-1, -1)]
-        public async void BuscaTodosAtores_RetornaNull_PaginacaoErrada(int skip,int take)
-        {
-            //Arrange
-            _atorRepository.Setup(a => a.BuscaTodos()).ReturnsAsync(null as IEnumerable<Ator>);
-            //act
-            var act = await _atorServices.BuscaTodos(skip, take);
-            //assert
-            Assert.Null(act);
-        }
+        
 
 
-        //CADASTRA ATOR
+        //Cadastrar ATOR
         [Fact]
-        public async void CadastraAtor_RetornaNUll_AtorJaExiste()
+        public async Task CadastrarAtor_RetornaNUll_AtorJaExiste()
         {
             //arrange
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };
             _atorRepository.Setup(a => a.BuscarPorNome(ator.NomeAtor)).ReturnsAsync(ator);
             var atorDto = _mapper.Map<CriarAtorDto>(ator);
             //act
-            var atorService = await _atorServices.Cadastra(atorDto);
+            var atorService = await _atorServices.Cadastrarr(atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.False(resultado);
 
         }
         [Fact]
-        public async void CadastraAtor_RetornaOk_Sucess()
+        public async Task CadastrarAtor_RetornaOk_Sucess()
         {
             //arrange
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };
             var atorDto = _mapper.Map<CriarAtorDto>(ator);
-            _atorRepository.Setup(a => a.Cadastra(ator)).Returns(Task.FromResult(ator));
+            _atorRepository.Setup(a => a.Cadastrar(ator)).Returns(Task.FromResult(ator));
             //act
-            var atorService= await _atorServices.Cadastra(atorDto);
+            var atorService= await _atorServices.Cadastrarr(atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.True(resultado);
         }
 
-        //ALTERA ATOR
+        //Alterar ATOR
         [Fact]
-        public async void AlteraAtor_RetornaFalse_AtorNaoExiste()
+        public async Task AlterarAtor_RetornaFalse_AtorNaoExiste()
         {
             //arrange
             _atorRepository.Setup(a => a.BuscarPorId(1)).ReturnsAsync(null as Ator);
             var atorDto = new AlterarAtorDto() { NomeAtor="ator" };
             //act
-            var atorService = await _atorServices.Altera(1, atorDto);
+            var atorService = await _atorServices.Alterar(1, atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.False(resultado);
             
         }
         [Fact]
-        public async void AlteraAtor_RetornaTrue_Sucess()
+        public async Task AlterarAtor_RetornaTrue_Sucess()
         {
             //arrange
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };
@@ -141,7 +131,7 @@ namespace Testes.Services
             _atorRepository.Setup(a => a.Alterar(ator)).Returns(Task.FromResult(ator));
 
             //act
-            var atorService= await _atorServices.Altera(1, atorDto);
+            var atorService= await _atorServices.Alterar(1, atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.True(resultado);
@@ -150,7 +140,7 @@ namespace Testes.Services
 
         //Exclui Ator
         [Fact]
-        public async void ExcluiAtor_RetornaFalse_AtorNaoExiste()
+        public async Task ExcluirAtor_RetornaFalse_AtorNaoExiste()
         {
             //arrange
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };
@@ -162,7 +152,7 @@ namespace Testes.Services
             Assert.False(resultado);
         }
         [Fact]
-        public async void ExcluiAtor_RetornaTrue_AtorExcluido()
+        public async Task ExcluirAtor_RetornaTrue_AtorExcluido()
         {
             //arrange
             var ator = new Ator() { IdAtor = 1, NomeAtor = "ator" };

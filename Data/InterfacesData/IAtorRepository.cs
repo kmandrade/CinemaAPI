@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Entities
+namespace Data.InterfacesData
 {
     public interface IAtorRepository : IRepository<Ator>
     {

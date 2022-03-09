@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

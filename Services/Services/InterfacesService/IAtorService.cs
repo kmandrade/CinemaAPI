@@ -8,17 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Servicos.Services.Entities
+namespace Servicos.Services.InterfacesService
 {
     public interface IAtorService
     {
         
 
-        Task<IEnumerable<LerAtorDto>> BuscaTodos(int skip, int take);
-        Task<LerAtorDto> BuscaPorId(int id);
+        Task<IEnumerable<LerAtorDto>> BuscarTodos(int skip, int take);
+        Task<Result<LerAtorDto>> BuscarPorId(int id);
 
-        Task<Result> Cadastra(CriarAtorDto obj);
-        Task<Result> Altera(int id,AlterarAtorDto obj);
+        Task<Result> Cadastrarr(CriarAtorDto obj);
+        Task<Result> Alterar(int id,AlterarAtorDto obj);
         Task<Result> Excluir(int id);
 
 

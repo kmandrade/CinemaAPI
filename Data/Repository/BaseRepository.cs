@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,15 +27,15 @@ namespace Data.Repository
         }
 
         
-        public async Task<IEnumerable<T>> BuscaTodos()
+        public virtual async Task<IEnumerable<T>> BuscarTodos()
         {
             return await _dbSet.ToListAsync();
         }
 
-        public virtual void Excluir(T obj)
+        public virtual async void Excluir(T obj)
         {
             _dbSet.Remove(obj);
-             Save();
+             await Save();
 
         }
         public virtual async Task Alterar(T obj)
@@ -43,7 +43,7 @@ namespace Data.Repository
             _dbSet.Update(obj);
             await Save();
         }
-        public virtual async Task Cadastra(T obj)
+        public virtual async Task Cadastrar(T obj)
         {
             _dbSet.Add(obj);
             await Save();
@@ -54,9 +54,6 @@ namespace Data.Repository
            return await _context.SaveChangesAsync();
             
         }
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
+       
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 using Microsoft.IdentityModel.Tokens;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using Servicos.Services.Token;
 
 namespace Cinema.Api.Controllers
@@ -12,8 +12,8 @@ namespace Cinema.Api.Controllers
     [Route("Controller")]
     public class LoginController :ControllerBase
     {
-        private ITokenService _tokenService;
-        private IUsuarioService _usuarioService;
+        private readonly ITokenService _tokenService;
+        private readonly IUsuarioService _usuarioService;
         public LoginController(ITokenService tokenService, IUsuarioService usuarioService)
         {
             _tokenService = tokenService;
@@ -25,7 +25,7 @@ namespace Cinema.Api.Controllers
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginRequest request)
         {
             //recupera o usuario
-            var usuario = await _usuarioService.BuscaUsuarioPorLogin(request);
+            var usuario = await _usuarioService.BuscarUsuarioPorLogin(request);
             
            //verifica se usuario existe
             if (usuario == null || usuario.Situacao==SituacaoEntities.Arquivado)

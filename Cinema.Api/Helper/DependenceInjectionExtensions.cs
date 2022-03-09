@@ -1,10 +1,11 @@
-﻿using Data.Entities;
+﻿using Data.InterfacesData;
 using Data.Repository;
 using Data.Services.Handlers;
-using Domain.Services.Entities;
-using Servicos.Services.Entities;
+using Domain.Services.InterfacesService;
+using Servicos.Services.InterfacesService;
 using Servicos.Services.Handlers;
 using Servicos.Services.Token;
+
 
 namespace Cinema.Api.Helper
 {

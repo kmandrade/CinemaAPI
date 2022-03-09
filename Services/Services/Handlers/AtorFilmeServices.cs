@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.AtorFilme;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using FluentResults;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +15,9 @@ namespace Servicos.Services.Handlers
 {
     public class AtorFilmeServices : IAtorFilmeService
     {
-        IAtorFilmeRepository _atorfilme;
-        IAtorRepository _atorRepository;
-        IFilmeRepository _filmeRepository;
+        private readonly IAtorFilmeRepository _atorfilme;
+        private readonly IAtorRepository _atorRepository;
+        private readonly IFilmeRepository _filmeRepository;
         private readonly IMapper _mapper;
 
         public AtorFilmeServices(IMapper mapper, IAtorFilmeRepository atorfilme, IAtorRepository atorRepository, IFilmeRepository filmeRepository)
@@ -31,18 +31,18 @@ namespace Servicos.Services.Handlers
 
 
 
-        public async Task<IEnumerable<LerAtorFilmeDto>> BuscaFilmesPorAtor(int idAtorFilme)
+        public async Task<IEnumerable<LerAtorFilmeDto>> BuscarFilmesPorAtor(int idAtorFilme)
         {
-            var atf = await _atorfilme.BuscaFilmesPorAtor(idAtorFilme);
-            if (atf != null)
+            var atoresFilme = await _atorfilme.BuscarFilmesPorAtor(idAtorFilme);
+            if (atoresFilme != null)
             {
-                var atfDto = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atf);
-                return atfDto;
+                var atoresFilmeDto = _mapper.Map<IEnumerable<LerAtorFilmeDto>>(atoresFilme);
+                return atoresFilmeDto;
             }
             //esse ator nao possui nenhum filme
             return null;
         }
-        public async Task<Result> AdicionaAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
+        public async Task<Result> AdicionarAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
             var buscaAtor = await _atorRepository.BuscarPorId(criarAtorFilmeDto.IdAtor);
             var buscaFilme = await _filmeRepository.BuscarPorId(criarAtorFilmeDto.IdFilme);
@@ -54,21 +54,21 @@ namespace Servicos.Services.Handlers
             var atorFilme = _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
 
 
-            await _atorfilme.Cadastra(atorFilme);
+            await _atorfilme.Cadastrar(atorFilme);
             return Result.Ok();
 
 
 
         }
-        public async Task<Result> AlteraAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
+        public async Task<Result> AlterarAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
         {
             var verificaSeAtorNovoExiste = await _atorRepository.BuscarPorId(idAtorNovo);
             if (verificaSeAtorNovoExiste == null )
             {
-                return Result.Fail("Novo Ator Nao Cadastrado");
+                return Result.Fail("Novo Ator Nao Cadastrardo");
             }
             //verifica se o atorAtual ou Filme existem
-            var AtorFilmeSelecionado = await _atorfilme.BuscaAtorEFilme(idAtorAtual, idFilme);
+            var AtorFilmeSelecionado = await _atorfilme.BuscarAtorEFilme(idAtorAtual, idFilme);
             if (AtorFilmeSelecionado != null)
             {
                 AtorFilmeSelecionado.IdAtor = idAtorNovo;
@@ -78,9 +78,9 @@ namespace Servicos.Services.Handlers
             return Result.Fail("Dados nao Conferem");
         }
 
-        public async Task<Result> DeletaAtorDoFilme(int idAtor, int idFilme)
+        public async Task<Result> DeletarAtorDoFilme(int idAtor, int idFilme)
         {
-            var selecionarAtorDoFilme = await _atorfilme.BuscaAtorEFilme(idAtor, idFilme);
+            var selecionarAtorDoFilme = await _atorfilme.BuscarAtorEFilme(idAtor, idFilme);
             if (selecionarAtorDoFilme != null)
             {
                 _atorfilme.Excluir(selecionarAtorDoFilme);

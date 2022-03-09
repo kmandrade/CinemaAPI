@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.DiretorDto;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using FluentResults;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,55 +15,60 @@ namespace Servicos.Services.Handlers
 {
     public class DiretorServices : IDiretorService
     {
-        IDiretorRepository _diretorDao;
-        IFilmeRepository _filmeDao;
+        private readonly IDiretorRepository _diretorRepository;
+        private readonly IFilmeRepository _filmeRepository;
         private readonly IMapper _mapper;
-        public DiretorServices(IDiretorRepository diretorDao, IMapper mapper , IFilmeRepository filmeDao)
+        public DiretorServices(IDiretorRepository diretorRepository, IMapper mapper , IFilmeRepository filmeRepository)
         {
             _mapper=mapper;
-            _diretorDao=diretorDao;
-            _filmeDao=filmeDao;
+            _diretorRepository=diretorRepository;
+            _filmeRepository=filmeRepository;
 
         }
 
         public async Task<IEnumerable<LerFilmeDto>> lerFilmeDtosPorDiretor(int idDiretor)
         {
 
-            var filmes = await _diretorDao.BuscaFilmesPorDiretor(idDiretor);
+            var filmes = await _diretorRepository.BuscarFilmesPorDiretor(idDiretor);
             var filmesDto = _mapper.Map<IEnumerable<LerFilmeDto>>(filmes);
             return filmesDto;
            
         }
 
-        public async Task<IEnumerable<LerDiretorDto>> ConsultaTodos(int skip, int take)
+        public async Task<IEnumerable<LerDiretorDto>> ConsultarTodos(int skip, int take)
         {
-            var diretores = await _diretorDao.BuscaTodos();
+            var diretores = await _diretorRepository.BuscarTodos();
             var diretoresPaginados = diretores.Skip(skip).Take(take).ToList();
             var diretoresMapeados = _mapper.Map<IEnumerable<LerDiretorDto>>(diretoresPaginados);
             return diretoresMapeados;
         }
 
-        public async Task<LerDiretorDto> ConsultaPorId(int id)
+        public async Task<Result<LerDiretorDto>> ConsultarPorId(int id)
         {
-            var diretor = await _diretorDao.BuscarPorId(id);//vai pegar so o numero do id e verifica no banco
+            var diretor = await _diretorRepository.BuscarPorId(id);
+            if (diretor == null)
+            {
+                return Result.Fail("Diretor nao encontrado");
+            }
+
             var diretorDto = _mapper.Map<LerDiretorDto>(diretor);//converte pra dto e manda pra tela
-            return diretorDto;
+            return Result.Ok(diretorDto);
         }
 
-        public async Task<Result> Cadastra(CriarDiretorDto obj)
+        public async Task<Result> Cadastrar(CriarDiretorDto obj)
         {
             var diretor = _mapper.Map<Diretor>(obj);
-           await _diretorDao.Cadastra(diretor);
+           await _diretorRepository.Cadastrar(diretor);
             return Result.Ok();
         }
 
-        public async Task<Result> Altera(int id, AlterarDiretorDto diretorDto)
+        public async Task<Result> Alterar(int id, AlterarDiretorDto diretorDto)
         {
-            var diretorSelecionado = _diretorDao.BuscarPorId(id);
+            var diretorSelecionado = _diretorRepository.BuscarPorId(id);
             if(diretorSelecionado != null)
             {
                 var diretorMapeado = _mapper.Map<Diretor>(diretorDto);
-               await _diretorDao.Alterar(diretorMapeado);
+               await _diretorRepository.Alterar(diretorMapeado);
                 return Result.Ok();
             }
             return Result.Fail("errror");
@@ -72,10 +77,10 @@ namespace Servicos.Services.Handlers
 
         public async Task<Result> Excluir(int id)
         {
-            var diretorSelecionado = await _diretorDao.BuscarPorId(id);
+            var diretorSelecionado = await _diretorRepository.BuscarPorId(id);
             if (diretorSelecionado != null)
             {
-                _diretorDao.Excluir(diretorSelecionado);
+                _diretorRepository.Excluir(diretorSelecionado);
                 return Result.Ok();
             }
             return Result.Fail("fail");

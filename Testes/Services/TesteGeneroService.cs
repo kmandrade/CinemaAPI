@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cinema.Api.Profiles;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.GeneroDto;
 using Domain.Models;
 using Moq;
@@ -38,101 +38,90 @@ namespace Testes.Services
 
         //BUSCA GENERO
         [Fact]
-        public async void BuscaGeneroPorId_RetornaNUll_GeneroNaoExiste()
+        public async Task BuscarGeneroPorId_GeneroNaoExiste_RetornaFalse()
         {
             //arrage
 
             _generoRepository.Setup(g => g.BuscarPorId(1)).ReturnsAsync(null as Genero);
             //act
-            var act = await _generoServices.BuscaPorId(1);
-            //assert
-            Assert.Null(act);
+            var act = await _generoServices.BuscarPorId(1);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Genero(act);
+            // Assert
+            Assert.False(resultado);
         }
         [Fact]
-        public async void BuscaGeneroPorId_RetornaGeneroDto_Sucess()
+        public async Task BuscarGeneroPorId_GeneroEncontrado_RetornaTrue()
         {
             //arrange
             var genero = new Genero() { IdGenero = 1, NomeGenero = "genero" };
             _generoRepository.Setup(a => a.BuscarPorId(genero.IdGenero)).ReturnsAsync(genero);
             var generoDto = _mapper.Map<LerGeneroDto>(genero);
             //act
-            var generoService = await _generoServices.BuscaPorId(generoDto.IdGenero);
+            var generoService = await _generoServices.BuscarPorId(generoDto.IdGenero);
+            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Genero(generoService);
             //assert
-            Assert.Equal(generoService.NomeGenero, generoDto.NomeGenero);
+            Assert.True(resultado);
         }
 
         [Fact]
-        public async void BuscaTodosGeneros_RetornaNull_NenhumGeneroEncontrado()
+        public async Task BuscarTodosGeneros_RetornaNull_NenhumGeneroEncontrado()
         {
             //arrange
-            _generoRepository.Setup(a => a.BuscaTodos()).ReturnsAsync(null as IEnumerable<Genero>);
+            _generoRepository.Setup(a => a.BuscarTodos()).ReturnsAsync(null as IEnumerable<Genero>);
 
             //act
-            var generoService = await _generoServices.BuscaTodos(1, 2);
+            var generoService = await _generoServices.BuscarTodos(1, 2);
             //assert
             Assert.Null(generoService);
         }
 
-        [Theory]
-        [InlineData(0, 0)]
-        [InlineData(0, -1)]
-        [InlineData(-1, 0)]
-        [InlineData(-1, -1)]
-        public async void BuscaTodosGeneros_RetornaNull_PaginacaoErrada(int skip, int take)
-        {
-            //Arrange
-            _generoRepository.Setup(a => a.BuscaTodos()).ReturnsAsync(null as IEnumerable<Genero>);
-            //act
-            var act = await _generoServices.BuscaTodos(skip, take);
-            //assert
-            Assert.Null(act);
-        }
+       
 
-        //CADASTRA Genero
+        //Cadastrar Genero
         [Fact]
-        public async void CadastraGenero_RetornaNUll_GeneroJaExiste()
+        public async Task CadastrarGenero_RetornaNUll_GeneroJaExiste()
         {
             //arrange
             var genero = new Genero() { IdGenero = 1, NomeGenero = "genero" };
-            _generoRepository.Setup(a => a.BuscaPorNome(genero.NomeGenero)).ReturnsAsync(genero);
+            _generoRepository.Setup(a => a.BuscarPorNome(genero.NomeGenero)).ReturnsAsync(genero);
             var generoDto = _mapper.Map<CriarGeneroDto>(genero);
             //act
-            var generoService = await _generoServices.Cadastra(generoDto);
+            var generoService = await _generoServices.Cadastrar(generoDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(generoService);
             //assert
             Assert.False(resultado);
 
         }
         [Fact]
-        public async void CadastraGenero_RetornaOk_Sucess()
+        public async Task CadastrarGenero_RetornaOk_Sucess()
         {
             //arrange
             var genero = new Genero() { IdGenero = 1, NomeGenero = "genero" };
             var generoDto = _mapper.Map<CriarGeneroDto>(genero);
-            _generoRepository.Setup(a => a.Cadastra(genero)).Returns(Task.FromResult(genero));
+            _generoRepository.Setup(a => a.Cadastrar(genero)).Returns(Task.FromResult(genero));
             //act
-            var generoService = await _generoServices.Cadastra(generoDto);
+            var generoService = await _generoServices.Cadastrar(generoDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(generoService);
             //assert
             Assert.True(resultado);
         }
 
-        //ALTERA Genero
+        //Alterar Genero
         [Fact]
-        public async void AlteraGenero_RetornaFalse_GeneroNaoExiste()
+        public async Task AlterarGenero_RetornaFalse_GeneroNaoExiste()
         {
             //arrange
             _generoRepository.Setup(a => a.BuscarPorId(1)).ReturnsAsync(null as Genero);
             var generoDto = new AlterarGeneroDto() { NomeGenero = "Genero" };
             //act
-            var generoService = await _generoServices.Altera(1, generoDto);
+            var generoService = await _generoServices.Alterar(1, generoDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(generoService);
             //assert
             Assert.False(resultado);
 
         }
         [Fact]
-        public async void AlteraGenero_RetornaTrue_Sucess()
+        public async Task AlterarGenero_RetornaTrue_Sucess()
         {
             //arrange
             var genero = new Genero() { IdGenero = 1, NomeGenero = "Genero" };
@@ -141,7 +130,7 @@ namespace Testes.Services
             _generoRepository.Setup(a => a.Alterar(genero)).Returns(Task.FromResult(genero));
 
             //act
-            var generoService = await _generoServices.Altera(1, generoDto);
+            var generoService = await _generoServices.Alterar(1, generoDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(generoService);
             //assert
             Assert.True(resultado);
@@ -149,7 +138,7 @@ namespace Testes.Services
 
         //Exclui Genero
         [Fact]
-        public async void ExcluiGenero_RetornaFalse_GeneroNaoExiste()
+        public async Task ExcluirGenero_RetornaFalse_GeneroNaoExiste()
         {
             //arrange
             var genero = new Genero() { IdGenero = 1, NomeGenero = "Genero" };
@@ -161,7 +150,7 @@ namespace Testes.Services
             Assert.False(resultado);
         }
         [Fact]
-        public async void ExcluiGenero_RetornaTrue_GeneroExcluido()
+        public async Task ExcluirGenero_RetornaTrue_GeneroExcluido()
         {
             //arrange
             var genero = new Genero() { IdGenero = 1, NomeGenero = "Genero" };

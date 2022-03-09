@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Entities
+namespace Servicos.Services.InterfacesService
 {
-    public interface IGeneroRepository :IRepository<Genero>
+    public interface ITokenService
     {
-        Task<Genero> BuscaPorNome(string nome);
+        public string GenerateToken(Usuario user);
+
     }
 }

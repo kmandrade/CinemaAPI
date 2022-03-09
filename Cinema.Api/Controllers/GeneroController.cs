@@ -1,7 +1,7 @@
 ﻿using Domain.Dtos.GeneroDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 
 
 namespace Cinema.Api.Controllers
@@ -11,41 +11,77 @@ namespace Cinema.Api.Controllers
     [Route("[controller]")]
     public class GeneroController : ControllerBase
     {
-         IGeneroService _generoService;
+        private readonly IGeneroService _generoService;
 
         public GeneroController(IGeneroService generoService)
         {
             _generoService = generoService;
         }
 
-        [HttpGet("ConsultaTodosGeneros")]
-        public async Task<IActionResult> ConsultaGeneros([FromQuery] int skip, int take)
+        [HttpGet("ConsultarTodosGeneros")]
+        public async Task<IActionResult> BuscarGeneros([FromQuery] int skip, int take)
         {
-            var generos = await _generoService.BuscaTodos(skip,take);
+            if(skip<= 0 || take <= 0)
+            {
+                return BadRequest(new { message = "Paginacao Errada" });
+            }
+            var generos = await _generoService.BuscarTodos(skip,take);
+            if (generos == null)
+            {
+                return BadRequest(new { message = "Nao foi possivel buscar os generos" });
+            }
             return Ok(generos);
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
-        public async Task<IActionResult> CadastraGenero([FromBody]CriarGeneroDto generoDto)
+        public async Task<IActionResult> CadastrarGenero([FromBody]CriarGeneroDto generoDto)
         {
-           await _generoService.Cadastra(generoDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var resultado= await _generoService.Cadastrar(generoDto);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpPut("AlteraNomeGenero/{id}")]
-        public async Task<IActionResult> AlteraNomeGenero(int id, AlterarGeneroDto obj)
+        [HttpPut("AlterarNomeGenero/{id}")]
+        public async Task<IActionResult> AlterarNomeGenero(int id, AlterarGeneroDto obj)
         {
-            await _generoService.Altera(id, obj);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "id precisa ser maior que 0" });
+            }
+           var resultado=  await _generoService.Alterar(id, obj);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaGenero/{id}")]
-        public async Task<IActionResult> DeletaGenero(int id)
+        public async Task<IActionResult> ExcluirGenero(int id)
         {
-            await _generoService.Excluir(id);
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "id precisa ser maior que 0" });
+            }
+            var resultado= await _generoService.Excluir(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
     }

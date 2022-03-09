@@ -1,6 +1,6 @@
 ﻿using Domain.Dtos.FilmeDto;
 using Domain.Models;
-using Domain.Services.Entities;
+using Domain.Services.InterfacesService;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,36 +16,52 @@ namespace Cinema.Api.Controllers
     [Route("controller")]
     public class FilmeController : ControllerBase
     {
-        IFilmeService _filmeService;
+        private readonly IFilmeService _filmeService;
 
         public FilmeController(IFilmeService service)
         {
             _filmeService = service;
         }
         
-        [HttpGet("BuscaTodosFilmes")]
-        public async Task<IActionResult> BuscaFilmes([FromQuery] int skip, int take)
+        [HttpGet("BuscarTodosFilmes")]
+        public async Task<IActionResult> BuscarFilmes([FromQuery] int skip, int take)
         {
-            var filmes = await _filmeService.BuscaTodos(skip,take);
+            if (skip <= 0 || take <= 0)
+            {
+                return BadRequest(new { message = "Paginacao Errada" });
+            }
+            var filmes = await _filmeService.BuscarTodos(skip,take);
 
             if (filmes != null)
             {
                 return Ok(filmes);
             }
-            return NotFound(new { message = "Paginacao Errada" });
+            return NotFound(new { message = "Nao foi possivel buscar os filmes" });
         }
         [Authorize(Roles = "Administrador")]
-        [HttpGet("BuscaFilmesArquivados")]
-        public async Task<IActionResult> BuscaFilmesArquivados([FromQuery] int skip, int take)
+        [HttpGet("BuscarFilmesArquivados")]
+        public async Task<IActionResult> BuscarFilmesArquivados([FromQuery] int skip, int take)
         {
-           var filmesArq= await _filmeService.BuscaFilmesArquivados(skip,take);
-            
+            if (skip <= 0 || take <= 0)
+            {
+                return BadRequest(new { message = "Paginacao Errada" });
+            }
+
+            var filmesArq= await _filmeService.BuscarFilmesArquivados(skip,take);
+            if (filmesArq == null)
+            {
+                return BadRequest(new { message = "Nao foi possivel buscar os filmes" });
+            }
             return Ok(filmesArq);
         }
         [HttpGet("BuscaCompleta/{id}")]
-        public async Task<IActionResult> BuscaCompleta(int id)
+        public async Task<IActionResult> BuscarFilmeDetalgado(int id)
         {
-            var filme = await _filmeService.BuscaFilmeCompleto(id);
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var filme = await _filmeService.BuscarFilmeCompleto(id);
             if (filme == null)
             {
                 return BadRequest(new { message = "Filme nao encontrado" });
@@ -53,9 +69,13 @@ namespace Cinema.Api.Controllers
             return Ok(filme);
         }
         [HttpGet("BucaUmFilme/{id}")]
-        public async Task<IActionResult> BuscaUmFilme(int id)
+        public async Task<IActionResult> BuscarUmFilme(int id)
         {
-            var filme = await _filmeService.BuscaPorId(id);
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var filme = await _filmeService.BuscarPorId(id);
 
             if (filme != null)
             {
@@ -63,28 +83,55 @@ namespace Cinema.Api.Controllers
             }
             return BadRequest(new { message = "Filme nao encontrado" });
         }
-        [Authorize(Roles ="Administrador")]
-        [HttpPost("CadastraUmFilme")]
-        public async Task<IActionResult> CadastraFilme([FromBody] CriarFilmeDto criarFilmeDto)
+
+        [HttpGet("BuscarFilmesMaisVotados")]
+        public async Task<IActionResult> BuscarFilmesMaisVotados()
         {
-            /*
+            
+            var filmes = await _filmeService.BuscarFilmesMaisVotados();
+            if (filmes == null)
+            {
+                return BadRequest(new { message = "Nao foi possivel encontrar os filmes" });
+            }
+            return Ok(filmes);
+        }
+
+        [Authorize(Roles ="Administrador")]
+        [HttpPost("CadastrarUmFilme")]
+        public async Task<IActionResult> CadastrarFilme([FromBody] CriarFilmeDto criarFilmeDto)
+        {
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            */
-            await _filmeService.Cadastra(criarFilmeDto);
+            
+            var resultado = await _filmeService.Cadastrar(criarFilmeDto);
+            
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new {message= resultado.ToString() });
+                
+            }
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpPut("AlteraUmFilme")]
+        [HttpPut("AlterarUmFilme")]
         public async Task<IActionResult> AlterarFilme(int id, [FromBody] AlterarFilmeDto filmeDto)
         {
-            Result resultado = await _filmeService.Altera(id, filmeDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            Result resultado = await _filmeService.Alterar(id, filmeDto);
             if (resultado.IsFailed)
             {
-                return NotFound();
+                return BadRequest(new { message = resultado.ToString() });
             }
             return NoContent();
         }
@@ -98,12 +145,12 @@ namespace Cinema.Api.Controllers
                 return BadRequest(new { message = "Filme nao existe" });
             }
 
-           Result resultado= await _filmeService.ArquivarFilme(id);
+            Result resultado= await _filmeService.ArquivarFilme(id);
             if (resultado.IsFailed)
             {
-                return BadRequest(new { message = "Filme nao existe" });
+                return BadRequest(new { message = resultado.ToString() });
             }
-            await _filmeService.ArquivarFilme(id);
+            
             return Ok();
         }
 
@@ -119,7 +166,7 @@ namespace Cinema.Api.Controllers
             Result resultado = await _filmeService.ReativarFilme(id);
             if (resultado.IsFailed)
             {
-                return BadRequest(new { message = "Filme nao existe" });
+                return BadRequest(new { message = resultado.ToString() });
             }
             await _filmeService.ReativarFilme(id);
             return Ok();
@@ -137,7 +184,7 @@ namespace Cinema.Api.Controllers
             Result resultado = await _filmeService.Excluir(id);
             if (resultado.IsFailed)
             {
-                return BadRequest(new { message = "Filme nao existe" });
+                return BadRequest(new { message = resultado.ToString() });
             }
             return Ok();
         }

@@ -1,4 +1,7 @@
-﻿using Domain.Dtos.FilmeDto;
+﻿using Domain.Dtos.AtorDto;
+using Domain.Dtos.FilmeDto;
+using Domain.Dtos.GeneroDto;
+using Domain.Dtos.UsuarioDto;
 using Domain.Models;
 using FluentResults;
 using System;
@@ -11,20 +14,7 @@ namespace Testes.BaseEntities
 {
     public static class TesteRepository
     {
-        public static List<CriarFilmeDto> RetornaCriarFilmeDto(List<CriarFilmeDto> filme)
-        {
-            var filmes = new List<CriarFilmeDto>()
-            {
-                new CriarFilmeDto() { Titulo = "Filme1", DiretorId = 1, Duracao =100},
-                new CriarFilmeDto() { Titulo = "Filme2", DiretorId = 1, Duracao =100}
-                
-            };
-            foreach(var f in filmes)
-            {
-                return filmes;
-            }
-            return null;
-        }
+       
 
         public static bool Retorna_FalseInFalid_TrueInSucess_Result(Result resultado)
         {
@@ -34,7 +24,38 @@ namespace Testes.BaseEntities
             }
             return true;
         }
-       
+        public static bool Retorna_FalseInFalid_TrueInSucess_Ator(Result<LerAtorDto> resultado)
+        {
+            if (resultado.IsFailed)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool Retorna_FalseInFalid_TrueInSucess_Genero(Result<LerGeneroDto> resultado)
+        {
+            if (resultado.IsFailed)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool Retorna_FalseInFalid_TrueInSucess_Usuario(Result<LerUsuarioDto> resultado)
+        {
+            if (resultado.IsFailed)
+            {
+                return false;
+            }
+            return true;
+        }
 
+        public static bool Retorna_FalseInFalid_TrueInSucess_Result_Filme(Result<LerNomeFilmeDto> resultado)
+        {
+            if (resultado.IsFailed)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

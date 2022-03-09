@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cinema.Api.Profiles;
-using Data.Entities;
+using Data.InterfacesData;
 using Data.Services.Handlers;
 using Domain.Dtos.FilmeDto;
 using Domain.Dtos.FilmeGenero;
@@ -23,8 +23,6 @@ namespace Testes.Services
     {
         private readonly IMapper _mapper;
         private readonly GeneroFilmeServices _generoFilmeServices;
-        private readonly GeneroServices _generoServices;
-        private readonly FilmeServices _filmeServices;
         private readonly Mock<IGeneroFilmeRepository> _generoFilmeRepository;
         private readonly Mock<IGeneroRepository> _generoRepository;
         private readonly Mock<IFilmeRepository> _filmeRepository;
@@ -49,21 +47,21 @@ namespace Testes.Services
 
         //BUSCA
         [Fact]
-        public async void BuscaFilmesPorGenero_DadoGeneroInvalido_RetornaNull_GeneroNaoExiste()
+        public async Task BuscarFilmesPorGenero_DadoGeneroInvalido_RetornaNull_GeneroNaoExiste()
         {
             //arrange 
 
-            _generoFilmeRepository.Setup(genero => genero.BuscaFilmesPorGenero(1)).ReturnsAsync(null as IEnumerable<GeneroFilme>);
+            _generoFilmeRepository.Setup(genero => genero.BuscarFilmesPorGenero(1)).ReturnsAsync(null as IEnumerable<GeneroFilme>);
 
 
             //act
-            var act = await _generoFilmeServices.BuscaFilmesPorGenero(1);
+            var act = await _generoFilmeServices.BuscarFilmesPorGenero(1);
             //assert
             Assert.Null(act);
 
         }
         [Fact]
-        public async void BuscaFilmesPorGenero_DadoGeneroValido_RetornaFilmes()
+        public async Task BuscarFilmesPorGenero_DadoGeneroValido_RetornaFilmes()
         {
             //arrange
             var filme = new Filme() { IdFilme = 1, Titulo = "filme"};
@@ -77,12 +75,12 @@ namespace Testes.Services
 
                     }
                  };
-            _generoFilmeRepository.Setup(g => g.BuscaFilmesPorGenero(genero.IdGenero)).ReturnsAsync(generosFilmes);
+            _generoFilmeRepository.Setup(g => g.BuscarFilmesPorGenero(genero.IdGenero)).ReturnsAsync(generosFilmes);
             var filmeDto = _mapper.Map<LerFilmeDto>(filme);
             var generoDto = _mapper.Map<LerGeneroDto>(genero);
-            var generoesFilmesDto = _mapper.Map<IEnumerable<GeneroFilme>>(generosFilmes);
+            
             //act
-            var generoService = await _generoFilmeServices.BuscaFilmesPorGenero(generoDto.IdGenero);
+            var generoService = await _generoFilmeServices.BuscarFilmesPorGenero(generoDto.IdGenero);
             var primeioFilmeDoGenero = generoService.FirstOrDefault(f=>f.FilmeDto.Titulo==filmeDto.Titulo);
 
             //assert
@@ -92,7 +90,7 @@ namespace Testes.Services
 
         //ADICIONA
         [Fact]
-        public async void AdicionaGeneroFilme_RetornaFalse_GeneroNaoExiste()
+        public async Task AdicionarGeneroFilme_RetornaFalse_GeneroNaoExiste()
         {
             //arrange 
 
@@ -100,13 +98,13 @@ namespace Testes.Services
             var generoDto = new CriarGeneroFilmeDto() { IdGenero = 1, IdFilme = 1 };
             
             //act
-            var act = await _generoFilmeServices.AdicionaGeneroFilme(generoDto);
+            var act = await _generoFilmeServices.AdicionarGeneroFilme(generoDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void AdicionaGeneroFilme_RetornaFalse_FilmeNaoExiste()
+        public async Task AdicionarGeneroFilme_RetornaFalse_FilmeNaoExiste()
         {
             //arrange 
 
@@ -114,7 +112,7 @@ namespace Testes.Services
             var generoDto = new CriarGeneroFilmeDto() { IdGenero = 1, IdFilme = 1 };
 
             //act
-            var act = await _generoFilmeServices.AdicionaGeneroFilme(generoDto);
+            var act = await _generoFilmeServices.AdicionarGeneroFilme(generoDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
@@ -122,34 +120,34 @@ namespace Testes.Services
 
 
 
-        //ALTERA
+        //Alterar
         [Fact]
-        public async void AlteraGeneroDoFilme_RetornaFalse_GeneroNovoNaoExiste()
+        public async Task AlterarGeneroDoFilme_RetornaFalse_GeneroNovoNaoExiste()
         {
             //arrange 
-            _generoRepository.Setup(atf => atf.BuscarPorId(1)).ReturnsAsync(null as Genero);
+            _generoRepository.Setup(atoresFilme => atoresFilme.BuscarPorId(1)).ReturnsAsync(null as Genero);
 
             //act
-            var act = await _generoFilmeServices.AlteraGeneroDoFilme(1, 1, 1);
+            var act = await _generoFilmeServices.AlterarGeneroDoFilme(1, 1, 1);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void AlteraGeneroDoFilme_RetornaFalse_GeneroAtualEFilmeNaoExistem()
+        public async Task AlterarGeneroDoFilme_RetornaFalse_GeneroAtualEFilmeNaoExistem()
         {
             //arrange 
           
           
-            _generoFilmeRepository.Setup(atf => atf.BuscaGeneroDoFilme(1, 1)).ReturnsAsync(null as GeneroFilme);
+            _generoFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarGeneroDoFilme(1, 1)).ReturnsAsync(null as GeneroFilme);
             //act
-            var act = await _generoFilmeServices.AlteraGeneroDoFilme(6, 6,6);
+            var act = await _generoFilmeServices.AlterarGeneroDoFilme(6, 6,6);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void AlteraGeneroDoFilme_RetornaTrue_GeneronovoExisteEGeneroAtualEFilmeExistem()
+        public async Task AlterarGeneroDoFilme_RetornaTrue_GeneronovoExisteEGeneroAtualEFilmeExistem()
         {
             //arrange 
             var generoNovo = new Genero() { IdGenero = 2, NomeGenero = "genero" };
@@ -162,12 +160,12 @@ namespace Testes.Services
 
             };
             //verifica Genero novo
-            _generoRepository.Setup(atf => atf.BuscarPorId(2)).ReturnsAsync(generoNovo);
+            _generoRepository.Setup(atoresFilme => atoresFilme.BuscarPorId(2)).ReturnsAsync(generoNovo);
             //verificar se existe GeneroEFilme
-            _generoFilmeRepository.Setup(atf => atf.BuscaGeneroDoFilme(genero.IdGenero, filme.IdFilme)).ReturnsAsync(generoesFilme);
+            _generoFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarGeneroDoFilme(genero.IdGenero, filme.IdFilme)).ReturnsAsync(generoesFilme);
 
             //act
-            var act = await _generoFilmeServices.AlteraGeneroDoFilme(genero.IdGenero, filme.IdFilme, generoNovo.IdGenero);
+            var act = await _generoFilmeServices.AlterarGeneroDoFilme(genero.IdGenero, filme.IdFilme, generoNovo.IdGenero);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.True(resultado);
@@ -176,19 +174,19 @@ namespace Testes.Services
 
         //EXCLUIR
         [Fact]
-        public async void ExcluiGeneroDoFilme_RetornaFalse_GeneroEFilmeNaoExistem()
+        public async Task ExcluirGeneroDoFilme_RetornaFalse_GeneroEFilmeNaoExistem()
         {
             //arrange
-            _generoFilmeRepository.Setup(atf => atf.BuscaGeneroDoFilme(1, 1)).ReturnsAsync(null as GeneroFilme);
+            _generoFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarGeneroDoFilme(1, 1)).ReturnsAsync(null as GeneroFilme);
 
             //act
-            var act = await _generoFilmeServices.DeletaGeneroDoFilme(1, 1);
+            var act = await _generoFilmeServices.DeletarGeneroDoFilme(1, 1);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
         [Fact]
-        public async void ExcluiGeneroDoFilme_RetornaTrue_GeneroEFilmeExistem()
+        public async Task ExcluirGeneroDoFilme_RetornaTrue_GeneroEFilmeExistem()
         {
 
             //arrange
@@ -200,10 +198,10 @@ namespace Testes.Services
                 IdFilme = filme.IdFilme,
 
             };
-            _generoFilmeRepository.Setup(atf => atf.BuscaGeneroDoFilme(1, 1)).ReturnsAsync(generoesFilme);
+            _generoFilmeRepository.Setup(atoresFilme => atoresFilme.BuscarGeneroDoFilme(1, 1)).ReturnsAsync(generoesFilme);
 
             //act
-            var act = await _generoFilmeServices.DeletaGeneroDoFilme(genero.IdGenero, filme.IdFilme);
+            var act = await _generoFilmeServices.DeletarGeneroDoFilme(genero.IdGenero, filme.IdFilme);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.True(resultado);

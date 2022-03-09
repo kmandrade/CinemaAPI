@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.AtorDto;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using FluentResults;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,36 +16,33 @@ namespace Servicos.Services.Handlers
     public class AtorServices : IAtorService
     {
         
-        IAtorRepository _atorDao;
+        private readonly IAtorRepository _atorRepository;
 
         private readonly IMapper _mapper;
-        public AtorServices(IMapper mapper , IAtorRepository atorDao)
+        public AtorServices(IMapper mapper , IAtorRepository atorRepository)
         {
-            _atorDao = atorDao;
+            _atorRepository = atorRepository;
             _mapper = mapper;
             
         }
 
 
-        public async Task<LerAtorDto> BuscaPorId(int id)
+        public async Task<Result<LerAtorDto>> BuscarPorId(int id)
         {
-            var atores = await _atorDao.BuscarPorId(id);
+            var atores = await _atorRepository.BuscarPorId(id);
             if (atores == null)
             {
-                return null;
+                return Result.Fail("Ator nao encontrado");
             }
             var atorDto = _mapper.Map<LerAtorDto>(atores);
-            return atorDto;
+            return Result.Ok(atorDto);
 
         }
 
-        public async Task<IEnumerable<LerAtorDto>> BuscaTodos(int skip, int take)
+        public async Task<IEnumerable<LerAtorDto>> BuscarTodos(int skip, int take)
         {
-            if(skip<=0 || take <= 0)
-            {
-                return null;
-            }
-            var atores = await _atorDao.BuscaTodos();
+           
+            var atores = await _atorRepository.BuscarTodos();
             if (atores == null)
             {
                 return null;
@@ -57,37 +54,37 @@ namespace Servicos.Services.Handlers
             return  atoresDto;
         }
 
-        public async Task<Result> Cadastra(CriarAtorDto obj)
+        public async Task<Result> Cadastrarr(CriarAtorDto obj)
         {
-            var buscaAtorExistente = await _atorDao.BuscarPorNome(obj.NomeAtor);
+            var buscaAtorExistente = await _atorRepository.BuscarPorNome(obj.NomeAtor);
             if(buscaAtorExistente != null)
             {
                 return Result.Fail("ator ja existe");
             }
             var atorMapeado = _mapper.Map<Ator>(obj);
-            await _atorDao.Cadastra(atorMapeado);
+            await _atorRepository.Cadastrar(atorMapeado);
             return Result.Ok();
         }
 
-        public async Task<Result> Altera(int id, AlterarAtorDto obj)
+        public async Task<Result> Alterar(int id, AlterarAtorDto obj)
         {
-            var atorSelecionado = await _atorDao.BuscarPorId(id);
+            var atorSelecionado = await _atorRepository.BuscarPorId(id);
             if (atorSelecionado == null)
             {
                 return Result.Fail("Ator nao existe");
             }
             _mapper.Map(obj, atorSelecionado);
-            await _atorDao.Save();
+            await _atorRepository.Save();
             return Result.Ok();
 
         }
 
         public async Task<Result> Excluir(int id)
         {
-            var atorSelecionado = await _atorDao.BuscarPorId(id);
+            var atorSelecionado = await _atorRepository.BuscarPorId(id);
             if (atorSelecionado != null)
             {
-                _atorDao.Excluir(atorSelecionado);
+                _atorRepository.Excluir(atorSelecionado);
                 return Result.Ok();
             }
             return Result.Fail("Esse Ator nao existe");

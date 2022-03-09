@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Entities
+namespace Data.InterfacesData
 {
     public interface IRepository<T>
     {
 
-        Task<IEnumerable<T>> BuscaTodos();
+        Task<IEnumerable<T>> BuscarTodos();
         
         Task<T> BuscarPorId(int id); 
         
 
 
-        Task Cadastra(T obj);
+        Task Cadastrar(T obj);
         Task Alterar(T obj);
         void Excluir(T obj);
         Task<int> Save();

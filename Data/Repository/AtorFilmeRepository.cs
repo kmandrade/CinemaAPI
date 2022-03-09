@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,7 @@ namespace Data.Repository
             
         }
 
-        public  async Task<IEnumerable<AtoresFilme>> BuscaFilmesPorAtor(int IdAtor)
+        public  async Task<IEnumerable<AtoresFilme>> BuscarFilmesPorAtor(int IdAtor)
         {
             //sem conseguir acessar genero
             var queryFilmes = _context.AtoresFilmes
@@ -30,12 +30,12 @@ namespace Data.Repository
                 .Include(f => f.Filme)
                 .ThenInclude(d=>d.Diretor)
                 .AsNoTracking()
-                .Where(atf => atf.IdAtor == IdAtor)
+                .Where(atoresFilme => atoresFilme.IdAtor == IdAtor)
                 .ToListAsync();
             return await queryFilmes;
          
         }
-        public async Task<AtoresFilme> BuscaAtorEFilme(int idAtor, int idFilme)
+        public async Task<AtoresFilme> BuscarAtorEFilme(int idAtor, int idFilme)
         {
             
                 var selecionaAtorFilme = _context.AtoresFilmes

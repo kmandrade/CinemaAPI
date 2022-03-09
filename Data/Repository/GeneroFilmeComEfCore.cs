@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Data.Entities;
+using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,24 +21,24 @@ namespace Data.Repository
             
         }
 
-        public async Task<IEnumerable<GeneroFilme>> BuscaFilmesPorGenero(int IdGeneroFilme)
+        public async Task<IEnumerable<GeneroFilme>> BuscarFilmesPorGenero(int IdGeneroFilme)
         {
             var queryFilmes = await _context.GenerosFilmes
             .Include(g => g.Genero)
             .Include(f => f.Filme)
             .ThenInclude(d => d.Diretor)
-            .Where(gf => gf.IdGenero == IdGeneroFilme)
+            .Where(generoFilme => generoFilme.IdGenero == IdGeneroFilme)
             .ToListAsync();
 
             return queryFilmes;
         }
 
-        public async Task<GeneroFilme> BuscaGeneroDoFilme(int idGenero,int idFilme)
+        public async Task<GeneroFilme> BuscarGeneroDoFilme(int idGenero,int idFilme)
         {
             var query = await _context.GenerosFilmes
                 .Include(g => g.Genero)
                 .Include(f => f.Filme)
-                .Where(gf => gf.IdGenero == idGenero && gf.IdFilme == idFilme)
+                .Where(generoFilme => generoFilme.IdGenero == idGenero && generoFilme.IdFilme == idFilme)
                 .FirstAsync();
             return query;
         }

@@ -8,17 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Servicos.Services.Entities
+namespace Servicos.Services.InterfacesService
 {
     public interface IGeneroService
     {
         
-        Task<IEnumerable<LerGeneroDto>> BuscaTodos(int skip, int take);
-        Task<LerGeneroDto> BuscaPorId(int id);
+        Task<IEnumerable<LerGeneroDto>> BuscarTodos(int skip, int take);
+        Task<Result<LerGeneroDto>> BuscarPorId(int id);
 
 
-        Task<Result> Cadastra(CriarGeneroDto obj);
-        Task<Result> Altera(int id, AlterarGeneroDto obj);
+        Task<Result> Cadastrar(CriarGeneroDto obj);
+        Task<Result> Alterar(int id, AlterarGeneroDto obj);
         Task<Result> Excluir(int id);
     }
 }

@@ -2,7 +2,7 @@
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Servicos.Services.Entities;
+using Servicos.Services.InterfacesService;
 
 namespace Cinema.Api.Controllers
 {
@@ -10,7 +10,7 @@ namespace Cinema.Api.Controllers
     [Route("Controller")]
     public class UsuarioController: ControllerBase
     {
-        private IUsuarioService _usuarioService;
+        private readonly IUsuarioService _usuarioService;
 
         public UsuarioController(IUsuarioService usuarioService)
         {
@@ -18,18 +18,34 @@ namespace Cinema.Api.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpGet("BuscaTodosUsuariosComSenha")]
-        public async Task<IActionResult> BuscaTodosUsuariosComSenha([FromQuery] int skip, int take)
+        [HttpGet("BuscarTodosUsuariosComSenha")]
+        public async Task<IActionResult> BuscarTodosUsuariosComSenha([FromQuery] int skip, int take)
         {
-            var usuarios = await _usuarioService.BuscaTodosOsUsuarioDto(skip,take);
+            if (skip <= 0 || take <= 0)
+            {
+                return BadRequest(new { message = "Paginacao Errada" });
+            }
+            var usuarios = await _usuarioService.BuscarTodosOsUsuarioDto(skip,take);
+            if (usuarios == null)
+            {
+                return BadRequest(new { message = "Nao foi possivel encontrar usuarios" });
+            }
             return Ok(usuarios);
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpGet("BuscaUsuario/{id}")]
-        public async Task<IActionResult> BuscaUsuario(int id)
+        public async Task<IActionResult> BuscarUsuario(int id)
         {
-            var usuario = await _usuarioService.BuscaUsuarioPorId(id);
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var usuario = await _usuarioService.BuscarUsuarioPorId(id);
+            if (usuario == null)
+            {
+                return BadRequest(new { message = "Nao foi possivel encontra o usuario" });
+            }
             return Ok(usuario);
         }
 
@@ -37,7 +53,15 @@ namespace Cinema.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> CriarUsuario([FromBody]CriarUsuarioDto usuarioDto)
         {
-            await _usuarioService.CriarUsuarioNormalDto(usuarioDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var resultado =  await _usuarioService.CriarUsuarioNormalDto(usuarioDto);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
 
@@ -45,10 +69,14 @@ namespace Cinema.Api.Controllers
         [HttpPut("ArquivaUsuario/{id}")]
         public async Task<IActionResult> ArquivaUsuario(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
             Result resultado = await _usuarioService.ArquivarUsuario(id);
             if (resultado.IsFailed)
             {
-                return BadRequest(new { message = "Usuario nao existe ou ja arquivado" });
+                return BadRequest(new { message = resultado.ToString() });
             }
             return Ok(resultado);
           
@@ -58,28 +86,52 @@ namespace Cinema.Api.Controllers
         [HttpPut("ReativarUsuario/{id}")]
         public async Task<IActionResult> ReativarUsuario(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
             Result resultado = await _usuarioService.ReativarUsuario(id);
             if (resultado.IsFailed)
             {
-                return BadRequest(new { message = "Usuario nao existe ou ja ativado" });
+                return BadRequest(new { message = resultado.ToString() });
             }
             return Ok(new { message = "Usuario Ativado" });
 
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpPut("AlteraUsuario")]
-        public async Task<IActionResult> AlteraUsuario([FromQuery]int idUsuario,[FromBody] CriarUsuarioDto criarUsuarioDto)
+        [HttpPut("AlterarUsuario")]
+        public async Task<IActionResult> AlterarUsuario([FromQuery]int idUsuario,[FromBody] CriarUsuarioDto criarUsuarioDto)
         {
-            await _usuarioService.AlteraUsuario( idUsuario, criarUsuarioDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (idUsuario <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var resultado= await _usuarioService.AlterarUsuario( idUsuario, criarUsuarioDto);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaUsuario/{id}")]
-        public async Task<IActionResult> DeletaUsuario(int id)
+        public async Task<IActionResult> ExcluirUsuario(int id)
         {
-            await _usuarioService.DeletaUsuario(id);
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "O id precisa ser maior que 0" });
+            }
+            var resultado= await _usuarioService.ExcluirUsuario(id);
+            if (resultado.IsFailed)
+            {
+                return BadRequest(new { message = resultado.ToString() });
+            }
             return Ok();
         }
 

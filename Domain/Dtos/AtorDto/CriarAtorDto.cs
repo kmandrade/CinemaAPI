@@ -9,7 +9,7 @@ namespace Domain.Dtos.AtorDto
 {
     public class CriarAtorDto
     {
-        [Required]
+        [Required(ErrorMessage ="Nome do ator é obrigatorio")]
         public string NomeAtor { get; set; }
 
     }

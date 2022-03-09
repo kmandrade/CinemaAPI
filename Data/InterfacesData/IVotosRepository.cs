@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Entities
+namespace Data.InterfacesData
 {
     public interface IVotosRepository: IRepository<Votos>
     {
-        Task<IQueryable<Votos>> BuscaFilmesMaisVotados();
-        Task<Votos> BuscaVotoPorFilmeEUsuario(int idFilme, int idUsuario);
+        Task<Votos> BuscarVotoPorFilme(int idFilme);
+        Task<Votos> BuscarVotoPorFilmeEUsuario(int idFilme, int idUsuario);
 
     }
 }
