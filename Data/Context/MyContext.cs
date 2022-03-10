@@ -1,10 +1,5 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Context
 {
@@ -12,7 +7,7 @@ namespace Data.Context
     {
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
-            this.ChangeTracker.LazyLoadingEnabled = false;  
+            this.ChangeTracker.LazyLoadingEnabled = false;
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -24,8 +19,8 @@ namespace Data.Context
         public DbSet<Diretor> Diretores { get; set; }
         public DbSet<Filme> Filmes { get; set; }
         public DbSet<Genero> Generos { get; set; }
-        public DbSet<AtoresFilme> AtoresFilmes { get;set; }
-        public DbSet<GeneroFilme> GenerosFilmes { get;set; }
+        public DbSet<AtoresFilme> AtoresFilmes { get; set; }
+        public DbSet<GeneroFilme> GenerosFilmes { get; set; }
         public DbSet<Votos> Votos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
 
@@ -33,7 +28,7 @@ namespace Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             //DIRETOR
             modelBuilder.Entity<Filme>()
                 .HasOne(filme => filme.Diretor)
@@ -61,32 +56,32 @@ namespace Data.Context
                     Email = "",
                     NomeUsuario = "admin",
                     Votos = null,
-                    Situacao=SituacaoEntities.Ativado
+                    Situacao = SituacaoEntities.Ativado
                 });
 
             //ATORFILME
             modelBuilder.Entity<AtoresFilme>()
                 .HasOne(atoresFilme => atoresFilme.Filme)
-                .WithMany(filme=>filme.AtoresFilme)
-                .HasForeignKey(atoresFilme=>atoresFilme.IdFilme);
+                .WithMany(filme => filme.AtoresFilme)
+                .HasForeignKey(atoresFilme => atoresFilme.IdFilme);
             modelBuilder.Entity<AtoresFilme>()
                 .HasOne(atoresFilme => atoresFilme.Ator)
                 .WithMany(at => at.AtoresFilme)
                 .HasForeignKey(atoresFilme => atoresFilme.IdAtor);
             modelBuilder.Entity<AtoresFilme>()
-                .HasKey(atoresFilme=>atoresFilme.IdAtoresFilme);
+                .HasKey(atoresFilme => atoresFilme.IdAtoresFilme);
 
             //GENEROFILME
             modelBuilder.Entity<GeneroFilme>()
                 .HasOne(generoFilme => generoFilme.Filme)
                 .WithMany(filme => filme.GenerosFilme)
                 .HasForeignKey(generoFilme => generoFilme.IdFilme);
-           modelBuilder.Entity<GeneroFilme>()
-                .HasOne(generoFilme=>generoFilme.Genero)
-                .WithMany(gen=>gen.GeneroFilmes)
-                .HasForeignKey(generoFilme=>generoFilme.IdGenero);
             modelBuilder.Entity<GeneroFilme>()
-                .HasKey(generoFilme=>generoFilme.IdGeneroFilme);
+                 .HasOne(generoFilme => generoFilme.Genero)
+                 .WithMany(gen => gen.GeneroFilmes)
+                 .HasForeignKey(generoFilme => generoFilme.IdGenero);
+            modelBuilder.Entity<GeneroFilme>()
+                .HasKey(generoFilme => generoFilme.IdGeneroFilme);
 
 
 

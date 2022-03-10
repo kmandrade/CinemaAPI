@@ -2,11 +2,9 @@
 
 namespace Testes.BaseEntities
 {
-    public static class TesteRepository
+    public static class TestaTipoResultRepository<T> where T : class
     {
-
-
-        public static bool Retorna_FalseInFalid_TrueInSucess_Result(Result resultado)
+        public static bool Retorna_FalseInFalid_TrueInSucess_Result(Result<T> resultado)
         {
             if (resultado.IsFailed)
             {
@@ -14,7 +12,5 @@ namespace Testes.BaseEntities
             }
             return true;
         }
-
-
     }
 }

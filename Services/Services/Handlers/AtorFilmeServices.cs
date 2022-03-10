@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
 using Data.InterfacesData;
 using Domain.Dtos.AtorFilme;
-using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using FluentResults;
 using Servicos.Services.InterfacesService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Servicos.Services.Handlers
 {
@@ -44,11 +38,15 @@ namespace Servicos.Services.Handlers
         }
         public async Task<Result> AdicionarAtorFilme(CriarAtorFilmeDto criarAtorFilmeDto)
         {
-            var buscaAtor = await _atorRepository.BuscarPorId(criarAtorFilmeDto.IdAtor);
-            var buscaFilme = await _filmeRepository.BuscarPorId(criarAtorFilmeDto.IdFilme);
-            if (buscaAtor == null || buscaFilme==null)
+            var buscarAtor = await _atorRepository.BuscarPorId(criarAtorFilmeDto.IdAtor);
+            if (buscarAtor == null)
             {
                 return Result.Fail("Ator nao existe");
+            }
+             var buscarFilme = await _filmeRepository.BuscarPorId(criarAtorFilmeDto.IdFilme);
+            if (buscarFilme == null)
+            {
+                return Result.Fail(" Filme nao existe");
             }
 
             var atorFilme = _mapper.Map<AtoresFilme>(criarAtorFilmeDto);
@@ -63,7 +61,7 @@ namespace Servicos.Services.Handlers
         public async Task<Result> AlterarAtorDoFilme(int idAtorAtual, int idFilme, int idAtorNovo)
         {
             var verificaSeAtorNovoExiste = await _atorRepository.BuscarPorId(idAtorNovo);
-            if (verificaSeAtorNovoExiste == null )
+            if (verificaSeAtorNovoExiste == null)
             {
                 return Result.Fail("Novo Ator Nao Cadastrardo");
             }
@@ -75,7 +73,7 @@ namespace Servicos.Services.Handlers
                 await _atorfilme.Save();
                 return Result.Ok();
             }
-            return Result.Fail("Dados nao Conferem");
+            return Result.Fail("Filme Ou Novo Ator nao existem");
         }
 
         public async Task<Result> DeletarAtorDoFilme(int idAtor, int idFilme)
@@ -86,7 +84,7 @@ namespace Servicos.Services.Handlers
                 _atorfilme.Excluir(selecionarAtorDoFilme);
                 return Result.Ok();
             }
-            return Result.Fail(errorMessage: "Dados nao Conferem");
+            return Result.Fail(errorMessage: "Filme Ou Novo Ator nao existem");
 
         }
 

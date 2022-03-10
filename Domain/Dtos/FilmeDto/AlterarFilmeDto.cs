@@ -1,10 +1,4 @@
-﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Dtos.FilmeDto
 {
@@ -18,7 +12,7 @@ namespace Domain.Dtos.FilmeDto
         public int DiretorId { get; set; }
 
 
-        
+
 
     }
 }

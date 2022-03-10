@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models
 {
     public class Filme
     {
-      
+
 
         [Key]
         [Required]
@@ -28,12 +22,12 @@ namespace Domain.Models
 
         public virtual List<GeneroFilme> GenerosFilme { get; set; }
 
-        
-        [Range (0,4,ErrorMessage ="O Voto so pode ser de 0 como ruim a 4 como otimo")]
+
+        [Range(0, 4, ErrorMessage = "O Voto so pode ser de 0 como ruim a 4 como otimo")]
         public virtual List<Votos> Votos { get; set; }
 
         public SituacaoEntities Situacao { get; set; }
 
-       
+
     }
 }

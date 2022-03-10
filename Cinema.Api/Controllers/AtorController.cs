@@ -27,7 +27,7 @@ namespace Cinema.Api.Controllers
             {
                 return BadRequest(new { message = "Error ao buscar Atores" });
             }
-            
+
             return Ok(atores);
         }
 
@@ -41,11 +41,11 @@ namespace Cinema.Api.Controllers
 
             }
             var ator = await _atorService.BuscarPorId(id);
-            if (ator == null)
+            if (ator.IsFailed)
             {
                 return BadRequest(new { message = "Ator Nao encontrado" });
             }
-            return Ok(ator);
+            return Ok(ator.ValueOrDefault);
 
         }
 
@@ -53,7 +53,7 @@ namespace Cinema.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CadastrarAtor([FromBody] CriarAtorDto atorDto)
         {
-            
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -74,7 +74,7 @@ namespace Cinema.Api.Controllers
                 return BadRequest(ModelState);
             }
             if (id <= 0) { return BadRequest(new { message = "Id precisa ser maior que 0" }); }
-            var resultado= await _atorService.Alterar(id, obj);
+            var resultado = await _atorService.Alterar(id, obj);
             if (resultado.IsFailed) { return BadRequest(new { message = resultado.ToString() }); }
             return Ok();
         }
@@ -83,7 +83,7 @@ namespace Cinema.Api.Controllers
         public async Task<IActionResult> DeletaAtor(int id)
         {
             if (id <= 0) { return BadRequest(new { message = "Id precisa ser maior que 0" }); }
-            var resultado=await _atorService.Excluir(id);
+            var resultado = await _atorService.Excluir(id);
             if (resultado.IsFailed) { return BadRequest(new { message = resultado.ToString() }); }
             return Ok();
         }

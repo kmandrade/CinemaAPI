@@ -1,16 +1,13 @@
-﻿using AutoMapper;
-using Data.InterfacesData;
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Servicos.Services.InterfacesService;
-using Servicos.Services.Token;
 
 namespace Cinema.Api.Controllers
 {
 
     [ApiController]
     [Route("Controller")]
-    public class LoginController :ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly ITokenService _tokenService;
         private readonly IUsuarioService _usuarioService;
@@ -21,14 +18,14 @@ namespace Cinema.Api.Controllers
         }
 
         [HttpPost("Login")]
-        
+
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginRequest request)
         {
             //recupera o usuario
             var usuario = await _usuarioService.BuscarUsuarioPorLogin(request);
-            
-           //verifica se usuario existe
-            if (usuario == null || usuario.Situacao==SituacaoEntities.Arquivado)
+
+            //verifica se usuario existe
+            if (usuario == null || usuario.Situacao == SituacaoEntities.Arquivado)
             {
                 return NotFound(new { message = "Usuario ou senha invalidos" });
             }
@@ -45,5 +42,6 @@ namespace Cinema.Api.Controllers
                 token = token
             };
         }
-}   }
+    }
+}
 

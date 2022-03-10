@@ -1,29 +1,23 @@
 ﻿using AutoMapper;
 using Data.InterfacesData;
 using Domain.Dtos.AtorDto;
-using Domain.Dtos.FilmeDto;
 using Domain.Models;
 using FluentResults;
 using Servicos.Services.InterfacesService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Servicos.Services.Handlers
 {
     public class AtorServices : IAtorService
     {
-        
+
         private readonly IAtorRepository _atorRepository;
 
         private readonly IMapper _mapper;
-        public AtorServices(IMapper mapper , IAtorRepository atorRepository)
+        public AtorServices(IMapper mapper, IAtorRepository atorRepository)
         {
             _atorRepository = atorRepository;
             _mapper = mapper;
-            
+
         }
 
 
@@ -41,23 +35,23 @@ namespace Servicos.Services.Handlers
 
         public async Task<IEnumerable<LerAtorDto>> BuscarTodos(int skip, int take)
         {
-           
+
             var atores = await _atorRepository.BuscarTodos();
             if (atores == null)
             {
                 return null;
             }
             var atoresPaginados = atores.Skip(skip).Take(take).ToList();
-            
-            
+
+
             var atoresDto = _mapper.Map<IEnumerable<LerAtorDto>>(atoresPaginados);
-            return  atoresDto;
+            return atoresDto;
         }
 
         public async Task<Result> Cadastrarr(CriarAtorDto obj)
         {
             var buscaAtorExistente = await _atorRepository.BuscarPorNome(obj.NomeAtor);
-            if(buscaAtorExistente != null)
+            if (buscaAtorExistente != null)
             {
                 return Result.Fail("ator ja existe");
             }
@@ -90,6 +84,6 @@ namespace Servicos.Services.Handlers
             return Result.Fail("Esse Ator nao existe");
         }
 
-    
+
     }
 }

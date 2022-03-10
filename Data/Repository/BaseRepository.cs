@@ -1,11 +1,6 @@
 ﻿using Data.Context;
 using Data.InterfacesData;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Repository
 {
@@ -22,11 +17,11 @@ namespace Data.Repository
 
         public async Task<T> BuscarPorId(int id)
         {
-            
-            return  await _dbSet.FindAsync(new object[] { id });
+
+            return await _dbSet.FindAsync(new object[] { id });
         }
 
-        
+
         public virtual async Task<IEnumerable<T>> BuscarTodos()
         {
             return await _dbSet.ToListAsync();
@@ -35,7 +30,7 @@ namespace Data.Repository
         public virtual async void Excluir(T obj)
         {
             _dbSet.Remove(obj);
-             await Save();
+            await Save();
 
         }
         public virtual async Task Alterar(T obj)
@@ -50,10 +45,10 @@ namespace Data.Repository
         }
         public async Task<int> Save()
         {
-            
-           return await _context.SaveChangesAsync();
-            
+
+            return await _context.SaveChangesAsync();
+
         }
-       
+
     }
 }

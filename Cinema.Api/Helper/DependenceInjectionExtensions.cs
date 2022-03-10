@@ -2,8 +2,8 @@
 using Data.Repository;
 using Data.Services.Handlers;
 using Domain.Services.InterfacesService;
-using Servicos.Services.InterfacesService;
 using Servicos.Services.Handlers;
+using Servicos.Services.InterfacesService;
 using Servicos.Services.Token;
 
 
@@ -11,7 +11,7 @@ namespace Cinema.Api.Helper
 {
     public static class DependenceInjectionExtensions
     {
-        public static IServiceCollection AddDependenceInjection (this IServiceCollection services)
+        public static IServiceCollection AddDependenceInjection(this IServiceCollection services)
         {
             //INTERFACES DATA
             services.AddScoped<IFilmeRepository, FilmeRepository>();
@@ -22,7 +22,7 @@ namespace Cinema.Api.Helper
             services.AddScoped<IAtorFilmeRepository, AtorFilmeRepository>();
             services.AddScoped<IVotosRepository, VotosRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            
+
             //INTERFACES SERVICES
             services.AddScoped<IFilmeService, FilmeServices>();
             services.AddScoped<IDiretorService, DiretorServices>();
@@ -32,9 +32,9 @@ namespace Cinema.Api.Helper
             services.AddScoped<IGeneroFilmeService, GeneroFilmeServices>();
             services.AddScoped<IVotosService, VotosServices>();
             services.AddScoped<IUsuarioService, UsuarioServices>();
-            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<ITokenService, TokenService>();
 
-            
+
             return services;
         }
     }

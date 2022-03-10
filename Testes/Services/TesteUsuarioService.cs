@@ -5,10 +5,7 @@ using Domain.Dtos.UsuarioDto;
 using Domain.Models;
 using Moq;
 using Servicos.Services.Handlers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Testes.BaseEntities;
 using Xunit;
@@ -53,17 +50,17 @@ namespace Testes.Services
             int skip = 1; int take = 3;
             var usuariosEncontradosAtivosServices = await _usuarioServices.BuscarTodosOsUsuarioDto(skip, take);
             bool resultado = true;
-            
-                foreach (var usuario in usuariosEncontradosAtivosServices)
+
+            foreach (var usuario in usuariosEncontradosAtivosServices)
+            {
+                if (usuario.Situacao == SituacaoEntities.Arquivado)
                 {
-                    if (usuario.Situacao == SituacaoEntities.Arquivado)
-                    {
-                        resultado=false;
-                    }
-          
+                    resultado = false;
                 }
-                 
-            
+
+            }
+
+
             //assert
             Assert.True(resultado);
         }
@@ -76,7 +73,8 @@ namespace Testes.Services
 
             //act
             var act = await _usuarioServices.BuscarUsuarioPorId(1);
-            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Usuario(act);
+            var resultado = TestaTipoResultRepository<LerUsuarioDto>
+                .Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
@@ -88,7 +86,8 @@ namespace Testes.Services
             _usuarioRepository.Setup(u => u.BuscarPorId(usuario.IdUsuario)).ReturnsAsync(usuario);
             //act
             var act = await _usuarioServices.BuscarUsuarioPorId(usuario.IdUsuario);
-            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Usuario(act);
+            var resultado = TestaTipoResultRepository<LerUsuarioDto>
+                .Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
@@ -102,7 +101,8 @@ namespace Testes.Services
             var usuarioDto = _mapper.Map<LerUsuarioDto>(usuario);
             //act
             var act = await _usuarioServices.BuscarUsuarioPorId(usuarioDto.IdUsuario);
-            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Usuario(act);
+            var resultado = TestaTipoResultRepository<LerUsuarioDto>
+                .Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.True(resultado);
 
@@ -175,7 +175,9 @@ namespace Testes.Services
         {
             //arrange
             var usuario = new Usuario()
-            { IdUsuario = 1, NomeUsuario = "usuario",
+            {
+                IdUsuario = 1,
+                NomeUsuario = "usuario",
                 Situacao = SituacaoEntities.Arquivado
             };
             _usuarioRepository.Setup(u => u.BuscarPorId(usuario.IdUsuario));

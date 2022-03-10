@@ -12,7 +12,7 @@ namespace Cinema.Api
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-               // c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+                // c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
                 c.OperationFilter<BearerAuthenticationFilter>();
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

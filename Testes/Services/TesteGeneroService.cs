@@ -5,10 +5,7 @@ using Domain.Dtos.GeneroDto;
 using Domain.Models;
 using Moq;
 using Servicos.Services.Handlers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Testes.BaseEntities;
 using Xunit;
@@ -33,7 +30,7 @@ namespace Testes.Services
             _mapper = mapper;
 
             _generoRepository = new Mock<IGeneroRepository>();
-            _generoServices= new GeneroServices(_mapper,_generoRepository.Object);
+            _generoServices = new GeneroServices(_mapper, _generoRepository.Object);
         }
 
         //BUSCA GENERO
@@ -45,7 +42,8 @@ namespace Testes.Services
             _generoRepository.Setup(g => g.BuscarPorId(1)).ReturnsAsync(null as Genero);
             //act
             var act = await _generoServices.BuscarPorId(1);
-            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Genero(act);
+            var resultado = TestaTipoResultRepository<LerGeneroDto>
+                .Retorna_FalseInFalid_TrueInSucess_Result(act);
             // Assert
             Assert.False(resultado);
         }
@@ -58,13 +56,14 @@ namespace Testes.Services
             var generoDto = _mapper.Map<LerGeneroDto>(genero);
             //act
             var generoService = await _generoServices.BuscarPorId(generoDto.IdGenero);
-            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Genero(generoService);
+            var resultado = TestaTipoResultRepository<LerGeneroDto>
+                .Retorna_FalseInFalid_TrueInSucess_Result(generoService);
             //assert
             Assert.True(resultado);
         }
 
         [Fact]
-        public async Task BuscarTodosGeneros_RetornaNull_NenhumGeneroEncontrado()
+        public async Task BuscarTodosGeneros_NenhumGeneroEncontrado_RetornaNull()
         {
             //arrange
             _generoRepository.Setup(a => a.BuscarTodos()).ReturnsAsync(null as IEnumerable<Genero>);
@@ -75,7 +74,7 @@ namespace Testes.Services
             Assert.Null(generoService);
         }
 
-       
+
 
         //Cadastrar Genero
         [Fact]

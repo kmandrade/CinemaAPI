@@ -20,7 +20,7 @@ namespace Cinema.Api.Profiles
                 .ReverseMap();
 
 
-                
+
         }
 
     }

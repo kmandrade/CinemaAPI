@@ -9,10 +9,10 @@ namespace Cinema.Api.Profiles
         public DiretorProfile()
         {
             CreateMap<Diretor, LerDiretorDto>()
-                .ForMember(dto=>dto.NomeDiretor, opt=>opt.MapFrom(d=>d.NomeDiretor))
+                .ForMember(dto => dto.NomeDiretor, opt => opt.MapFrom(d => d.NomeDiretor))
                 .ReverseMap();
-            CreateMap<CriarDiretorDto, Diretor>();
-            CreateMap<AlterarDiretorDto, Diretor>();
+            CreateMap<CriarDiretorDto, Diretor>().ReverseMap();
+            CreateMap<AlterarDiretorDto, Diretor>().ReverseMap();
         }
 
     }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Dtos.UsuarioDto
 {
     public class CriarUsuarioDto
     {
-        [Required(ErrorMessage ="Necessario o nome do usuario")]
+        [Required(ErrorMessage = "Necessario o nome do usuario")]
         public string NomeUsuarioDto { get; set; }
 
         [Required(ErrorMessage = "O Email é obrigatório")]

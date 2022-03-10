@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models
 {
@@ -15,8 +9,8 @@ namespace Domain.Models
         public int IdGenero { get; set; }
 
         public string NomeGenero { get; set; }
-        
+
         public virtual List<GeneroFilme> GeneroFilmes { get; set; }
 
-    }   
+    }
 }

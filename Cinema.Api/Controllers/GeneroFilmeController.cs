@@ -18,14 +18,14 @@ namespace Cinema.Api.Controllers
         }
 
 
-        [HttpGet("BuscaFilmesPorGenero")]
-        public async Task<IActionResult> BuscarFilmesPorGenero([FromQuery] int iDGenero)
+        [HttpGet("BuscaFilmesPorGenero/{id}")]
+        public async Task<IActionResult> BuscarFilmesPorGenero([FromQuery] int id)
         {
-            if (iDGenero <= 0)
+            if (id <= 0)
             {
                 return BadRequest(new { message = "O id precisa ser maior que 0" });
             }
-            var generoFilme = await _generoFilmeService.BuscarFilmesPorGenero(iDGenero);
+            var generoFilme = await _generoFilmeService.BuscarFilmesPorGenero(id);
             if (generoFilme == null)
             {
                 return BadRequest(new { message = "Nao foi possivel encontrar o genero" });
@@ -75,7 +75,7 @@ namespace Cinema.Api.Controllers
             {
                 return BadRequest(new { message = "O id precisa ser maior que 0" });
             }
-            var resultado= await _generoFilmeService.DeletarGeneroDoFilme(idGenero, idFilme);
+            var resultado = await _generoFilmeService.DeletarGeneroDoFilme(idGenero, idFilme);
             if (resultado.IsFailed)
             {
                 return BadRequest(new { message = resultado.ToString() });

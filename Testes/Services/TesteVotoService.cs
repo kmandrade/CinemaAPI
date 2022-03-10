@@ -6,10 +6,6 @@ using Domain.Models;
 using Domain.Profiles;
 using Moq;
 using Servicos.Services.Handlers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Testes.BaseEntities;
 using Xunit;
@@ -28,16 +24,16 @@ namespace Testes.Services
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new VotosProfile());
-               
+
                 mc.AddProfile(new FilmeProfile());
 
             });
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
-            _votosRepository= new Mock<IVotosRepository>();
+            _votosRepository = new Mock<IVotosRepository>();
             _filmeRepository = new Mock<IFilmeRepository>();
 
-            _votosServices= new VotosServices(_votosRepository.Object, _mapper, _filmeRepository.Object);
+            _votosServices = new VotosServices(_votosRepository.Object, _mapper, _filmeRepository.Object);
         }
 
         [Fact]
@@ -60,7 +56,7 @@ namespace Testes.Services
             //arrange
             var usuario = new Usuario() { IdUsuario = 1, NomeUsuario = "USUARIO" };
             var filme = new Filme() { IdFilme = 1, Titulo = "filme" };
-            var voto= new Votos() { IdUsuario= usuario.IdUsuario, ValorDoVoto = 4, IdVotos=1, IdFilme=1 };
+            var voto = new Votos() { IdUsuario = usuario.IdUsuario, ValorDoVoto = 4, IdVotos = 1, IdFilme = 1 };
             var adicionaVotosDto = _mapper.Map<AdicionaVotosDto>(voto);
             _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
             _votosRepository.Setup(v => v.BuscarVotoPorFilmeEUsuario(voto.IdFilme, usuario.IdUsuario)).ReturnsAsync(voto);
@@ -79,8 +75,8 @@ namespace Testes.Services
             var voto = new Votos() { IdUsuario = 2, ValorDoVoto = 4, IdVotos = 1, IdFilme = 1 };
             var adicionaVotosDto = _mapper.Map<AdicionaVotosDto>(voto);
             _filmeRepository.Setup(f => f.BuscarPorId(filme.IdFilme)).ReturnsAsync(filme);
-            _votosRepository.Setup(v => v.BuscarVotoPorFilmeEUsuario(1,1)).ReturnsAsync(null as Votos);
-            
+            _votosRepository.Setup(v => v.BuscarVotoPorFilmeEUsuario(1, 1)).ReturnsAsync(null as Votos);
+
             //act
             var act = await _votosServices.AdicionarVotosEmFilme(adicionaVotosDto, usuario.IdUsuario);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
@@ -94,7 +90,7 @@ namespace Testes.Services
             _votosRepository.Setup(v => v.BuscarVotoPorFilme(1)).ReturnsAsync(null as Votos);
 
             //act
-            var act = await _votosServices.AlterarValorDoVotoEmFilme(1, 1,1);
+            var act = await _votosServices.AlterarValorDoVotoEmFilme(1, 1, 1);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
@@ -109,7 +105,7 @@ namespace Testes.Services
             _votosRepository.Setup(v => v.BuscarVotoPorFilme(voto.IdFilme)).ReturnsAsync(voto);
 
             //act
-            var act =await _votosServices.AlterarValorDoVotoEmFilme(voto.IdFilme,1,3);
+            var act = await _votosServices.AlterarValorDoVotoEmFilme(voto.IdFilme, 1, 3);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
@@ -118,7 +114,7 @@ namespace Testes.Services
         public async Task AlterarValorDoVotoEmFilme_VotoAlterado_RetornaTrue()
         {
             //arrange
-            var voto = new Votos() { IdUsuario = 1, ValorDoVoto = 3, IdFilme=1 };
+            var voto = new Votos() { IdUsuario = 1, ValorDoVoto = 3, IdFilme = 1 };
             _votosRepository.Setup(v => v.BuscarVotoPorFilme(voto.IdFilme)).ReturnsAsync(voto);
             //act
             var act = await _votosServices.AlterarValorDoVotoEmFilme(voto.IdFilme, 4, voto.IdUsuario);

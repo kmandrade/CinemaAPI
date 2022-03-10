@@ -9,5 +9,6 @@ namespace Data.InterfacesData
         Task<Filme> BuscarPorNome(string nome);
         Task<Filme> BuscarPorFilmesCompletoID(int id);
         Task<IEnumerable<Filme>> BuscarFilmesArquivados();
+        Task<IEnumerable<Filme>> BuscarFilmesPorDiretor(int idDiretor);
     }
 }

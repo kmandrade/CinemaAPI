@@ -3,7 +3,6 @@ using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Servicos.Services.InterfacesService;
-using Servicos.Services.Handlers;
 
 namespace Cinema.Api.Controllers
 {
@@ -20,7 +19,7 @@ namespace Cinema.Api.Controllers
             _atorFilmeService = atorFilmeService;
         }
         [HttpGet("BuscaFilmesPorAtor")]
-        public  async Task<IActionResult> BuscaFilmesPorAtor([FromQuery] int idAtor)
+        public async Task<IActionResult> BuscaFilmesPorAtor([FromQuery] int idAtor)
         {
             if (idAtor <= 0)
             {
@@ -45,12 +44,12 @@ namespace Cinema.Api.Controllers
                 return BadRequest(ModelState);
             }
             Result resultado = await _atorFilmeService.AdicionarAtorFilme(criarAtorFilmeDto);
-            if(resultado.IsFailed)
+            if (resultado.IsFailed)
             {
                 return BadRequest(new { message = resultado.ToString() });
             }
             return Ok();
-            
+
         }
 
         [Authorize(Roles = "Administrador")]
@@ -61,7 +60,7 @@ namespace Cinema.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            Result resultado = await  _atorFilmeService.AlterarAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
+            Result resultado = await _atorFilmeService.AlterarAtorDoFilme(idAtorAtual, idFilme, idAtorNovo);
             if (resultado.IsFailed)
             {
                 return BadRequest(new { message = resultado.ToString() });
@@ -72,16 +71,16 @@ namespace Cinema.Api.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpDelete("DeletaAtorDoFilme")]
-        public async Task<IActionResult> DeletaAtorDoFilme([FromQuery] int idAtor,int idFilme)
+        public async Task<IActionResult> DeletaAtorDoFilme([FromQuery] int idAtor, int idFilme)
         {
-            Result resultado = await _atorFilmeService.DeletarAtorDoFilme(idAtor,idFilme);
+            Result resultado = await _atorFilmeService.DeletarAtorDoFilme(idAtor, idFilme);
             if (resultado.IsFailed)
             {
                 return BadRequest(new { message = resultado.ToString() });
             }
             return Ok();
         }
-        
+
 
     }
 }

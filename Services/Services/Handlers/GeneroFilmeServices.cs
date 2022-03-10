@@ -1,19 +1,13 @@
 ﻿using AutoMapper;
 using Data.InterfacesData;
-using Domain.Dtos.FilmeDto;
 using Domain.Dtos.FilmeGenero;
 using Domain.Models;
 using FluentResults;
 using Servicos.Services.InterfacesService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Servicos.Services.Handlers
 {
-    public class GeneroFilmeServices:IGeneroFilmeService
+    public class GeneroFilmeServices : IGeneroFilmeService
     {
         private readonly IGeneroFilmeRepository _generofilme;
         private readonly IGeneroRepository _generoRepository;
@@ -30,7 +24,7 @@ namespace Servicos.Services.Handlers
         }
         public async Task<IEnumerable<LerGeneroFilmeDto>> BuscarFilmesPorGenero(int IdGeneroFilme)
         {
-            
+
             var generoFilme = await _generofilme.BuscarFilmesPorGenero(IdGeneroFilme);
             if (generoFilme == null)
             {
@@ -44,7 +38,7 @@ namespace Servicos.Services.Handlers
         {
             var buscaGenero = await _generoRepository.BuscarPorId(criarGeneroFilmeDto.IdGenero);
             var buscaFilme = await _filmeRepository.BuscarPorId(criarGeneroFilmeDto.IdFilme);
-            if(buscaGenero ==null || buscaFilme == null)
+            if (buscaGenero == null || buscaFilme == null)
             {
                 return Result.Fail("Genero Ou Filme Nao existem");
             }
@@ -72,7 +66,7 @@ namespace Servicos.Services.Handlers
 
         public async Task<Result> DeletarGeneroDoFilme(int idGenero, int idFilme)
         {
-            
+
             var selecionarGeneroDoFilme = await _generofilme.BuscarGeneroDoFilme(idGenero, idFilme);
             if (selecionarGeneroDoFilme == null)
             {
@@ -82,6 +76,6 @@ namespace Servicos.Services.Handlers
             return Result.Ok();
         }
 
-       
+
     }
 }

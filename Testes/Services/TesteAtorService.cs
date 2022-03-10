@@ -5,10 +5,7 @@ using Domain.Dtos.AtorDto;
 using Domain.Models;
 using Moq;
 using Servicos.Services.Handlers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Testes.BaseEntities;
 using Xunit;
@@ -26,7 +23,7 @@ namespace Testes.Services
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AtorProfile());
-                
+
             });
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
@@ -45,11 +42,11 @@ namespace Testes.Services
             _atorRepository.Setup(a => a.BuscarPorId(1)).ReturnsAsync(null as Ator);
             //act
             var act = await _atorServices.BuscarPorId(1);
-            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Ator(act);
+            var resultado = TestaTipoResultRepository<LerAtorDto>.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.False(resultado);
         }
-        
+
         [Fact]
         public async Task BuscarAtorPorId_AtorEncontrado_RetornaTrue()
         {
@@ -58,8 +55,8 @@ namespace Testes.Services
             _atorRepository.Setup(a => a.BuscarPorId(ator.IdAtor)).ReturnsAsync(ator);
             var atorDto = _mapper.Map<LerAtorDto>(ator);
             //act
-            var atorService= await _atorServices.BuscarPorId(atorDto.IdAtor);
-            var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Ator(atorService);
+            var atorService = await _atorServices.BuscarPorId(atorDto.IdAtor);
+            var resultado = TestaTipoResultRepository<LerAtorDto>.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.True(resultado);
         }
@@ -71,11 +68,11 @@ namespace Testes.Services
             _atorRepository.Setup(a => a.BuscarTodos()).ReturnsAsync(null as IEnumerable<Ator>);
 
             //act
-            var atorService = await _atorServices.BuscarTodos(1,2);
+            var atorService = await _atorServices.BuscarTodos(1, 2);
             //assert
             Assert.Null(atorService);
         }
-        
+
 
 
         //Cadastrar ATOR
@@ -101,7 +98,7 @@ namespace Testes.Services
             var atorDto = _mapper.Map<CriarAtorDto>(ator);
             _atorRepository.Setup(a => a.Cadastrar(ator)).Returns(Task.FromResult(ator));
             //act
-            var atorService= await _atorServices.Cadastrarr(atorDto);
+            var atorService = await _atorServices.Cadastrarr(atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.True(resultado);
@@ -113,13 +110,13 @@ namespace Testes.Services
         {
             //arrange
             _atorRepository.Setup(a => a.BuscarPorId(1)).ReturnsAsync(null as Ator);
-            var atorDto = new AlterarAtorDto() { NomeAtor="ator" };
+            var atorDto = new AlterarAtorDto() { NomeAtor = "ator" };
             //act
             var atorService = await _atorServices.Alterar(1, atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.False(resultado);
-            
+
         }
         [Fact]
         public async Task AlterarAtor_RetornaTrue_Sucess()
@@ -131,7 +128,7 @@ namespace Testes.Services
             _atorRepository.Setup(a => a.Alterar(ator)).Returns(Task.FromResult(ator));
 
             //act
-            var atorService= await _atorServices.Alterar(1, atorDto);
+            var atorService = await _atorServices.Alterar(1, atorDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(atorService);
             //assert
             Assert.True(resultado);

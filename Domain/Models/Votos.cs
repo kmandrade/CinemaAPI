@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
@@ -16,6 +15,6 @@ namespace Domain.Models
         public virtual Usuario Usuario { get; set; }
         public int IdUsuario { get; set; }
 
-        
+
     }
 }

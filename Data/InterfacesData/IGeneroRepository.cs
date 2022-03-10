@@ -1,13 +1,8 @@
 ﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.InterfacesData
 {
-    public interface IGeneroRepository :IRepository<Genero>
+    public interface IGeneroRepository : IRepository<Genero>
     {
         Task<Genero> BuscarPorNome(string nome);
     }

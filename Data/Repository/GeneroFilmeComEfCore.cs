@@ -2,23 +2,18 @@
 using Data.InterfacesData;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Repository
 {
     public class GeneroFilmeComEfCore : BaseRepository<GeneroFilme>, IGeneroFilmeRepository
     {
         private readonly DbSet<GeneroFilme> _dbset;
-        
+
 
         public GeneroFilmeComEfCore(MyContext _context) : base(_context)
         {
             _dbset = _context.Set<GeneroFilme>();
-            
+
         }
 
         public async Task<IEnumerable<GeneroFilme>> BuscarFilmesPorGenero(int IdGeneroFilme)
@@ -33,7 +28,7 @@ namespace Data.Repository
             return queryFilmes;
         }
 
-        public async Task<GeneroFilme> BuscarGeneroDoFilme(int idGenero,int idFilme)
+        public async Task<GeneroFilme> BuscarGeneroDoFilme(int idGenero, int idFilme)
         {
             var query = await _context.GenerosFilmes
                 .Include(g => g.Genero)

@@ -1,11 +1,5 @@
-﻿using Domain.Dtos.FilmeDto;
-using Domain.Dtos.FilmeGenero;
+﻿using Domain.Dtos.FilmeGenero;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Servicos.Services.InterfacesService
 {
