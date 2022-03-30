@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos.UsuarioDto;
+using Domain.Models;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -135,7 +136,12 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
 
-
+        [HttpPost]
+        public async Task<IActionResult> CriarUsuarioHash(CriarUsuarioDto criarUsuarioDto)
+        {
+            await _usuarioService.CriarUsuarioHash(criarUsuarioDto);
+            return Ok();
+        }
 
     }
 }

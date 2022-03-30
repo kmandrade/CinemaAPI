@@ -20,5 +20,11 @@ namespace Data.Repository
                 .FirstOrDefaultAsync(u => u.NomeUsuario == nome && u.Password == password);
             return await usuario;
         }
+        public async Task<Usuario>BuscarUsuarioPorLogin(string nome)
+        {
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.NomeUsuario == nome);
+            return usuario;
+        }
     }
 }

@@ -21,6 +21,8 @@ namespace Cinema.Api.Controllers
 
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginRequest request)
         {
+
+            /*
             //recupera o usuario
             var usuario = await _usuarioService.BuscarUsuarioPorLogin(request);
 
@@ -29,18 +31,25 @@ namespace Cinema.Api.Controllers
             {
                 return NotFound(new { message = "Usuario ou senha invalidos" });
             }
-
-            //gera o token
-            var token = _tokenService.GenerateToken(usuario);
-            //oculta a senha
-            usuario.Password = "";
-
-            //retorna os dados
-            return new
+            */
+            var valido = await _usuarioService.ValidaSenhaAsync(request);
+            if (valido)
             {
-                usuario.NomeUsuario,
-                token = token
-            };
+                var usuario= await _usuarioService.BuscarUsuarioPorLogin(request.UserName);
+                //gera o token
+                var token = _tokenService.GenerateToken(usuario);
+                //oculta a senha
+                usuario.Password = "";
+
+                //retorna os dados
+                return new
+                {
+                    usuario.NomeUsuario,
+                    token = token
+                };
+            }
+            return Unauthorized();
+            
         }
     }
 }

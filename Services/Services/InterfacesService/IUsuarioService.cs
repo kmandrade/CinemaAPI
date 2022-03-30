@@ -9,7 +9,7 @@ namespace Servicos.Services.InterfacesService
         Task<IEnumerable<LerUsuarioDto>> BuscarTodosOsUsuarioDto(int skip, int take);
         Task<Result> CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto);
         Task<Result<LerUsuarioDto>> BuscarUsuarioPorId(int idUsuario);
-        Task<Usuario> BuscarUsuarioPorLogin(LoginRequest loginRequest);
+        Task<Usuario> BuscarUsuarioPorLogin(string nome);
         Task<IEnumerable<LerUsuarioDto>> BuscarUsuariosArquivados(int skip, int take);
         Task<Result> AlterarUsuario(int idUsuario, CriarUsuarioDto criarUsuarioDto);
         Task<Result> ExcluirUsuario(int idUsuario);
@@ -17,6 +17,10 @@ namespace Servicos.Services.InterfacesService
 
         Task<Result> ArquivarUsuario(int id);
         Task<Result> ReativarUsuario(int id);
+
+        Task<Result> CriarUsuarioHash(CriarUsuarioDto criarUsuarioDto);
+        Task<bool> ValidaSenhaAsync(LoginRequest login);
+
 
     }
 }

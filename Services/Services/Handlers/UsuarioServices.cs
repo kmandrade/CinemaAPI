@@ -3,6 +3,7 @@ using Data.InterfacesData;
 using Domain.Dtos.UsuarioDto;
 using Domain.Models;
 using FluentResults;
+using Microsoft.AspNetCore.Identity;
 using Servicos.Services.InterfacesService;
 
 namespace Servicos.Services.Handlers
@@ -18,10 +19,10 @@ namespace Servicos.Services.Handlers
             _mapper = mapper;
         }
 
-        public async Task<Usuario> BuscarUsuarioPorLogin(LoginRequest loginRequest)
+        public async Task<Usuario> BuscarUsuarioPorLogin(string nome)
         {
             var usuarioSelecionado = await
-                _usuarioRepository.BuscarUsuarioPorNomeESenha(loginRequest.UserName, loginRequest.Password);
+                _usuarioRepository.BuscarUsuarioPorLogin(nome);
             return usuarioSelecionado;
         }
 
@@ -61,8 +62,7 @@ namespace Servicos.Services.Handlers
             await _usuarioRepository.Cadastrar(usuario);
             return Result.Ok();
         }
-
-
+       
 
         public async Task<Result> AlterarUsuario(int idUsuario, CriarUsuarioDto criarUsuarioDto)
         {
@@ -122,6 +122,47 @@ namespace Servicos.Services.Handlers
             }
             _usuarioRepository.Excluir(usuarioSelecionado);
             return Result.Ok();
+        }
+
+
+        public async Task<Result> CriarUsuarioHash(CriarUsuarioDto criarUsuario)
+
+        {
+
+            var usuario = _mapper.Map<Usuario>(criarUsuario);
+            var passwordHasher = new PasswordHasher<Usuario>();
+            usuario.Password = passwordHasher.HashPassword(usuario, usuario.Password);
+            await _usuarioRepository.Cadastrar(usuario);
+            return Result.Ok();
+        }
+
+        public async Task<bool> ValidaSenhaAsync(LoginRequest login)
+        {
+            var usuario = _mapper.Map<Usuario>(login);
+            var usuarioConsultado = await _usuarioRepository.BuscarUsuarioPorLogin(usuario.NomeUsuario);
+            if (usuarioConsultado == null)
+            {
+                return false;
+            }
+            var passwordHash = new PasswordHasher<Usuario>();
+
+            var status = passwordHash.VerifyHashedPassword(usuario, usuarioConsultado.Password, usuario.Password);
+            switch (status)
+            {
+                case PasswordVerificationResult.Failed:
+                    return false;
+                    break;
+                case PasswordVerificationResult.Success:
+                    return true;
+                    break;
+                case PasswordVerificationResult.SuccessRehashNeeded:
+                    //chama o update para converter o hash de novo
+                    return false;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
         }
 
     }

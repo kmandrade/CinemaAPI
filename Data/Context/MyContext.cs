@@ -12,7 +12,7 @@ namespace Data.Context
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source = protech-ssc6;Initial Catalog=CinemaMDB;Trusted_Connection=true;");
+            optionsBuilder.UseSqlServer("Data Source = DESKTOP-86UFV16;Initial Catalog=CinemaMDB;Trusted_Connection=true;");
         }
 
         public DbSet<Ator> Atores { get; set; }
