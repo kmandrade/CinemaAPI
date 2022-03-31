@@ -23,8 +23,9 @@ namespace Data.Repository
         public async Task<Usuario>BuscarUsuarioPorLogin(string nome)
         {
             var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.NomeUsuario == nome);
+                .FirstOrDefaultAsync(u => u.NomeUsuario == nome && u.Situacao==SituacaoEntities.Ativado);
             return usuario;
+            
         }
     }
 }

@@ -11,7 +11,7 @@
 
         Task Cadastrar(T obj);
         Task Alterar(T obj);
-        void Excluir(T obj);
+        Task Excluir(T obj);
         Task<int> Save();
 
 

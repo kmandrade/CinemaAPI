@@ -58,13 +58,14 @@ namespace Cinema.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var resultado = await _usuarioService.CriarUsuarioNormalDto(usuarioDto);
+            var resultado = await _usuarioService.CriarUsuarioHash(usuarioDto);
             if (resultado.IsFailed)
             {
-                return BadRequest(new { message = resultado.ToString() });
+                return BadRequest(new { message = "Error ao criar usuario" });
             }
             return Ok();
         }
+        
 
         [Authorize(Roles = "Administrador")]
         [HttpPut("ArquivaUsuario/{id}")]
@@ -79,7 +80,7 @@ namespace Cinema.Api.Controllers
             {
                 return BadRequest(new { message = resultado.ToString() });
             }
-            return Ok(resultado);
+            return Ok();
 
         }
 
@@ -121,7 +122,7 @@ namespace Cinema.Api.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
-        [HttpDelete("DeletaUsuario/{id}")]
+        [HttpDelete("DeletarUsuario/{id}")]
         public async Task<IActionResult> ExcluirUsuario(int id)
         {
             if (id <= 0)
@@ -136,12 +137,7 @@ namespace Cinema.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CriarUsuarioHash(CriarUsuarioDto criarUsuarioDto)
-        {
-            await _usuarioService.CriarUsuarioHash(criarUsuarioDto);
-            return Ok();
-        }
+        
 
     }
 }

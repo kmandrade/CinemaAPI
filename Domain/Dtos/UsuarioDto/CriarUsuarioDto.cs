@@ -13,6 +13,7 @@ namespace Domain.Dtos.UsuarioDto
 
         [Required(ErrorMessage = "A senha é obrigatorio")]
         [DataType(DataType.Password)]//inferindo que sera do tipo password
+        
         public string Password { get; set; }
         [Required]
         [Compare("Password")]

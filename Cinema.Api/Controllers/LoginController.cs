@@ -18,20 +18,10 @@ namespace Cinema.Api.Controllers
         }
 
         [HttpPost("Login")]
-
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginRequest request)
         {
-
-            /*
-            //recupera o usuario
-            var usuario = await _usuarioService.BuscarUsuarioPorLogin(request);
-
-            //verifica se usuario existe
-            if (usuario == null || usuario.Situacao == SituacaoEntities.Arquivado)
-            {
-                return NotFound(new { message = "Usuario ou senha invalidos" });
-            }
-            */
+            
+            
             var valido = await _usuarioService.ValidaSenhaAsync(request);
             if (valido)
             {
@@ -48,7 +38,7 @@ namespace Cinema.Api.Controllers
                     token = token
                 };
             }
-            return Unauthorized();
+            return BadRequest(new { message = "Usuario ou senha invalidos" });
             
         }
     }

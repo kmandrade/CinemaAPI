@@ -27,7 +27,7 @@ namespace Data.Repository
             return await _dbSet.ToListAsync();
         }
 
-        public virtual async void Excluir(T obj)
+        public virtual async Task Excluir(T obj)
         {
             _dbSet.Remove(obj);
             await Save();

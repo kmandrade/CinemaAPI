@@ -55,27 +55,38 @@ namespace Servicos.Services.Handlers
         }
 
 
-        public async Task<Result> CriarUsuarioNormalDto(CriarUsuarioDto criarUsuarioDto)
+        public async Task<Result> CriarUsuarioHash(CriarUsuarioDto criarUsuario)
+
         {
-            var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
+            var usuario = _mapper.Map<Usuario>(criarUsuario);
+            var usuarioConsultado = await _usuarioRepository.BuscarUsuarioPorLogin(criarUsuario.NomeUsuarioDto);
+            if (usuarioConsultado != null)
+            {
+                return Result.Fail("Ja possui usuario com este nome");
+            }
+            ConverteSenhaEmHash(usuario);
             usuario.Situacao = SituacaoEntities.Ativado;
             await _usuarioRepository.Cadastrar(usuario);
             return Result.Ok();
+
         }
-       
+
 
         public async Task<Result> AlterarUsuario(int idUsuario, CriarUsuarioDto criarUsuarioDto)
         {
 
-            var usuarioSelecionado = await _usuarioRepository.BuscarPorId(idUsuario);
-            if (usuarioSelecionado == null)
+            var usuarioConsultado = _usuarioRepository.BuscarPorId(idUsuario);
+            if (usuarioConsultado == null)
             {
-                return null;
+                return Result.Fail("Nao possui usuario com esse id");
             }
-            _mapper.Map(usuarioSelecionado, criarUsuarioDto);
-            await _usuarioRepository.Save();
+            var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
+            ConverteSenhaEmHash(usuario);
+            await _usuarioRepository.Alterar(usuario);
             return Result.Ok();
+            
         }
+        
 
         public async Task<Result> ArquivarUsuario(int id)
         {
@@ -125,25 +136,23 @@ namespace Servicos.Services.Handlers
         }
 
 
-        public async Task<Result> CriarUsuarioHash(CriarUsuarioDto criarUsuario)
-
-        {
-
-            var usuario = _mapper.Map<Usuario>(criarUsuario);
-            var passwordHasher = new PasswordHasher<Usuario>();
-            usuario.Password = passwordHasher.HashPassword(usuario, usuario.Password);
-            await _usuarioRepository.Cadastrar(usuario);
-            return Result.Ok();
-        }
+        
 
         public async Task<bool> ValidaSenhaAsync(LoginRequest login)
         {
+            
             var usuario = _mapper.Map<Usuario>(login);
             var usuarioConsultado = await _usuarioRepository.BuscarUsuarioPorLogin(usuario.NomeUsuario);
             if (usuarioConsultado == null)
             {
                 return false;
             }
+
+            if (usuarioConsultado.NomeUsuario == "admin")
+            {
+                ConverteSenhaEmHash(usuarioConsultado);
+            }
+
             var passwordHash = new PasswordHasher<Usuario>();
 
             var status = passwordHash.VerifyHashedPassword(usuario, usuarioConsultado.Password, usuario.Password);
@@ -163,6 +172,12 @@ namespace Servicos.Services.Handlers
                     throw new InvalidOperationException();
             }
 
+        }
+        private void ConverteSenhaEmHash(Usuario usuario)
+        {
+
+            var passwordHasher = new PasswordHasher<Usuario>();
+            usuario.Password = passwordHasher.HashPassword(usuario, usuario.Password);
         }
 
     }
