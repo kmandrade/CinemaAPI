@@ -5,7 +5,7 @@ using Domain.Services.InterfacesService;
 using Servicos.Services.Handlers;
 using Servicos.Services.InterfacesService;
 using Servicos.Services.Token;
-
+using Utils.Cripitografia;
 
 namespace Cinema.Api.Helper
 {
@@ -34,6 +34,10 @@ namespace Cinema.Api.Helper
             services.AddScoped<IUsuarioService, UsuarioServices>();
             services.AddScoped<ITokenService, TokenService>();
 
+
+
+            //UTILS
+            services.AddScoped<IHash, Hash>();
 
             return services;
         }

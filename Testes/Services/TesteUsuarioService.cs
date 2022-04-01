@@ -8,6 +8,7 @@ using Servicos.Services.Handlers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Testes.BaseEntities;
+using Utils.Cripitografia;
 using Xunit;
 
 namespace Testes.Services
@@ -17,6 +18,7 @@ namespace Testes.Services
         private readonly IMapper _mapper;
         private readonly UsuarioServices _usuarioServices;
         private readonly Mock<IUsuarioRepository> _usuarioRepository;
+        private readonly Mock<IHash> _hash;
 
         public TesteUsuarioService()
         {
@@ -29,8 +31,8 @@ namespace Testes.Services
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
             _usuarioRepository = new Mock<IUsuarioRepository>();
-
-            _usuarioServices = new UsuarioServices(_usuarioRepository.Object, _mapper);
+            _hash = new Mock<IHash>();
+            _usuarioServices = new UsuarioServices(_usuarioRepository.Object, _mapper ,_hash.Object);
         }
 
 
@@ -117,7 +119,7 @@ namespace Testes.Services
             var usuario = _mapper.Map<Usuario>(usuarioDto);
             _usuarioRepository.Setup(u => u.Cadastrar(usuario)).Returns(Task.FromResult(usuario));
             //act
-            var act = await _usuarioServices.CriarUsuarioNormalDto(usuarioDto);
+            var act = await _usuarioServices.CriarUsuarioHash(usuarioDto);
             var resultado = TesteRepository.Retorna_FalseInFalid_TrueInSucess_Result(act);
             //assert
             Assert.True(resultado);

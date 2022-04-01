@@ -5,6 +5,7 @@ using Domain.Models;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using Servicos.Services.InterfacesService;
+using Utils.Cripitografia;
 
 namespace Servicos.Services.Handlers
 {
@@ -13,10 +14,12 @@ namespace Servicos.Services.Handlers
 
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
-        public UsuarioServices(IUsuarioRepository usuarioRepository, IMapper mapper)
+        private readonly IHash _hash;
+        public UsuarioServices(IUsuarioRepository usuarioRepository, IMapper mapper, IHash hash)
         {
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
+            _hash = hash;
         }
 
         public async Task<Usuario> BuscarUsuarioPorLogin(string nome)
@@ -64,7 +67,7 @@ namespace Servicos.Services.Handlers
             {
                 return Result.Fail("Ja possui usuario com este nome");
             }
-            ConverteSenhaEmHash(usuario);
+            _hash.TransformaEmHash(usuario);
             usuario.Situacao = SituacaoEntities.Ativado;
             await _usuarioRepository.Cadastrar(usuario);
             return Result.Ok();
@@ -81,7 +84,8 @@ namespace Servicos.Services.Handlers
                 return Result.Fail("Nao possui usuario com esse id");
             }
             var usuario = _mapper.Map<Usuario>(criarUsuarioDto);
-            ConverteSenhaEmHash(usuario);
+
+            _hash.TransformaEmHash(usuario);
             await _usuarioRepository.Alterar(usuario);
             return Result.Ok();
             
@@ -131,7 +135,7 @@ namespace Servicos.Services.Handlers
             {
                 return Result.Fail("usuario ativo ou nao encontrado");
             }
-            _usuarioRepository.Excluir(usuarioSelecionado);
+            await _usuarioRepository.Excluir(usuarioSelecionado);
             return Result.Ok();
         }
 
@@ -153,24 +157,7 @@ namespace Servicos.Services.Handlers
                 ConverteSenhaEmHash(usuarioConsultado);
             }
 
-            var passwordHash = new PasswordHasher<Usuario>();
-
-            var status = passwordHash.VerifyHashedPassword(usuario, usuarioConsultado.Password, usuario.Password);
-            switch (status)
-            {
-                case PasswordVerificationResult.Failed:
-                    return false;
-                    break;
-                case PasswordVerificationResult.Success:
-                    return true;
-                    break;
-                case PasswordVerificationResult.SuccessRehashNeeded:
-                    //chama o update para converter o hash de novo
-                    return false;
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
+           return await _hash.ValidaSenha(usuario, usuarioConsultado.Password);
 
         }
         private void ConverteSenhaEmHash(Usuario usuario)
